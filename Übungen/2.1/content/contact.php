@@ -50,6 +50,12 @@ echo $_POST['foobar'];
                 } ?></textarea>
         </div>
         <div class="form-group">
+            <label for="phone">Telefon</label>
+            <input type="tel" name="phone" id="phone" value="<?php if (isset($_POST['phone'])) {
+                echo $_POST['phone'];
+            } ?>">
+        </div>
+        <div class="form-group">
             <label for="newsletter">Newsletter?</label>
             <input type="checkbox" name="newsletter" id="newsletter">
         </div>
