@@ -16,7 +16,7 @@ $links = [
             $encodedUrl = urlencode($link);
             $hasBeenClicked = '';
 
-            if (in_array($link, $_SESSION['visited'])) {
+            if (isset($_SESSION['visited']) && in_array($link, $_SESSION['visited'])) {
                 $hasBeenClicked = ' - clicked';
             }
 
