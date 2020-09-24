@@ -1,0 +1,3 @@
+<main>
+    Blog
+</main>
