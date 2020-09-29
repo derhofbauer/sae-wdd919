@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Todo
+ * Tasks:
  *
  * [ ] Mehrere Topics
  * [ ] Email + Name speichern
@@ -19,9 +19,6 @@
  */
 
 require_once 'dbconnect.php';
-
-var_dump($link);
-
 require_once 'partials/header.php';
 ?>
 
