@@ -2,6 +2,7 @@ version: '3'
 
 services:
   apache:
+    # Install: docker-php-ext-install pdo pdo_mysql mysqli
     image: php:7.4.10-apache
     volumes:
       - './:/var/www/html/' # DO NOT use this mapping in production environments! NEVER! NO!
