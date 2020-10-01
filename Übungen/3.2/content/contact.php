@@ -104,6 +104,11 @@ if (!isset($errors)) {
             <?php renderError($errors, 'phone'); ?>
         </div>
         <div class="form-group">
+            <label for="agb">Ich habe die AGB gelesen, verstanden und akzeptiere sie.</label>
+            <input type="checkbox" name="agb" id="agb">
+            <?php renderError($errors, 'agb'); ?>
+        </div>
+        <div class="form-group">
             <label for="newsletter">Newsletter?</label>
             <input type="checkbox" name="newsletter" id="newsletter">
         </div>
