@@ -8,7 +8,7 @@ Ihr braucht für den Unterricht einen Text-Editor. Im Prinzip könnt ihr jeden b
 
 ## `docker-compose`
 
-Wer gerne Docker/Docker Compose nutzen möchte, findet ein entsprechendes File im Repository. Ihr könnte aber genauso gut auch den XAMPP/MAMP/whatever verwenden.
+Wer gerne Docker/Docker Compose nutzen möchte, findet ein entsprechendes File im Repository. Ihr könnte aber genauso gut auch den XAMPP/MAMP/whatever verwenden. Wichtig bei der Verwendung des hier befindlichen `docker-compose.yml` Files ist, dass ihr das `.env.example` File kopiert und damit ein `.env` File anlegt. Dieses `.env` File wird nicht von GIT in das Repository hinzugefügt und erlaubt auf allen Rechnern, auf denen ihr diese Docker-Umgebung startet, eine andere Konfiguration.
 
 ### Web
 + Apache: [localhost:8080](localhost:8080)
