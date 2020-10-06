@@ -3,11 +3,11 @@
 /**
  * Tasks:
  *
- * [ ] Mehrere Topics
- * [ ] Email + Name speichern
- * [ ] Abos-Übersicht
- * [ ] Übersicht über alle Topics
- * [ ] Abo-Formular
+ * [x] Mehrere Topics
+ * [x] Email + Name speichern
+ * [x] Abos-Übersicht
+ * [x] Übersicht über alle Topics
+ * [x] Abo-Formular
  *
  * ----
  *
