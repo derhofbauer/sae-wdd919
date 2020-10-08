@@ -1,0 +1,17 @@
+# URL-Rewriting
+# Das Apache Modul mod_rewrite kann URLs, zu denen keine physische Datei existiert, umformen und im Hintergrund eine
+#   existierende Datei aufrufen und die angefragt URL, oder Teile davon, als ein oder mehrere Parameter übergeben.
+#
+# Bsp.:
+#   localhost:8080/mvc/products/1 --> localhost:8080/mvc/index.php?path=/products/1
+#   localhost:8080/mvc/blog/posts/42 --> localhost:8080/mvc/index.php?path=/blog/posts/42
+
+# mod_rewrite aktivieren
+RewriteEngine On
+# Rewriting nur dann durchführen, wenn keine Datei an der aufgerufenen URL existiert
+RewriteCond %{REQUEST_FILENAME} !-f
+# Rewriting nur dann durchführen, wenn kein Ordner an der aufgerufenen URL existiert
+RewriteCond %{REQUEST_FILENAME} !-d
+# Gesamten Pfad, beginnend am Verzeichnis, in dem diese .htacces Datei gespeichert ist, als Parameter an die index.php
+#   Datei anähngen.
+RewriteRule ^(.*)$ index.php?path=$1 [L,QSA]
