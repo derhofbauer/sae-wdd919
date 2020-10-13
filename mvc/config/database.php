@@ -1,9 +1,9 @@
 <?php
 
 return [
-    'host' => 'localhost',
+    'host' => 'mariadb',
     'username' => 'root',
-    'password' => 'root',
+    'password' => 'password',
     'dbname' => 'mvc',
     'port' => null,
     'socket' => null

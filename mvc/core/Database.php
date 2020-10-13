@@ -12,7 +12,7 @@ class Database
 {
     private object $link;
     private object $lastResult;
-    private object $data;
+    private array $data;
 
     /**
      * Database constructor.
