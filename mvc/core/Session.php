@@ -36,16 +36,16 @@ class Session
      * Wert aus Session auslesen
      *
      * @param string $key
-     * @param null   $fallback
+     * @param null   $default
      *
      * @return mixed|null
      */
-    public static function get (string $key, $fallback = null)
+    public static function get (string $key, $default = null)
     {
         if (isset($_SESSION[$key])) {
             return $_SESSION[$key];
         }
-        return $fallback;
+        return $default;
     }
 
     /**
@@ -64,14 +64,14 @@ class Session
      * Wert aus der Session auslesen und danach löschen
      *
      * @param string $key
-     * @param null   $fallback
+     * @param null   $default
      *
      * @return mixed|null
      */
-    public static function getAndForget (string $key, $fallback = null)
+    public static function getAndForget (string $key, $default = null)
     {
-        $value = self::get($key, $fallback);
+        $_value = self::get($key, $default);
         self::forget($key);
-        return $value;
+        return $_value;
     }
 }

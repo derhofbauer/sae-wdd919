@@ -9,7 +9,6 @@ use Core\View;
  * Class HomeController
  *
  * @package App\Controllers
- * @todo comment
  */
 class HomeController
 {
@@ -19,7 +18,13 @@ class HomeController
         $db = new Database();
         $products = $db->query('SELECT * FROM products');
 
-        View::render('home', ['products' => $products]);
+        /**
+         * Um nicht in jeder Action den Header und den Footer und dann den View laden zu müssen, haben wir uns eine View
+         * Klasse gebaut.
+         */
+        View::render('home', [
+            'products' => $products
+        ]);
     }
 
 }
