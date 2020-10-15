@@ -7,10 +7,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link" href="index.php">Subscribe</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="admin.php">Abos</a>
+                <a class="nav-link" href="cart">Cart (<?php /* @todo: comment */ echo \App\Controllers\CartController::numberOfProducts(); ?>)</a>
             </li>
         </ul>
     </div>

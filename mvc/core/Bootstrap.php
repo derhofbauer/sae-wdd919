@@ -18,6 +18,11 @@ class Bootstrap
     {
         Session::init();
 
+        /**
+         * @todo: comment
+         */
+        define('BASE_URL', Config::get('app.baseurl'));
+
         $router = new Router();
         $router->route();
     }

@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\Product;
 use Core\Database;
 use Core\View;
 
@@ -13,10 +14,12 @@ use Core\View;
 class HomeController
 {
 
-    public function home ()
+    public function show ()
     {
-        $db = new Database();
-        $products = $db->query('SELECT * FROM products');
+        /**
+         * @todo: comment
+         */
+        $products = Product::all();
 
         /**
          * Um nicht in jeder Action den Header und den Footer und dann den View laden zu müssen, haben wir uns eine View
