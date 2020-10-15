@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Generation Time: Oct 14, 2020 at 07:42 AM
--- Server version: 10.4.6-MariaDB-1:10.4.6+maria~bionic
--- PHP Version: 7.2.22
+-- Erstellungszeit: 15. Okt 2020 um 18:34
+-- Server-Version: 10.4.6-MariaDB-1:10.4.6+maria~bionic
+-- PHP-Version: 7.2.22
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,13 +19,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `mvc`
+-- Datenbank: `mvc`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `products`
+-- Tabellenstruktur für Tabelle `products`
 --
 
 CREATE TABLE `products` (
@@ -38,29 +38,29 @@ CREATE TABLE `products` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Dumping data for table `products`
+-- Daten für Tabelle `products`
 --
 
 INSERT INTO `products` (`id`, `name`, `description`, `price`, `stock`, `images`) VALUES
-(1, 'Product 1', 'Product 1 Desc', 9.99, 10, NULL),
+(1, 'Product 1', 'Product 1 Desc', 9.99, 10, 'pimp-rollator.jpg;pimp-rollator.jpg'),
 (2, 'Product 2', NULL, 42, 10, NULL);
 
 --
--- Indexes for dumped tables
+-- Indizes der exportierten Tabellen
 --
 
 --
--- Indexes for table `products`
+-- Indizes für die Tabelle `products`
 --
 ALTER TABLE `products`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT für exportierte Tabellen
 --
 
 --
--- AUTO_INCREMENT for table `products`
+-- AUTO_INCREMENT für Tabelle `products`
 --
 ALTER TABLE `products`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
