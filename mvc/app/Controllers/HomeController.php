@@ -17,7 +17,7 @@ class HomeController
     public function show ()
     {
         /**
-         * @todo: comment
+         * Alle Produkte über das Product-Model aus der Datenbank laden.
          */
         $products = Product::all();
 

@@ -2,11 +2,15 @@
     <?php
     /**
      * [ ] Produkt-Detailseite
-     * @todo: comment
      */
     ?>
 
 
+    <?php
+    /**
+     * Gibt es Bilder für das Produkt? Wenn ja, geben wir hier alle nacheinander aus.
+     */
+    ?>
     <?php if (count($product->getImages()) > 0): ?>
         <div class="col-6">
             <?php foreach ($product->getImages() as $image): ?>

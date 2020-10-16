@@ -19,7 +19,7 @@ class Bootstrap
         Session::init();
 
         /**
-         * @todo: comment
+         * Damit wir nicht bei jedem Redirect die baseurl aus der Config laden müssen, erstellen wir hier eine Hilfs-Konstante.
          */
         define('BASE_URL', Config::get('app.baseurl'));
 

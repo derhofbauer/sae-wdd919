@@ -7,7 +7,12 @@
     foreach ($products as $product): ?>
 
     <div class="col-4 product">
-        <?php /* @todo: comment */ if (count($product->getImages()) > 0): ?>
+        <?php
+        /**
+         * ibt es Bilder? Wenn ja, geben wir hier das erste davon als Produktbild aus.
+         */
+        ?>
+        <?php if (count($product->getImages()) > 0): ?>
             <img src="<?php echo $product->getImages()[0]; ?>" alt="<?php echo $product->name ?>" class="img-thumbnail">
         <?php endif; ?>
         <h2><?php echo $product->name; ?></h2>
