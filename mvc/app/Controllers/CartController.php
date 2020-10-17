@@ -75,7 +75,7 @@ class CartController
      */
     public static function numberOfProducts (): int
     {
-        return array_sum(Session::get(self::CART_SESSION_KEY));
+        return array_sum(Session::get(self::CART_SESSION_KEY, []));
     }
 
 }
