@@ -3,6 +3,7 @@
 use App\Controllers\HomeController;
 use App\Controllers\ProductController;
 use App\Controllers\CartController;
+use App\Controllers\LoginController;
 
 /**
  * Die Dateien im /routes Ordner beinhalten ein Mapping von einer URL auf eine eindeutige Controller & Action
@@ -30,4 +31,10 @@ return [
     '/cart/add/{id}' => [CartController::class, 'add'],
     '/cart/add-one/{id}' => [CartController::class, 'addOne'],
     '/cart/remove-one/{id}' => [CartController::class, 'removeOne'],
+
+    /**
+     * Login Routes
+     */
+    '/login' => [LoginController::class, 'loginForm'],
+    '/login/do' => [LoginController::class, 'doLogin'],
 ];
