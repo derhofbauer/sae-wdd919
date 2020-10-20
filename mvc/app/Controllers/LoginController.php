@@ -8,16 +8,23 @@ use Core\View;
  * Class LoginController
  *
  * @package App\Controllers
- * @todo    : comment
  */
 class LoginController
 {
 
+    /**
+     * Loin Formular anzeigen
+     */
     public function loginForm ()
     {
         View::render('login');
     }
 
+    /**
+     * Login durchführen
+     *
+     * @todo: comment
+     */
     public function doLogin ()
     {
         /**

@@ -135,6 +135,11 @@ class Product extends BaseModel
     /**
      * Preis des aktuellen Produkts immer gleich formatieren und zurückgeben.
      *
+     * Wir rufen hier nur die statische Methode formatPrice() auf, weil wir irgendwann bemerkt haben, dass es auch
+     * praktisch wäre, wenn wir beliebige Preise formatieren könnten. Daher haben wir diese statische Methode entwickelt,
+     * um nicht mehrmals den selben Code zu haben - in unserem Fall wäre das mehrfach ein fast identer Aufrud der
+     * number_format() Funktion gewesen.
+     *
      * @return string
      */
     public function getPrice (): string
@@ -143,11 +148,13 @@ class Product extends BaseModel
     }
 
     /**
+     * s. $this->getPrice()
+     *
+     * Wir verwenden diese Methode beispielsweise im Cart-View, um alle dort angezeigten Preise einheitlich darzustellen.
+     *
      * @param float $price
      *
      * @return string
-     *
-     * @todo: comment
      */
     public static function formatPrice (float $price): string
     {

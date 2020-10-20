@@ -2,7 +2,6 @@
     <?php
     /**
      * [ ] Cart Inhalt
-     * @todo: comment
      */
     ?>
 

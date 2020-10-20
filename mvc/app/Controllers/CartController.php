@@ -63,23 +63,53 @@ class CartController
 
     /**
      * Inhalt aus dem Cart laden und an einen View zur Auflistung übergeben.
-     *
-     * @todo: comment
      */
     public function show ()
     {
-        $cartContent = Session::get(self::CART_SESSION_KEY);
+        /**
+         * Cart aus der Session laden
+         */
+        $cart = Session::get(self::CART_SESSION_KEY);
 
+        /**
+         * Variablen vorbereiten; $total wird den Gesamtwert der Waren im Warenkorb beinhalten
+         */
         $products = [];
         $total = 0;
-        foreach ($cartContent as $productId => $quantity) {
+
+        /**
+         * Alle Einträge im Warenkorb durchgehen
+         */
+        foreach ($cart as $productId => $quantity) {
+            /**
+             * Zugehöriges Produkt aus der Datenbank laden
+             */
             $product = Product::find($productId);
+
+            /**
+             * $quantity Property dynamisch in dem Produkt Objekt erstellen und mit der Wert aus der Session befüllen
+             */
             $product->quantity = $quantity;
+
+            /**
+             * $subtotal Property dynamisch in dem Produkt Objekt erstellen und berechnen
+             */
             $product->subtotal = $product->quantity * $product->price;
+
+            /**
+             * "fertig" geladenes Produkt zu den übrigen geladenen Produkten pushen
+             */
             $products[] = $product;
+
+            /**
+             * Gesamten Warenwert des Warenkorbs erhöhen
+             */
             $total += $product->subtotal;
         }
 
+        /**
+         * View laden und Werte übergebem
+         */
         View::render('cart', [
             'products' => $products,
             'total' => $total
@@ -87,57 +117,115 @@ class CartController
     }
 
     /**
-     * @todo: comment
+     * Genaue Anzahl eines Produktes in den Warenkorb legen
      */
     public function update ()
     {
+        /**
+         * Warenkorb aus der Session auslesen
+         */
         $cart = Session::get(self::CART_SESSION_KEY, []);
 
+        /**
+         * Alle übergebenen Werte aus dem Cart-View durchgehen. Die Quantities haben deshalb alle den selben Namen,
+         * 'cart-quantity', weil die name-Attribute der Input Felder Namen wie cart-quantity[1] und cart-quantity[42]
+         * haben und die Werte dadurch als Array verfügbar sind.
+         */
         foreach ($_POST['cart-quantity'] as $productId => $newQuantity) {
+            /**
+             * Neue Quantity setzen
+             */
             $cart[$productId] = $newQuantity;
         }
 
+        /**
+         * Cart zurück in Session speichern
+         */
         Session::set(self::CART_SESSION_KEY, $cart);
 
+        /**
+         * Zurück zum Cart leiten
+         */
         header("Location: " . BASE_URL . 'cart');
     }
 
     /**
-     * @todo: comment
+     * @param int $id
      */
     public function addOne (int $id)
     {
+        /**
+         * Cart aus Session auslesen
+         */
         $cart = Session::get(self::CART_SESSION_KEY, []);
 
+        /**
+         * Existiert dieses Produkt bereits im Warenkorb?
+         */
         if (array_key_exists($id, $cart)) {
+            /**
+             * Wenn ja, fügen wir ein Exemplar des Produkts hinzu
+             */
             $cart[$id] += 1;
         } else {
+            /**
+             * Wenn nein, legen wir ein neues Exemplar dieses Produkts in den Warenkorb
+             */
             $cart[$id] = 1;
         }
 
+        /**
+         * Warenkorb zurück in die Session speichern
+         */
         Session::set(self::CART_SESSION_KEY, $cart);
 
+        /**
+         * Zurück zum Warenkorb View leiten
+         */
         header("Location: " . BASE_URL . 'cart');
     }
 
     /**
-     * @todo: comment
+     * @param int $id
      */
     public function removeOne (int $id)
     {
+        /**
+         * Warenkorb aus Session laden
+         */
         $cart = Session::get(self::CART_SESSION_KEY, []);
 
+        /**
+         * Befindet sich das Produkt schon im Warenkorb?
+         */
         if (array_key_exists($id, $cart)) {
+            /**
+             * Wenn ja, berechnen wir, wie oft es drin wäre, wenn wir eines davon weg nehmen.
+             */
             $newQuantity = $cart[$id] - 1;
+            /**
+             *  Sind nach Abzug von einem Exemplar immernoch welche da, setzen wir diese neu berechnete veringerte Anzahl
+             */
             if ($newQuantity >= 1) {
                 $cart[$id] = $newQuantity;
             } else {
+                /**
+                 * Andernfalls löschn wir das Produkt aus dem Warenkorb.
+                 *
+                 * Die unset() Funktion kann verwendet werden um Variablen oder einzelne Einträge in Arrays zu löschen.
+                 */
                 unset($cart[$id]);
             }
         }
 
+        /**
+         * Warenkorb zurück in Session speichern
+         */
         Session::set(self::CART_SESSION_KEY, $cart);
 
+        /**
+         * Zurück zum Cart-View leiten
+         */
         header("Location: " . BASE_URL . 'cart');
     }
 
