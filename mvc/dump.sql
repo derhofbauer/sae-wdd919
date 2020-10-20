@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Erstellungszeit: 15. Okt 2020 um 18:34
+-- Erstellungszeit: 20. Okt 2020 um 18:33
 -- Server-Version: 10.4.6-MariaDB-1:10.4.6+maria~bionic
 -- PHP-Version: 7.2.22
 
@@ -45,6 +45,30 @@ INSERT INTO `products` (`id`, `name`, `description`, `price`, `stock`, `images`)
 (1, 'Product 1', 'Product 1 Desc', 9.99, 10, 'pimp-rollator.jpg;pimp-rollator.jpg'),
 (2, 'Product 2', NULL, 42, 10, NULL);
 
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `users`
+--
+
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL,
+  `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `password` varchar(255) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Password Hash',
+  `username` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `firstname` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `lastname` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `is_admin` tinyint(1) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Daten für Tabelle `users`
+--
+
+INSERT INTO `users` (`id`, `email`, `password`, `username`, `firstname`, `lastname`, `is_admin`) VALUES
+(1, 'admin@shop.com', '$2y$12$mONZuM2SJSo425/axQfqcOBPYfFew8TXDAKt9rwGjWQLOlO8xAkwi ', 'admin', 'User', 'One (Admin)', 1),
+(2, 'user@shop.com', '$2y$12$.P6HA4LEjI7qT5jBTBlB5uY1UgLThZkYS6KDKe2BdgqoDFZvrOanq ', 'user', 'User', 'Two (regular User)', NULL);
+
 --
 -- Indizes der exportierten Tabellen
 --
@@ -56,6 +80,14 @@ ALTER TABLE `products`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indizes für die Tabelle `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `email` (`email`),
+  ADD UNIQUE KEY `username` (`username`);
+
+--
 -- AUTO_INCREMENT für exportierte Tabellen
 --
 
@@ -63,6 +95,12 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT für Tabelle `products`
 --
 ALTER TABLE `products`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT für Tabelle `users`
+--
+ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
