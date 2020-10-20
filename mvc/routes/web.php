@@ -26,5 +26,8 @@ return [
      * Cart Routes
      */
     '/cart' => [CartController::class, 'show'],
-    '/cart/add/{id}' => [CartController::class, 'add']
+    '/cart/update' => [CartController::class, 'update'],
+    '/cart/add/{id}' => [CartController::class, 'add'],
+    '/cart/add-one/{id}' => [CartController::class, 'addOne'],
+    '/cart/remove-one/{id}' => [CartController::class, 'removeOne'],
 ];

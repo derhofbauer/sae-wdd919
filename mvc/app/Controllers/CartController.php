@@ -2,7 +2,9 @@
 
 namespace App\Controllers;
 
+use App\Models\Product;
 use Core\Session;
+use Core\View;
 
 /**
  * Class CartController
@@ -61,10 +63,82 @@ class CartController
 
     /**
      * Inhalt aus dem Cart laden und an einen View zur Auflistung übergeben.
+     *
+     * @todo: comment
      */
     public function show ()
     {
-        var_dump(Session::get(self::CART_SESSION_KEY));
+        $cartContent = Session::get(self::CART_SESSION_KEY);
+
+        $products = [];
+        $total = 0;
+        foreach ($cartContent as $productId => $quantity) {
+            $product = Product::find($productId);
+            $product->quantity = $quantity;
+            $product->subtotal = $product->quantity * $product->price;
+            $products[] = $product;
+            $total += $product->subtotal;
+        }
+
+        View::render('cart', [
+            'products' => $products,
+            'total' => $total
+        ]);
+    }
+
+    /**
+     * @todo: comment
+     */
+    public function update ()
+    {
+        $cart = Session::get(self::CART_SESSION_KEY, []);
+
+        foreach ($_POST['cart-quantity'] as $productId => $newQuantity) {
+            $cart[$productId] = $newQuantity;
+        }
+
+        Session::set(self::CART_SESSION_KEY, $cart);
+
+        header("Location: " . BASE_URL . 'cart');
+    }
+
+    /**
+     * @todo: comment
+     */
+    public function addOne (int $id)
+    {
+        $cart = Session::get(self::CART_SESSION_KEY, []);
+
+        if (array_key_exists($id, $cart)) {
+            $cart[$id] += 1;
+        } else {
+            $cart[$id] = 1;
+        }
+
+        Session::set(self::CART_SESSION_KEY, $cart);
+
+        header("Location: " . BASE_URL . 'cart');
+    }
+
+    /**
+     * @todo: comment
+     */
+    public function removeOne (int $id)
+    {
+        $cart = Session::get(self::CART_SESSION_KEY, []);
+
+        if (array_key_exists($id, $cart)) {
+            $newQuantity = $cart[$id] - 1;
+            if ($newQuantity >= 1) {
+                $cart[$id] = $newQuantity;
+            } else {
+                unset($cart[$id]);
+            }
+        }
+
+        Session::set(self::CART_SESSION_KEY, $cart);
+
+        header("Location: " . BASE_URL . 'cart');
     }
 
     /**

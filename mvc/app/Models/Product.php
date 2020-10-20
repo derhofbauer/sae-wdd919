@@ -139,7 +139,19 @@ class Product extends BaseModel
      */
     public function getPrice (): string
     {
-        return number_format($this->price, 2, ',', '.') . ' €';
+        return self::formatPrice($this->price);
+    }
+
+    /**
+     * @param float $price
+     *
+     * @return string
+     *
+     * @todo: comment
+     */
+    public static function formatPrice (float $price): string
+    {
+        return number_format($price, 2, ',', '.') . ' €';
     }
 
 }
