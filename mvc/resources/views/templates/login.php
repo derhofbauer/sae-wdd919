@@ -1,6 +1,9 @@
 <div class="products row">
 
     <div class="col">
+
+        <?php /* @todo: comment */ require __DIR__ . '/../partials/errors.php'; ?>
+
         <form action="login/do" method="post">
             <div class="form-group">
                 <label for="usernameOrEmail">Username or E-Mail</label>

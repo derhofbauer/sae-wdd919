@@ -15,10 +15,14 @@ class Session
 {
     /**
      * Session starten
+     *
+     * @todo: comment
      */
     public static function init ()
     {
-        session_start();
+        session_start([
+            'cookie_lifetime' => 90 * 24 * 60 * 60
+        ]);
     }
 
     /**

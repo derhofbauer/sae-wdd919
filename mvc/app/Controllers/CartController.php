@@ -67,9 +67,10 @@ class CartController
     public function show ()
     {
         /**
-         * Cart aus der Session laden
+         * Cart aus der Session laden. Falls kein Cart in der Session gesetzt ist, nehmen wir hier ein leeres Array als
+         * Standardwert.
          */
-        $cart = Session::get(self::CART_SESSION_KEY);
+        $cart = Session::get(self::CART_SESSION_KEY, []);
 
         /**
          * Variablen vorbereiten; $total wird den Gesamtwert der Waren im Warenkorb beinhalten

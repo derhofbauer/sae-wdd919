@@ -44,6 +44,10 @@ abstract class BaseModel
          * Ergebnis-Array vorbereiten.
          */
         $objects = [];
+
+        /**
+         * Ergebnisse des Datenbank-Queries durchgehen und jeweils ein neues Objekt erzeugen.
+         */
         foreach ($result as $object) {
             /**
              * Auslesen, welche Klasse aufgerufen wurde und ein Objekt dieser Klasse erstellen und in den Ergebnis-Array
@@ -106,7 +110,7 @@ abstract class BaseModel
      *
      * @return string
      */
-    private static function getTableNameFromClassName (): string
+    protected static function getTableNameFromClassName (): string
     {
         /**
          * Name der aufgerufenen Klasse abfragen.

@@ -14,8 +14,24 @@
                  * aus der Klasse aufrufen können ohne vorher ein Objekt erstellen zu müssen.
                  */
                 ?>
-                <a class="nav-link" href="cart">Cart (<?php echo \App\Controllers\CartController::numberOfProducts(); ?>)</a>
+                <a class="nav-link" href="cart">
+                    Cart (<?php echo \App\Controllers\CartController::numberOfProducts(); ?>)
+                </a>
             </li>
+        </ul>
+
+        <ul class="navbar-nav">
+            <?php /* @todo: comment */ if (\App\Models\User::isLoggedIn()): ?>
+                <li class="nav-item">
+                    <a href="logout" class="nav-link">
+                    <?php echo \App\Models\User::getLoggedIn()->username; ?>, Logout
+                    </a>
+                </li>
+            <? else: ?>
+                <li class="nav-item">
+                    <a href="login" class="nav-link">Login</a>
+                </li>
+            <?php endif; ?>
         </ul>
     </div>
 </nav>

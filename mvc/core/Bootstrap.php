@@ -2,6 +2,9 @@
 
 namespace Core;
 
+use App\Models\User;
+use Core\Models\BaseUser;
+
 /**
  * Class Bootstrap
  *
@@ -17,6 +20,7 @@ class Bootstrap
     public function __construct ()
     {
         Session::init();
+        $this->updateSessionLifetime();
 
         /**
          * Damit wir nicht bei jedem Redirect die baseurl aus der Config laden müssen, erstellen wir hier eine Hilfs-Konstante.
@@ -49,6 +53,21 @@ class Bootstrap
          * Referrer in Session speichern
          */
         Session::set('referrer', $currentUrl);
+    }
+
+    /**
+     * @todo: comment
+     */
+    public function updateSessionLifetime ()
+    {
+        if (
+            Session::get(BaseUser::LOGGED_IN_REMEMBER, false) === false
+            || Session::get(BaseUser::LOGGED_IN_REMEMBER, 0) >= time()
+        ) {
+            Session::set(BaseUser::LOGGED_IN_REMEMBER, time() + BaseUser::LOGGED_IN_SESSION_LIFETIME);
+        } else {
+            User::logout();
+        }
     }
 
 }
