@@ -42,7 +42,7 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `name`, `description`, `price`, `stock`, `images`) VALUES
-(1, 'Product 1', 'Product 1 Desc', 9.99, 10, 'pimp-rollator.jpg;pimp-rollator.jpg'),
+(1, 'Product 1', 'Product 1 Desc', 9.99, 10, 'pimp-rollator.jpg'),
 (2, 'Product 2', NULL, 42, 10, NULL);
 
 -- --------------------------------------------------------
