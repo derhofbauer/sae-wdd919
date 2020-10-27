@@ -13,7 +13,10 @@ class Database
 {
     private object $link;
     private object $stmt;
-    private object $lastResult;
+    /**
+     * @todo: comment, warum hier kein Type angegeben wird
+     */
+    private $lastResult;
     private array $data;
 
     /**

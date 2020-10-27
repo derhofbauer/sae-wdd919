@@ -136,9 +136,9 @@ class Product extends BaseModel
      * Preis des aktuellen Produkts immer gleich formatieren und zurückgeben.
      *
      * Wir rufen hier nur die statische Methode formatPrice() auf, weil wir irgendwann bemerkt haben, dass es auch
-     * praktisch wäre, wenn wir beliebige Preise formatieren könnten. Daher haben wir diese statische Methode entwickelt,
-     * um nicht mehrmals den selben Code zu haben - in unserem Fall wäre das mehrfach ein fast identer Aufrud der
-     * number_format() Funktion gewesen.
+     * praktisch wäre, wenn wir beliebige Preise formatieren könnten. Daher haben wir diese statische Methode
+     * entwickelt, um nicht mehrmals den selben Code zu haben - in unserem Fall wäre das mehrfach ein fast identer
+     * Aufrud der number_format() Funktion gewesen.
      *
      * @return string
      */
@@ -150,7 +150,8 @@ class Product extends BaseModel
     /**
      * s. $this->getPrice()
      *
-     * Wir verwenden diese Methode beispielsweise im Cart-View, um alle dort angezeigten Preise einheitlich darzustellen.
+     * Wir verwenden diese Methode beispielsweise im Cart-View, um alle dort angezeigten Preise einheitlich
+     * darzustellen.
      *
      * @param float $price
      *
@@ -159,6 +160,51 @@ class Product extends BaseModel
     public static function formatPrice (float $price): string
     {
         return number_format($price, 2, ',', '.') . ' €';
+    }
+
+    /**
+     * @param string $filename
+     *
+     * @todo: comment
+     */
+    public function removeImage (string $filename)
+    {
+        /**
+         * [x] Dateinamen aus Bildern in der DB löschen: filename.jpg;something.png;file1.gif
+         */
+        $this->images = str_replace($filename, '', $this->images); // filename.jpg;;file1.gif
+        $this->images = str_replace(self::IMAGES_DELIMITER . self::IMAGES_DELIMITER, self::IMAGES_DELIMITER, $this->images); // filename.jpg;file1.gif
+        $this->images = trim($this->images, self::IMAGES_DELIMITER); // filename.jpg;file1.gif
+    }
+
+    /**
+     * @todo: comment
+     */
+    public function save ()
+    {
+        /**
+         * Datenbankverbindung herstellen.
+         */
+        $db = new Database();
+
+        /**
+         * Tabellennamen berechnen.
+         */
+        $tableName = self::getTableNameFromClassName();
+
+        /**
+         * Query ausführen.
+         *
+         * @todo: comment
+         */
+        return $db->query("UPDATE $tableName SET name = ?, description = ?, price = ?, stock = ?, images = ? WHERE id = ?", [
+            's:name' => $this->name,
+            's:description' => $this->description,
+            'd:price' => $this->price,
+            'i:stock' => $this->stock,
+            's:images' => $this->images,
+            'i:id' => $this->id
+        ]);
     }
 
 }

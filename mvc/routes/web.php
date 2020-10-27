@@ -49,5 +49,7 @@ return [
     /**
      * Admin Route
      */
-    '/admin' => [AdminController::class, 'test']
+    '/admin' => [AdminController::class, 'dashboard'],
+    '/admin/products/{id}/edit' => [ProductController::class, 'updateForm'],
+    '/admin/products/{id}/edit/do' => [ProductController::class, 'update']
 ];

@@ -21,9 +21,14 @@ abstract class BaseModel
     /**
      * Alle Datensätze aus der Datenbank abfragen
      *
+     * @param string $orderbBy
+     * @param string $direction
+     *
      * @return array
+     *
+     * @todo: comment function params
      */
-    public static function all (): array
+    public static function all (string $orderbBy = '', string $direction = 'ASC'): array
     {
         /**
          * Datenbankverbindung herstellen.
@@ -37,8 +42,14 @@ abstract class BaseModel
 
         /**
          * Query ausführen.
+         *
+         * @todo: comment
          */
-        $result = $db->query("SELECT * FROM $tableName");
+        if (empty($orderbBy)) {
+            $result = $db->query("SELECT * FROM $tableName");
+        } else {
+            $result = $db->query("SELECT * FROM $tableName ORDER BY $orderbBy $direction");
+        }
 
         /**
          * Ergebnis-Array vorbereiten.

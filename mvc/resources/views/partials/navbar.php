@@ -21,10 +21,17 @@
         </ul>
 
         <ul class="navbar-nav">
-            <?php /* @todo: comment */ if (\App\Models\User::isLoggedIn()): ?>
+
+            <?php /* @todo: comment */
+            if (\App\Models\User::isLoggedIn()): ?>
+                <?php if (\App\Models\User::getLoggedIn()->is_admin === true): ?>
+                    <li class="nav-item">
+                        <a href="admin" class="nav-link">Dashboard</a>
+                    </li>
+                <?php endif; ?>
                 <li class="nav-item">
                     <a href="logout" class="nav-link">
-                    <?php echo \App\Models\User::getLoggedIn()->username; ?>, Logout
+                        <?php echo \App\Models\User::getLoggedIn()->username; ?>, Logout
                     </a>
                 </li>
             <? else: ?>

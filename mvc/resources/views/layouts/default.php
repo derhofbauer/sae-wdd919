@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Custom Shop</title>
 
+    <!-- @todo: comment -->
     <base href="<?php echo \Core\Config::get('app.baseurl') ?>">
 
     <!-- CSS -->

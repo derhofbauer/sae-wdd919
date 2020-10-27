@@ -54,4 +54,22 @@ class View
         require_once "$viewBasePath/layouts/$layout.php";
     }
 
+    /**
+     * @todo: comment
+     */
+    public static function error404 ()
+    {
+        header("HTTP/1.0 404 Not Found");
+        die;
+    }
+
+    /**
+     * @todo: comment
+     */
+    public static function error403 ()
+    {
+        header("HTTP/1.0 403 Forbidden");
+        die;
+    }
+
 }

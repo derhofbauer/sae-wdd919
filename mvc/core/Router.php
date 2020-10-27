@@ -171,7 +171,7 @@ class Router
          * aber fürs erste reicht uns mal ein einfaches die().
          */
         if ($controller === '') {
-            die('404 - Page not found');
+            View::error404();
         } else {
 
             /**
