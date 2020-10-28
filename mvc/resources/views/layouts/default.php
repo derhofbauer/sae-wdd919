@@ -6,7 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Custom Shop</title>
 
-    <!-- @todo: comment -->
+    <!--
+    Hier definieren wir eine HTML Base Url. Diese dient dazu, dass alle relativen URLs und includes im HTML relativ zu
+    dieser URL berechnet werden.
+
+    s. https://developer.mozilla.org/de/docs/Web/HTML/Element/base
+    -->
     <base href="<?php echo \Core\Config::get('app.baseurl') ?>">
 
     <!-- CSS -->

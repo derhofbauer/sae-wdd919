@@ -14,7 +14,7 @@ class Database
     private object $link;
     private object $stmt;
     /**
-     * @todo: comment, warum hier kein Type angegeben wird
+     * Hier können wir keinen Typ angeben, weil $lastResult sowohl ein boolscher Wert als auch ein mysql_result sein kann.
      */
     private $lastResult;
     private array $data;

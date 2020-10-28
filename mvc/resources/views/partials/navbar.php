@@ -22,7 +22,11 @@
 
         <ul class="navbar-nav">
 
-            <?php /* @todo: comment */
+            <?php
+            /**
+             * Ist ein*e User*in eingeloggt und ein Admin, so kriegt die Person den Dashboard Link angezeigt. Ist sie
+             * kein Admin, so kriegt sie nur den Logout link.
+             */
             if (\App\Models\User::isLoggedIn()): ?>
                 <?php if (\App\Models\User::getLoggedIn()->is_admin === true): ?>
                     <li class="nav-item">

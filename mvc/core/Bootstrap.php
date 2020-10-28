@@ -56,7 +56,10 @@ class Bootstrap
     }
 
     /**
-     * @todo: comment
+     * Damit wir die Remember-Funktionalität im Rahmen des Logins umsetzen können, müssen wir ein bisschen tricksen.
+     * Wir erstellen eine Session und speichern einen Lifetime-Wert hinein. Hier aktualisieren wir die Lifetime bei
+     * jedem Request. Ist die Lifetime irgendwann überschritten, weil die Seite lange nicht besucht wurde, führen wir
+     * einen Logout durch.
      */
     public function updateSessionLifetime ()
     {

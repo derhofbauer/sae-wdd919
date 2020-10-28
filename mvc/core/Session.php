@@ -15,11 +15,13 @@ class Session
 {
     /**
      * Session starten
-     *
-     * @todo: comment
      */
     public static function init ()
     {
+        /**
+         * Die session_start() Funktion erlaubt es, Config-Werte zu übergeben, unter anderem das Ablaufdatum des Session
+         * Cookie.
+         */
         session_start([
             'cookie_lifetime' => 90 * 24 * 60 * 60
         ]);

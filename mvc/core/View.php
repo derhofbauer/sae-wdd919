@@ -55,7 +55,7 @@ class View
     }
 
     /**
-     * @todo: comment
+     * Das ist eine einfache Hilfsfunktion die den HTTP Status Code 404 an den Browser schickt und danach abbricht.
      */
     public static function error404 ()
     {
@@ -64,7 +64,7 @@ class View
     }
 
     /**
-     * @todo: comment
+     * Das ist eine einfache Hilfsfunktion die den HTTP Status Code 403 an den Browser schickt und danach abbricht.
      */
     public static function error403 ()
     {

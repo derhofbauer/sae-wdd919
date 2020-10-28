@@ -10,7 +10,6 @@ use Core\View;
  * Class LoginController
  *
  * @package App\Controllers
- * @todo: comment
  */
 class AuthController
 {
@@ -25,8 +24,6 @@ class AuthController
 
     /**
      * Login durchführen
-     *
-     * @todo: comment
      */
     public function doLogin ()
     {
@@ -38,18 +35,46 @@ class AuthController
          *      5) Login-Status in Session speichern
          */
 
+        /**
+         * User anhand einer Email-Adresse oder eines Usernames aus der Datenbank laden
+         */
         $user = User::findByEmailOrUsername($_POST['usernameOrEmail']);
 
+        /**
+         * Fehler-Array vorbereiten
+         */
         $errors = [];
 
+        /**
+         * Wurde ein*e User*in in der Datenbank gefunden und stimmt das eingegebene Passwort mit dem Passwort Hash des/der User*in
+         * überein?
+         */
         if ($user === false || $user->checkPassword($_POST['password']) === false) {
+            /**
+             * Wenn nein: Fehler!
+             */
             $errors[] = 'Username/E-Mail oder Passwort sind falsch';
         } else {
+            /**
+             * Wenn ja: weiter
+             */
+
+            /**
+             * Remember Status vorbereiten
+             */
             $remember = false;
+
+            /**
+             * Wenn die Rmember-Checkbox angehakerlt worden ist, ändern wir den Status
+             */
             if (isset($_POST['remember']) && $_POST['remember'] === 'on') {
                 $remember = true;
             }
 
+            /**
+             * Ist die/der User*in, der sich einloggen möchte ein Admin, so redirecten wir in den Admin-Bereich, sonst auf die
+             * home-Seite.
+             */
             if ($user->is_admin) {
                 $user->login(BASE_URL . 'admin', $remember);
             } else {
@@ -57,13 +82,16 @@ class AuthController
             }
         }
 
+        /**
+         * Fehler in die Session schreiben und zum Login zurück leiten.
+         */
         Session::set('errors', $errors);
         header('Location: ' . BASE_URL . 'login');
         exit;
     }
 
     /**
-     * @todo: comment
+     * Logout und redirect auf die Home-Seite durchführen.
      */
     public function logout ()
     {
@@ -71,7 +99,7 @@ class AuthController
     }
 
     /**
-     * @todo: comment
+     * Registrierungsformular anzeigen
      */
     public function signupForm ()
     {

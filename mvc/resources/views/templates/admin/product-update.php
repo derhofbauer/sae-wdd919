@@ -1,4 +1,3 @@
-<!-- @todo: comment -->
 <form action="admin/products/<?php echo $product->id; ?>/edit/do" method="post" enctype="multipart/form-data">
 
     <div class="row">

@@ -19,14 +19,16 @@ abstract class BaseModel
     protected abstract function fill (array $data);
 
     /**
-     * Alle Datensätze aus der Datenbank abfragen
+     * Alle Datensätze aus der Datenbank abfragen.
+     *
+     * Die beiden Funktionsparameter bieten die Möglichkeit die Daten, die abgerufen werden, nach einer einzelnen Spalte
+     * aufsteigend oder absteigend direkt über MySQL zu sortieren. Sortierungen sollten, sofern möglich, über die
+     * Datenbank durchgeführt werden, weil das wesentlich performanter ist als über PHP.
      *
      * @param string $orderbBy
      * @param string $direction
      *
      * @return array
-     *
-     * @todo: comment function params
      */
     public static function all (string $orderbBy = '', string $direction = 'ASC'): array
     {
@@ -43,7 +45,8 @@ abstract class BaseModel
         /**
          * Query ausführen.
          *
-         * @todo: comment
+         * Wurde in den Funktionsparametern eine Sortierung definiert, so wenden wir sie hier an, andernfalls rufen wir
+         * alles ohne sortierung ab.
          */
         if (empty($orderbBy)) {
             $result = $db->query("SELECT * FROM $tableName");

@@ -2,7 +2,7 @@
 
     <div class="col products">
         <ul class="list-group">
-            <!-- @todo: comment -->
+            <!-- Hier gehen wir alle Produkte durch und geben sie in einer Liste aus. -->
             <?php foreach ($products as $product): ?>
                 <li class="list-group-item d-flex justify-content-between align-items-center<?php echo ($product->stock < 10) ? ' list-group-item-danger' : ''; ?>">
                     <a href="admin/products/<?php echo $product->id; ?>/edit">

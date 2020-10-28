@@ -2,7 +2,12 @@
 
     <div class="col">
 
-        <?php /* @todo: comment */ require __DIR__ . '/../partials/errors.php'; ?>
+        <?php
+        /**
+         * Partial laden, dass die Errors aus der Session ausliest und hübsch rendert.
+         */
+        require __DIR__ . '/../partials/errors.php';
+        ?>
 
         <form action="login/do" method="post">
             <div class="form-group">

@@ -163,22 +163,36 @@ class Product extends BaseModel
     }
 
     /**
-     * @param string $filename
+     * Ein einzelnes Bild anhand des Dateinamens aus $this->images löschen.
      *
-     * @todo: comment
+     * @param string $filename
      */
     public function removeImage (string $filename)
     {
         /**
          * [x] Dateinamen aus Bildern in der DB löschen: filename.jpg;something.png;file1.gif
          */
+
+        /**
+         * Dateinamen mit einem leeren String ersetzen.
+         */
         $this->images = str_replace($filename, '', $this->images); // filename.jpg;;file1.gif
+
+        /**
+         * Dadurch kann es passieren, dass zwei Trennzeichen direkt aufeinanderfolgen. Hier ersetzen wir also 2 direkt
+         * aufeinanderfolgende Trennzeichen durch ein einzelnes Trennzeichen.
+         */
         $this->images = str_replace(self::IMAGES_DELIMITER . self::IMAGES_DELIMITER, self::IMAGES_DELIMITER, $this->images); // filename.jpg;file1.gif
+
+        /**
+         * Es kann auch vorkommen, dass das erste oder letzte Bild gelöscht wird und damit ganz vorne oder ganz am Ende
+         * ein Trennzeichen übrig bleibt. Hier schneiden wir vorn und hinten von dem String alle Trennzeichen weg.
+         */
         $this->images = trim($this->images, self::IMAGES_DELIMITER); // filename.jpg;file1.gif
     }
 
     /**
-     * @todo: comment
+     * Aktuelle Properties dieses Objekts wieder in die Datenbank zurückspeichern.
      */
     public function save ()
     {
@@ -195,7 +209,8 @@ class Product extends BaseModel
         /**
          * Query ausführen.
          *
-         * @todo: comment
+         * Hier ist es essenziell, dass die Werte in dem zweiten Funktionsparameter von $db->query() in der selben
+         * Reihenfolge angegeben werden, wie sie im Query auftreten.
          */
         return $db->query("UPDATE $tableName SET name = ?, description = ?, price = ?, stock = ?, images = ? WHERE id = ?", [
             's:name' => $this->name,
