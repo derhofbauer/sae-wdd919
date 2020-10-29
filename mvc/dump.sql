@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Erstellungszeit: 20. Okt 2020 um 18:33
+-- Erstellungszeit: 29. Okt 2020 um 18:54
 -- Server-Version: 10.4.6-MariaDB-1:10.4.6+maria~bionic
 -- PHP-Version: 7.2.22
 
@@ -42,7 +42,7 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `name`, `description`, `price`, `stock`, `images`) VALUES
-(1, 'Product 1', 'Product 1 Desc', 9.99, 10, 'pimp-rollator.jpg'),
+(1, 'Product 1 renamed', 'Product 1 Desc', 42.99, 10, '1603997590_pimp-rollator.jpg'),
 (2, 'Product 2', NULL, 42, 10, NULL);
 
 -- --------------------------------------------------------
