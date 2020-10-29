@@ -1,5 +1,7 @@
 <form action="admin/products/<?php echo $product->id; ?>/edit/do" method="post" enctype="multipart/form-data">
 
+    <?php require __DIR__ . '/../../partials/errors.php'; ?>
+
     <div class="row">
 
         <div class="col">

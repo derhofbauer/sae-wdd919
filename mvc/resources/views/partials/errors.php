@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @todo: comment
+ */
 $errors = \Core\Session::getAndForget('errors', []);
 
 foreach ($errors as $error): ?>

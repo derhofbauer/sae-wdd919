@@ -4,6 +4,9 @@ namespace App\Controllers;
 
 use App\Models\Product;
 use App\Models\User;
+use Core\Config;
+use Core\Session;
+use Core\Validator;
 use Core\View;
 
 /**
@@ -75,11 +78,12 @@ class ProductController
             View::error403();
         }
 
-        /**
-         * HIER MÜSSTE VALIDIERT WERDEN!!
-         */
-
-        var_dump($_POST, $_FILES);
+        $validator = new Validator();
+        $validator->validate($_POST['name'], 'Name', true, 'textnum');
+        $validator->validate($_POST['stock'], 'Stock', true, 'int', 0);
+        $validator->validate($_POST['price'], 'Price', true, 'float', 0);
+        $validator->validate($_POST['description'], 'Description', false, 'textnum');
+        $validationErrors = $validator->getErrors();
 
         /**
          * [x] Product abrufen
@@ -99,8 +103,8 @@ class ProductController
          */
         $product->name = $_POST['name'];
         $product->description = $_POST['description'];
-        $product->price = $_POST['price'];
-        $product->stock = $_POST['stock'];
+        $product->price = (float)$_POST['price'];
+        $product->stock = (int)$_POST['stock'];
 
         /**
          * Sollen Bilder gelöscht werden?
@@ -111,7 +115,10 @@ class ProductController
              */
             foreach ($_POST['delete-image'] as $path => $on) {
                 /**
-                 * Dateinamen aus dem Bild-Pfad auslesen.
+                 * Die basename-Funktion extrahiert aus einem Dateipfad nur den Dateinamen, z.B.:
+                 * basename('/var/www/html/index.php') --> 'index.php'
+                 *
+                 * s. https://www.php.net/manual/en/function.basename.php
                  */
                 $filename = basename($path);
 
@@ -124,8 +131,71 @@ class ProductController
         }
 
         /**
+         * Hochgeladenen, "neuen" Bilder verarbeiten
+         *
+         * @todo: comment
+         */
+        if (!empty($_FILES['images']['name'][0])) {
+            foreach ($_FILES['images']['name'] as $index => $originalFileName) {
+                $name = $originalFileName;
+                $type = $_FILES['images']['type'][$index];
+                $tmp_name = $_FILES['images']['tmp_name'][$index];
+                $error = $_FILES['images']['error'][$index];
+                $size = $_FILES['images']['size'][$index];
+
+                /**
+                 * [x] Handelt es sich um eine Bild?
+                 * [x] Ist die Datei übermäßig groß (Dateigröße)? max. 10MB
+                 * [x] Liegen die Dimensionen im Rahmen?
+                 * [x] Wenn ja: speichern!
+                 * [x] Wenn nein: Fehler!
+                 */
+
+                $uploadLimit = 1024 * 1024 * 10; // 10MB
+                $imageSizeWidthLimit = 1920;
+                $imageSizeHeightLimit = 1080;
+
+                $uploadedImageSizes = getimagesize($tmp_name);
+                $uploadedImageWidth = $uploadedImageSizes[0];
+                $uploadedImageHeight = $uploadedImageSizes[1];
+
+                if ($error !== UPLOAD_ERR_OK) {
+                    $validationErrors[] = 'Dateiupload ist fehlgeschlagen. Fehler' . $error;
+                } elseif (strpos($type, 'image/') !== 0) {
+                    $validationErrors[] = 'Es sind nur Bilder erlaubt';
+                } elseif ($size > $uploadLimit) {
+                    $validationErrors[] = 'Die Datei ist zu groß!';
+                } elseif (
+                    $uploadedImageWidth > $imageSizeWidthLimit
+                    || $uploadedImageHeight > $imageSizeHeightLimit
+                ) {
+                    $validationErrors[] = 'Die Dimenstionen der Datei übeschreibten das Maximum';
+                } else {
+                    $storagePath = Config::get('app.storage-path', 'storage/');
+                    $uploadPath = Config::get('app.upload-path', 'uploads/');
+
+                    $destinationFolder = __DIR__ . "/../../{$storagePath}{$uploadPath}";
+                    $destinationFilename = time() . "_$name";
+                    $destination = $destinationFolder . $destinationFilename;
+
+                    if (move_uploaded_file($tmp_name, $destination)) {
+                        $product->addImage(basename($destination));
+                    } else {
+                        $validationErrors[] = 'Die hochgeladene Datei konnte nicht gespeichert werden.';
+                    }
+                }
+            }
+        }
+
+        /**
          * Geändertes Produkt in der Datenbank aktualisieren.
          */
+        if (!empty($validationErrors)) {
+            Session::set('errors', $validationErrors);
+            header('Location: ' . BASE_URL . '/admin/products/' . $product->id . '/edit');
+            exit;
+        }
+
         $product->save();
 
         /**
@@ -139,6 +209,12 @@ class ProductController
                 unlink(__DIR__ . "/../../$path");
             }
         }
+
+        /**
+         * @todo: comment
+         */
+        header('Location: ' . BASE_URL . '/admin/products/' . $product->id . '/edit');
+        exit;
     }
 
 }

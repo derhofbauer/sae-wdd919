@@ -179,6 +179,30 @@ class Product extends BaseModel
         $this->images = str_replace($filename, '', $this->images); // filename.jpg;;file1.gif
 
         /**
+         * @todo: comment
+         */
+        $this->sanitizeImages();
+    }
+
+    /**
+     * @param string $filename
+     *
+     * @todo: comment
+     */
+    public function addImage (string $filename)
+    {
+        if (strpos($this->images, $filename) === false) {
+            $this->images .= (self::IMAGES_DELIMITER . $filename);
+        }
+
+        $this->sanitizeImages();
+    }
+
+    /**
+     * @todo: comment
+     */
+    private function sanitizeImages () {
+        /**
          * Dadurch kann es passieren, dass zwei Trennzeichen direkt aufeinanderfolgen. Hier ersetzen wir also 2 direkt
          * aufeinanderfolgende Trennzeichen durch ein einzelnes Trennzeichen.
          */
