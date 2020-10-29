@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\User;
 use Core\Session;
+use Core\Validator;
 use Core\View;
 
 /**
@@ -112,13 +113,38 @@ class AuthController
     public function doSignup ()
     {
         /**
-         * [ ] Validierung - Erfolgreich?
-         * [ ] Ja: Weiter, Fehler: Fehler ausgeben
+         * [x] Validierung - Erfolgreich?
+         * [x] Ja: Weiter, Fehler: Fehler ausgeben
          * [ ] Gibts E-Mail oder Username schon in der DB?
          * [ ] Ja: Fehler ausgeben, Nein: weiter
          * [ ] User Objekt erstellen & in DB speichern
          * [ ] Weiterleitung zum Login Formular
          */
+
+        $validator = new Validator();
+        $validator->validate($_POST['firstname'], 'Firstname', true, 'text', 2, 255);
+        $validator->validate($_POST['lastname'], 'Lastname', true, 'text', 2, 255);
+        $validator->validate($_POST['username'], 'Username', false, 'textnum', null, 255);
+        $validator->validate($_POST['email'], 'Email', true, 'email', 3, 255);
+        $validator->validate($_POST['password'], 'Password', true, 'password');
+        $validator->compare($_POST['password'], $_POST['password_repeat']);
+
+        $agb = false;
+        if (isset($_POST['agb'])) {
+            $agb = $_POST['agb'];
+        }
+        $validator->validate($agb, 'AGB', true, 'checkbox');
+
+        $errors = $validator->getErrors();
+
+        if (!empty($errors)) {
+            Session::set('errors', $errors);
+            header('Location: ' . BASE_URL . '/sign-up');
+            exit;
+        }
+
+
+
         var_dump($_POST);
     }
 
