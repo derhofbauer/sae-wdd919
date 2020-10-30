@@ -108,6 +108,7 @@ class AuthController
     }
 
     /**
+     * Daten aus dem Registrierungsformular entgegen nehmen und verarbeiten
      * @todo: comment
      */
     public function doSignup ()
@@ -121,24 +122,52 @@ class AuthController
          * [ ] Weiterleitung zum Login Formular
          */
 
+        /**
+         * Formulardaten validieren.
+         */
         $validator = new Validator();
         $validator->validate($_POST['firstname'], 'Firstname', true, 'text', 2, 255);
         $validator->validate($_POST['lastname'], 'Lastname', true, 'text', 2, 255);
         $validator->validate($_POST['username'], 'Username', false, 'textnum', null, 255);
         $validator->validate($_POST['email'], 'Email', true, 'email', 3, 255);
         $validator->validate($_POST['password'], 'Password', true, 'password');
+        /**
+         * Das Feld 'password_repeat' braucht nicht validiert werden, weil wenn 'password' ein valides Passwort ist und
+         * alle Kriterien erfüllt, und wir hier nun prüfen, ob 'password' und 'password_repeat' ident sind, dann ergibt
+         * sich daraus, dass auch 'password_repeat' ein valides Passwort ist.
+         */
         $validator->compare($_POST['password'], $_POST['password_repeat']);
 
+        /**
+         * Standardwert für die AGB-Checkbox setzen.
+         */
         $agb = false;
+        /**
+         * Wenn die Checkbox aus dem Formular übergeben wurde, dann nehmen wir den Wert aus dem Formular, und verwenden
+         * diesen weiter.
+         */
         if (isset($_POST['agb'])) {
             $agb = $_POST['agb'];
         }
+        /**
+         * Validieren, ob die Checkbox einen validen Wert hat.
+         */
         $validator->validate($agb, 'AGB', true, 'checkbox');
 
+        /**
+         * Fehler aus dem Validator auslesen.
+         */
         $errors = $validator->getErrors();
 
+        /**
+         * Wenn der Fehler-Array nicht leer ist und es somit Fehler gibt ...
+         */
         if (!empty($errors)) {
             Session::set('errors', $errors);
+            /**
+             * ... dann speichern wir sie in die Session, damit sie im errors.php-Partial ausgegeben werden können und
+             * leiten dann weiter.
+             */
             header('Location: ' . BASE_URL . '/sign-up');
             exit;
         }

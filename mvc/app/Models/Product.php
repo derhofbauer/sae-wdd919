@@ -179,27 +179,41 @@ class Product extends BaseModel
         $this->images = str_replace($filename, '', $this->images); // filename.jpg;;file1.gif
 
         /**
-         * @todo: comment
+         * Die beiden Zeilen, die hier zuvor gestanden sind, haben wir in eine Funktion ausgelagert, damit wir sie auch
+         * in der $this->addImage() Methode verwenden können ohne Code zu duplizieren.
          */
         $this->sanitizeImages();
     }
 
     /**
-     * @param string $filename
+     * Ein einzelnes Bild anhand des Dateinamens in $this->images hinzufügen.
      *
-     * @todo: comment
+     * @param string $filename
      */
     public function addImage (string $filename)
     {
+        /**
+         * Existiert das Bild noch nicht in $this->images ...
+         */
         if (strpos($this->images, $filename) === false) {
+            /**
+             * ... so hängen wir an $this->images einen Trenner und den Dateinamen hinten dran. Das kann dazu führen,
+             * dass Trenner an Stellen vorhanden sind, an denen keine sein sollen. War beispielsweise zuvor kein Bild
+             * verknüpft, so würde jetzt ';neuesBild.jpg' in $this->images stehen und einen Fehler verursachen ...
+             */
             $this->images .= (self::IMAGES_DELIMITER . $filename);
         }
 
+        /**
+         * ... daher verwenden wir hier auch die beiden Funktionen, die wir zuvor in $this->removeImage() programmiert
+         * hatten, um $this->images zu korrigieren und bspw. doppelte Trenner zu entfernen.
+         */
         $this->sanitizeImages();
     }
 
     /**
-     * @todo: comment
+     * Diese Funktion haben wir angelegt, weil wir die beiden beinhalteten Zeilen sowohl in $this->removeImage() als auch
+     * in $this->addImage() verwenden wollen. Best-Practice ist, Code-Duplikate so gut es geht zu vermeiden.
      */
     private function sanitizeImages () {
         /**
