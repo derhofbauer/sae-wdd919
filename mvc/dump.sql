@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.0.1
+-- version 5.0.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Erstellungszeit: 29. Okt 2020 um 18:54
--- Server-Version: 10.4.6-MariaDB-1:10.4.6+maria~bionic
--- PHP-Version: 7.2.22
+-- Erstellungszeit: 03. Nov 2020 um 19:38
+-- Server-Version: 10.4.12-MariaDB-1:10.4.12+maria~bionic
+-- PHP-Version: 7.4.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -42,8 +42,9 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `name`, `description`, `price`, `stock`, `images`) VALUES
-(1, 'Product 1 renamed', 'Product 1 Desc', 42.99, 10, '1603997590_pimp-rollator.jpg'),
-(2, 'Product 2', NULL, 42, 10, NULL);
+(1, 'Product 1', 'Product 2 Description', 42.99, 10, '1603997590_pimp-rollator.jpg'),
+(2, 'Product 2', 'Product 2 Description', 42, 15, '1604432186_37844315_454803461597516_8815318794768482304_n (1).jpg'),
+(3, 'Product 3', 'Product 3 Description', 41.99, 29, '');
 
 -- --------------------------------------------------------
 
@@ -95,7 +96,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT für Tabelle `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT für Tabelle `users`
