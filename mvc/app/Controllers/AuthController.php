@@ -77,9 +77,9 @@ class AuthController
              * home-Seite.
              */
             if ($user->is_admin) {
-                $user->login(BASE_URL . 'admin', $remember);
+                $user->login(BASE_URL . '/admin', $remember);
             } else {
-                $user->login(BASE_URL . 'home', $remember);
+                $user->login(BASE_URL . '/home', $remember);
             }
         }
 
@@ -87,7 +87,7 @@ class AuthController
          * Fehler in die Session schreiben und zum Login zurück leiten.
          */
         Session::set('errors', $errors);
-        header('Location: ' . BASE_URL . 'login');
+        header('Location: ' . BASE_URL . '/login');
         exit;
     }
 
@@ -96,7 +96,7 @@ class AuthController
      */
     public function logout ()
     {
-        User::logout(BASE_URL . 'home');
+        User::logout(BASE_URL . '/home');
     }
 
     /**

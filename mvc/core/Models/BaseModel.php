@@ -3,6 +3,7 @@
 namespace Core\Models;
 
 use Core\Database;
+use Core\Session;
 
 /**
  * Class BaseModel
@@ -153,5 +154,13 @@ abstract class BaseModel
          * Berechneten Tabellennamen zurückgeben.
          */
         return $tableName;
+    }
+
+    /**
+     * @todo: comment
+     */
+    public function save () {
+        Session::forget('$_post');
+        Session::forget('$_get');
     }
 }

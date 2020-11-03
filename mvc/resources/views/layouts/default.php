@@ -12,7 +12,7 @@
 
     s. https://developer.mozilla.org/de/docs/Web/HTML/Element/base
     -->
-    <base href="<?php echo \Core\Config::get('app.baseurl') ?>">
+    <base href="<?php echo \Core\Config::get('app.baseurl') ?>/">
 
     <!-- CSS -->
     <link rel="stylesheet" href="css/bootstrap.css">

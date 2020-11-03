@@ -51,5 +51,7 @@ return [
      */
     '/admin' => [AdminController::class, 'dashboard'],
     '/admin/products/{id}/edit' => [ProductController::class, 'updateForm'],
-    '/admin/products/{id}/edit/do' => [ProductController::class, 'update']
+    '/admin/products/{id}/edit/do' => [ProductController::class, 'update'],
+    '/admin/products/create' => [ProductController::class, 'createForm'],
+    '/admin/products/create/do' => [ProductController::class, 'create'],
 ];

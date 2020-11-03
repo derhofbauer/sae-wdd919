@@ -66,8 +66,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `email`, `password`, `username`, `firstname`, `lastname`, `is_admin`) VALUES
-(1, 'admin@shop.com', '$2y$12$mONZuM2SJSo425/axQfqcOBPYfFew8TXDAKt9rwGjWQLOlO8xAkwi ', 'admin', 'User', 'One (Admin)', 1),
-(2, 'user@shop.com', '$2y$12$.P6HA4LEjI7qT5jBTBlB5uY1UgLThZkYS6KDKe2BdgqoDFZvrOanq ', 'user', 'User', 'Two (regular User)', NULL);
+(1, 'admin@shop.com', '$2y$12$mONZuM2SJSo425/axQfqcOBPYfFew8TXDAKt9rwGjWQLOlO8xAkwi', 'admin', 'User', 'One (Admin)', 1),
+(2, 'user@shop.com', '$2y$12$.P6HA4LEjI7qT5jBTBlB5uY1UgLThZkYS6KDKe2BdgqoDFZvrOanq', 'user', 'User', 'Two (regular User)', NULL);
 
 --
 -- Indizes der exportierten Tabellen

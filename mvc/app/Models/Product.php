@@ -18,11 +18,11 @@ class Product extends BaseModel
      * Wir definieren alle Spalten aus der Tabelle mit den richtigen Datentypen.
      */
     public int $id;
-    public string $name;
-    public string $description;
-    public float $price;
-    public int $stock;
-    public string $images;
+    public string $name = '';
+    public string $description = '';
+    public float $price = 0.0;
+    public int $stock = 0;
+    public string $images = '';
 
     /**
      * Die abstrakte Klasse BaseModel kann den Namen, der zu diesem Model gehörigen Tabelle, automatisch berechnen. Es
@@ -235,6 +235,11 @@ class Product extends BaseModel
     public function save ()
     {
         /**
+         * @todo
+         */
+        parent::save();
+
+        /**
          * Datenbankverbindung herstellen.
          */
         $db = new Database();
@@ -249,15 +254,35 @@ class Product extends BaseModel
          *
          * Hier ist es essenziell, dass die Werte in dem zweiten Funktionsparameter von $db->query() in der selben
          * Reihenfolge angegeben werden, wie sie im Query auftreten.
+         *
+         *          * @todo
          */
-        return $db->query("UPDATE $tableName SET name = ?, description = ?, price = ?, stock = ?, images = ? WHERE id = ?", [
-            's:name' => $this->name,
-            's:description' => $this->description,
-            'd:price' => $this->price,
-            'i:stock' => $this->stock,
-            's:images' => $this->images,
-            'i:id' => $this->id
-        ]);
+        if (!empty($this->id)) {
+            return $db->query("UPDATE $tableName SET name = ?, description = ?, price = ?, stock = ?, images = ? WHERE id = ?", [
+                's:name' => $this->name,
+                's:description' => $this->description,
+                'd:price' => $this->price,
+                'i:stock' => $this->stock,
+                's:images' => $this->images,
+                'i:id' => $this->id
+            ]);
+        } else {
+            $result = $db->query("INSERT INTO $tableName SET name = ?, description = ?, price = ?, stock = ?, images = ?", [
+                's:name' => $this->name,
+                's:description' => $this->description,
+                'd:price' => $this->price,
+                'i:stock' => $this->stock,
+                's:images' => $this->images,
+            ]);
+
+            $newId = $db->getInsertId();
+
+            if (is_int($newId)) {
+                $this->id = $newId;
+            }
+
+            return $result;
+        }
     }
 
 }

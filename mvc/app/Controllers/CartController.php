@@ -147,7 +147,7 @@ class CartController
         /**
          * Zurück zum Cart leiten
          */
-        header("Location: " . BASE_URL . 'cart');
+        header("Location: " . BASE_URL . '/cart');
     }
 
     /**
@@ -183,7 +183,7 @@ class CartController
         /**
          * Zurück zum Warenkorb View leiten
          */
-        header("Location: " . BASE_URL . 'cart');
+        header("Location: " . BASE_URL . '/cart');
     }
 
     /**
@@ -227,7 +227,7 @@ class CartController
         /**
          * Zurück zum Cart-View leiten
          */
-        header("Location: " . BASE_URL . 'cart');
+        header("Location: " . BASE_URL . '/cart');
     }
 
     /**

@@ -80,4 +80,28 @@ class Session
         self::forget($key);
         return $_value;
     }
+
+    /**
+     * @param string $key
+     * @param null   $default
+     *
+     * @return mixed
+     * @todo: comment
+     */
+    public static function old (string $key, $default = null)
+    {
+        if (isset($_SESSION['$_post'][$key])) {
+            $_value = $_SESSION['$_post'][$key];
+            unset($_SESSION['$_post'][$key]);
+            return $_value;
+        }
+
+        if (isset($_SESSION['$_get'][$key])) {
+            $_value = $_SESSION['$_post'][$key];
+            unset($_SESSION['$_post'][$key]);
+            return $_value;
+        }
+
+        return $default;
+    }
 }

@@ -81,16 +81,7 @@ class ProductController
         /**
          * Formulardaten validieren.
          */
-        $validator = new Validator();
-        $validator->validate($_POST['name'], 'Name', true, 'textnum');
-        $validator->validate($_POST['stock'], 'Stock', true, 'int', 0);
-        $validator->validate($_POST['price'], 'Price', true, 'float', 0);
-        $validator->validate($_POST['description'], 'Description', false, 'textnum');
-
-        /**
-         * Validierungsfehler aus dem Validator holen.
-         */
-        $validationErrors = $validator->getErrors();
+        $validationErrors = $this->validateAndGetErrors();
 
         /**
          * [x] Product abrufen
@@ -137,6 +128,170 @@ class ProductController
             }
         }
 
+        /**
+         * Hochgeladene, neue Bilder verarbeiten
+         */
+        $product = $this->validateFileupload($product, $validationErrors);
+
+        /**
+         * Sind Validierungsfehler aufgetreten ...
+         */
+        if (!empty($validationErrors)) {
+            /**
+             * ... dann speichern wir sie in die Session und leiten zurück zum Bearbeitungsformular, wo die Fehler über
+             * das errors.php Partial ausgegeben werden.
+             */
+            Session::set('errors', $validationErrors);
+            header('Location: ' . BASE_URL . '/admin/products/' . $product->id . '/edit');
+            exit;
+        }
+
+        /**
+         * Geändertes Produkt in der Datenbank aktualisieren.
+         */
+        $product->save();
+
+        /**
+         * Wie oben, werden hier jetzt die Bilder, die gelöscht werden sollen, physisch aus dem uploads-Ordner gelöscht.
+         * Das ganze muss in einem eigenen Schritt passieren, weil sonst Bilder gelöscht werden könnten, die in der
+         * Datenbank noch referenziert sind - das darf nicht passieren. Lieber haben wir Bilder, die nicht mehr
+         * referenziert sind und somit sinnlos gespeichert werden.
+         */
+        if (isset($_POST['delete-image'])) {
+            foreach ($_POST['delete-image'] as $path => $on) {
+                unlink(__DIR__ . "/../../$path");
+            }
+        }
+
+        /**
+         * Hat alles funktioniert und sind keine Fehler aufgetreten, leiten wir zurück zum Bearbeitungsformular. Hier
+         * könnten wir auch auf die Produkt-Übersicht im Dashboard leiten oder irgendeine andere Route.
+         */
+        header('Location: ' . BASE_URL . '/admin/products/' . $product->id . '/edit');
+        exit;
+    }
+
+    /**
+     * @todo: comment
+     */
+    public function createForm ()
+    {
+        /**
+         * Prüfen ob ein User eingeloggt ist und ob dieser eingeloggt User Admin ist. Wenn nicht, geben wir einen
+         * Fehler 403 Forbidden zurück.
+         */
+        if (!User::isLoggedIn() || !User::getLoggedIn()->is_admin) {
+            View::error403();
+        }
+
+        /**
+         * Produkt, das bearbeitet werden soll, an den View übergeben.
+         */
+        View::render('admin/product-create');
+    }
+
+    /**
+     * @todo: comment
+     */
+    public function create ()
+    {
+        /**
+         * Prüfen ob ein User eingeloggt ist und ob dieser eingeloggt User Admin ist. Wenn nicht, geben wir einen
+         * Fehler 403 Forbidden zurück.
+         */
+        if (!User::isLoggedIn() || !User::getLoggedIn()->is_admin) {
+            View::error403();
+        }
+
+        /**
+         * Formulardaten validieren.
+         */
+        $validationErrors = $this->validateAndGetErrors();
+
+        /**
+         * Neues Produkt anlegen, damit wir die Daten aus dem Formular speichern können.
+         */
+        $product = new Product();
+
+        /**
+         * Eigenschaften des Produkts mit den Daten aus dem Formular aktualisieren.
+         */
+        $product->name = $_POST['name'];
+        $product->description = $_POST['description'];
+        $product->price = (float)$_POST['price'];
+        $product->stock = (int)$_POST['stock'];
+
+        /**
+         * Hochgeladene, neue Bilder verarbeiten
+         */
+        $product = $this->validateFileupload($product, $validationErrors);
+
+        /**
+         * Sind Validierungsfehler aufgetreten ...
+         */
+        if (!empty($validationErrors)) {
+            /**
+             * ... dann speichern wir sie in die Session und leiten zurück zum Bearbeitungsformular, wo die Fehler über
+             * das errors.php Partial ausgegeben werden.
+             */
+            Session::set('errors', $validationErrors);
+            header('Location: ' . BASE_URL . '/admin/products/create');
+            exit;
+        }
+
+        /**
+         * Neues Produkt in die Datenbank speichern.
+         * @todo: comment
+         */
+        if ($product->save()) {
+            /**
+             * Hat alles funktioniert und sind keine Fehler aufgetreten, leiten wir zurück zum Bearbeitungsformular. Hier
+             * könnten wir auch auf die Produkt-Übersicht im Dashboard leiten oder irgendeine andere Route.
+             */
+            header('Location: ' . BASE_URL . '/admin/products/' . $product->id . '/edit');
+            exit;
+        } else {
+            /**
+             * Hat alles funktioniert und sind keine Fehler aufgetreten, leiten wir zurück zum Bearbeitungsformular. Hier
+             * könnten wir auch auf die Produkt-Übersicht im Dashboard leiten oder irgendeine andere Route.
+             */
+            $validationErrors[] = 'Das Produkt konnte nicht gespeichert werden.';
+            Session::set('errors', $validationErrors);
+            header('Location: ' . BASE_URL . '/admin/products/create');
+            exit;
+        }
+
+    }
+
+    /**
+     * @return array
+     * @todo: comment
+     */
+    private function validateAndGetErrors ()
+    {
+        /**
+         * Formulardaten validieren.
+         */
+        $validator = new Validator();
+        $validator->validate($_POST['name'], 'Name', true, 'textnum');
+        $validator->validate($_POST['stock'], 'Stock', true, 'int', 0);
+        $validator->validate($_POST['price'], 'Price', true, 'float', 0);
+        $validator->validate($_POST['description'], 'Description', false, 'textnum');
+
+        /**
+         * Validierungsfehler aus dem Validator holen und zurückgeben.
+         */
+        return $validator->getErrors();
+    }
+
+    /**
+     * @param Product $product
+     * @param array   $validationErrors
+     *
+     * @return Product
+     * @todo: comment
+     */
+    private function validateFileupload (Product $product, array &$validationErrors) {
         /**
          * Hochgeladenen, "neuen" Bilder verarbeiten
          *
@@ -279,41 +434,9 @@ class ProductController
         }
 
         /**
-         * Sind Validierungsfehler aufgetreten ...
+         * Potentiell verändertes Produkt (neue Bilder) zurückgeben
          */
-        if (!empty($validationErrors)) {
-            /**
-             * ... dann speichern wir sie in die Session und leiten zurück zum Bearbeitungsformular, wo die Fehler über
-             * das errors.php Partial ausgegeben werden.
-             */
-            Session::set('errors', $validationErrors);
-            header('Location: ' . BASE_URL . '/admin/products/' . $product->id . '/edit');
-            exit;
-        }
-
-        /**
-         * Geändertes Produkt in der Datenbank aktualisieren.
-         */
-        $product->save();
-
-        /**
-         * Wie oben, werden hier jetzt die Bilder, die gelöscht werden sollen, physisch aus dem uploads-Ordner gelöscht.
-         * Das ganze muss in einem eigenen Schritt passieren, weil sonst Bilder gelöscht werden könnten, die in der
-         * Datenbank noch referenziert sind - das darf nicht passieren. Lieber haben wir Bilder, die nicht mehr
-         * referenziert sind und somit sinnlos gespeichert werden.
-         */
-        if (isset($_POST['delete-image'])) {
-            foreach ($_POST['delete-image'] as $path => $on) {
-                unlink(__DIR__ . "/../../$path");
-            }
-        }
-
-        /**
-         * Hat alles funktioniert und sind keine Fehler aufgetreten, leiten wir zurück zum Bearbeitungsformular. Hier
-         * könnten wir auch auf die Produkt-Übersicht im Dashboard leiten oder irgendeine andere Route.
-         */
-        header('Location: ' . BASE_URL . '/admin/products/' . $product->id . '/edit');
-        exit;
+        return $product;
     }
 
 }

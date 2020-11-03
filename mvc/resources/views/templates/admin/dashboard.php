@@ -1,6 +1,9 @@
 <div class="row">
 
     <div class="col products">
+        <h2>Products
+            <a href="admin/products/create" class="btn btn-primary btn-sm">Add</a>
+        </h2>
         <ul class="list-group">
             <!-- Hier gehen wir alle Produkte durch und geben sie in einer Liste aus. -->
             <?php foreach ($products as $product): ?>

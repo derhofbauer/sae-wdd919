@@ -14,7 +14,8 @@ class Database
     private object $link;
     private object $stmt;
     /**
-     * Hier können wir keinen Typ angeben, weil $lastResult sowohl ein boolscher Wert als auch ein mysql_result sein kann.
+     * Hier können wir keinen Typ angeben, weil $lastResult sowohl ein boolscher Wert als auch ein mysql_result sein
+     * kann.
      */
     private $lastResult;
     private array $data;
@@ -119,8 +120,18 @@ class Database
             $this->stmt->execute();
             /**
              * Ergebnis aus dem Query holen.
+             *
+             * @todo :comment
              */
             $this->lastResult = $this->stmt->get_result();
+
+            if ($this->lastResult === false) {
+                if ($this->stmt->errno === 0) {
+                    $this->lastResult = true;
+                } else {
+                    $this->lastResult = false;
+                }
+            }
         }
 
         /**
@@ -176,7 +187,7 @@ class Database
     /**
      * @return object
      */
-    public function getLastResult (): object
+    public function getLastResult ()
     {
         return $this->lastResult;
     }
