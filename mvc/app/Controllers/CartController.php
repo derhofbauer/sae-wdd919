@@ -58,7 +58,7 @@ class CartController
         /**
          * Redirect auf die Seite, von der wir gekommen sind.
          */
-        header("Location: " . Session::get('referrer'));
+        header("Location: " . Session::get('referer'));
     }
 
     /**

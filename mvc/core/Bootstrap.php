@@ -44,15 +44,25 @@ class Bootstrap
     public function __destruct ()
     {
         /**
-         * Angefragte URL zusammenbauen. S. https://stackoverflow.com/a/6768831
+         * Wenn der HTTP_REFERER in der $_SERVER Superglobal nicht gesetzt ist, dann bauen wir ihn selbst zusammen.
          */
-        $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http");
-        $currentUrl = "$protocol://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        if (empty($_SERVER['HTTP_REFERER'])) {
+            /**
+             * Angefragte URL zusammenbauen. S. https://stackoverflow.com/a/6768831
+             */
+            $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http");
+            $currentUrl = "$protocol://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 
-        /**
-         * Referrer in Session speichern
-         */
-        Session::set('referrer', $currentUrl);
+            /**
+             * Referrer in Session speichern
+             */
+            Session::set('referer', $currentUrl);
+        } else {
+            /**
+             * Wenn der HTTP_REFERER gesetzt ist, dann verwenden wir diese URL.
+             */
+            Session::set('referer', $_SERVER['HTTP_REFERER']);
+        }
     }
 
     /**
