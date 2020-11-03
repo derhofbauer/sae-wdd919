@@ -45,7 +45,7 @@ function errorClass (array $errors, string $key)
     }
 }
 
-if (!isset($errors)) {
+if (!isset($success)) {
     $errors = [];
 }
 

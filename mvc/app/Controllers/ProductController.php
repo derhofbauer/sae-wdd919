@@ -16,6 +16,7 @@ use Core\View;
  */
 class ProductController
 {
+    private array $_uploadedFiles = [];
 
     /**
      * @param int $id
@@ -140,8 +141,11 @@ class ProductController
             /**
              * ... dann speichern wir sie in die Session und leiten zurück zum Bearbeitungsformular, wo die Fehler über
              * das errors.php Partial ausgegeben werden.
+             *
+             * @todo: comment
              */
             Session::set('errors', $validationErrors);
+            $this->discardUploadedFiles();
             header('Location: ' . BASE_URL . '/admin/products/' . $product->id . '/edit');
             exit;
         }
@@ -167,6 +171,7 @@ class ProductController
          * Hat alles funktioniert und sind keine Fehler aufgetreten, leiten wir zurück zum Bearbeitungsformular. Hier
          * könnten wir auch auf die Produkt-Übersicht im Dashboard leiten oder irgendeine andere Route.
          */
+        Session::set('success', ['Das Produkt wurde erfolgreich gespeichert.']);
         header('Location: ' . BASE_URL . '/admin/products/' . $product->id . '/edit');
         exit;
     }
@@ -233,34 +238,63 @@ class ProductController
             /**
              * ... dann speichern wir sie in die Session und leiten zurück zum Bearbeitungsformular, wo die Fehler über
              * das errors.php Partial ausgegeben werden.
+             *
+             * @todo: comment
              */
             Session::set('errors', $validationErrors);
+            $this->discardUploadedFiles();
             header('Location: ' . BASE_URL . '/admin/products/create');
             exit;
         }
 
         /**
          * Neues Produkt in die Datenbank speichern.
+         *
          * @todo: comment
          */
         if ($product->save()) {
             /**
              * Hat alles funktioniert und sind keine Fehler aufgetreten, leiten wir zurück zum Bearbeitungsformular. Hier
              * könnten wir auch auf die Produkt-Übersicht im Dashboard leiten oder irgendeine andere Route.
+             *
+             *              * @todo: comment
              */
+            Session::set('success', ['Das Produkt wurde erfolgreich gespeichert.']);
             header('Location: ' . BASE_URL . '/admin/products/' . $product->id . '/edit');
             exit;
         } else {
             /**
              * Hat alles funktioniert und sind keine Fehler aufgetreten, leiten wir zurück zum Bearbeitungsformular. Hier
              * könnten wir auch auf die Produkt-Übersicht im Dashboard leiten oder irgendeine andere Route.
+             *
+             * @todo: comment
              */
             $validationErrors[] = 'Das Produkt konnte nicht gespeichert werden.';
             Session::set('errors', $validationErrors);
+            $this->discardUploadedFiles();
             header('Location: ' . BASE_URL . '/admin/products/create');
             exit;
         }
 
+    }
+
+    /**
+     * @param int $id
+     *
+     * @todo: comment
+     */
+    public function delete (int $id)
+    {
+        $product = Product::find($id);
+
+        $product->delete();
+
+        foreach ($product->getImages() as $filename) {
+            unlink(__DIR__ . "/../../$filename");
+        }
+
+        header('Location: ' . BASE_URL . '/admin');
+        exit;
     }
 
     /**
@@ -291,7 +325,8 @@ class ProductController
      * @return Product
      * @todo: comment
      */
-    private function validateFileupload (Product $product, array &$validationErrors) {
+    private function validateFileupload (Product $product, array &$validationErrors)
+    {
         /**
          * Hochgeladenen, "neuen" Bilder verarbeiten
          *
@@ -421,8 +456,11 @@ class ProductController
                          * wir möglicherweise noch eine Funktion bauen, die Leerzeichen in dem Pfad ersetzt oder etwas
                          * in der Art, dann macht es Sinn, hier den tatsächlich verwendeten Pfad heranzuziehen und den
                          * Dateinamen daraus zu berechnen.
+                         *
+                         * @todo: comment
                          */
                         $product->addImage(basename($destination));
+                        $this->_uploadedFiles[] = $destination;
                     } else {
                         /**
                          * Ist ein Fehler beim verschieben der Datei aufgetreten, schreiben wir einen Fehler.
@@ -439,4 +477,13 @@ class ProductController
         return $product;
     }
 
+    /**
+     * @todo: comment
+     */
+    private function discardUploadedFiles ()
+    {
+        foreach ($this->_uploadedFiles as $uploadedFile) {
+            unlink($uploadedFile);
+        }
+    }
 }

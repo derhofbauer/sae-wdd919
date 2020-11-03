@@ -1,5 +1,6 @@
 <form action="admin/products/create/do" method="post" enctype="multipart/form-data">
 
+    <?php require __DIR__ . '/../../partials/success.php'; ?>
     <?php require __DIR__ . '/../../partials/errors.php'; ?>
 
     <div class="row">

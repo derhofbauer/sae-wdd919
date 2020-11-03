@@ -1,5 +1,6 @@
 <form action="admin/products/<?php echo $product->id; ?>/edit/do" method="post" enctype="multipart/form-data">
 
+    <?php require __DIR__ . '/../../partials/success.php'; ?>
     <?php require __DIR__ . '/../../partials/errors.php'; ?>
 
     <div class="row">
@@ -55,6 +56,7 @@
         <div class="col">
             <button type="submit" class="btn btn-primary">Save</button>
             <a href="admin" class="btn btn-danger float-right">Abort</a>
+            <a href="admin/products/<?php echo $product->id; ?>/delete" class="btn btn-danger">DELETE THIS PRODUCT!</a>
         </div>
     </div>
 

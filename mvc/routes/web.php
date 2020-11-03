@@ -54,4 +54,5 @@ return [
     '/admin/products/{id}/edit/do' => [ProductController::class, 'update'],
     '/admin/products/create' => [ProductController::class, 'createForm'],
     '/admin/products/create/do' => [ProductController::class, 'create'],
+    '/admin/products/{id}/delete' => [ProductController::class, 'delete']
 ];

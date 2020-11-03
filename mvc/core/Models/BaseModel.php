@@ -120,6 +120,34 @@ abstract class BaseModel
     }
 
     /**
+     * @return array|bool|mixed
+     *
+     * @todo: comment
+     */
+    public function delete ()
+    {
+        /**
+         * Datenbankverbindung herstellen.
+         */
+        $db = new Database();
+
+        /**
+         * Tabellennamen berechnen.
+         */
+        $tableName = self::getTableNameFromClassName();
+
+        /**
+         * Query ausführen.
+         */
+        $result = $db->query("DELETE FROM $tableName WHERE id = ?", ['i:id' => $this->id]);
+
+        /**
+         * Result zurückgeben
+         */
+        return $result;
+    }
+
+    /**
      * Damit diese abstrakte Klasse für alle Models verwendet werden kann, ist es hilfreich, berechnen zu können, welche
      * Tabelle vermutlich zu dem erweiternden Model gehört.
      *
@@ -159,7 +187,8 @@ abstract class BaseModel
     /**
      * @todo: comment
      */
-    public function save () {
+    public function save ()
+    {
         Session::forget('$_post');
         Session::forget('$_get');
     }
