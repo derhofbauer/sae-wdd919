@@ -120,12 +120,17 @@ class Database
             $this->stmt->execute();
             /**
              * Ergebnis aus dem Query holen.
-             *
-             * @todo :comment
              */
             $this->lastResult = $this->stmt->get_result();
 
+            /**
+             * Ist das Ergebnis false, was bei allen Queries außer SELECT-Queries der Fall ist, ...
+             */
             if ($this->lastResult === false) {
+                /**
+                 * ... so prüfen wir ob ein Fehler aufgetreten ist oder nicht. Ist die Fehlernummer (errno) gleich 0,
+                 * ist kein Fehler aufgetreten und wir geben den positiven Wert true zurück, andernfalls false.
+                 */
                 if ($this->stmt->errno === 0) {
                     $this->lastResult = true;
                 } else {

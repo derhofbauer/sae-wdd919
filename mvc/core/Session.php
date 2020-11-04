@@ -82,17 +82,32 @@ class Session
     }
 
     /**
+     * Diese Methode ermöglicht es uns auf die Werte, die in dem jeweils vorhergehenden Request in ein Formular
+     * eingegeben wurden, zuzugreifen. Dadurch können wir Formularfelder mit Werten befüllen, wenn ein Fehler in der
+     * Validierung auftritt, der/die User*in muss dann die Werte nicht nochmal eingeben, sondern lediglich korrigieren.
+     *
      * @param string $key
      * @param null   $default
      *
      * @return mixed
-     * @todo: comment
      */
     public static function old (string $key, $default = null)
     {
+        /**
+         * Damit sowohl POST als auch GET Formular funktionieren, suchen wir in beiden Datenbeständen.
+         */
         if (isset($_SESSION['$_post'][$key])) {
+            /**
+             * Wert aus der Session holen.
+             */
             $_value = $_SESSION['$_post'][$key];
+            /**
+             * Wert in der Session löschen.
+             */
             unset($_SESSION['$_post'][$key]);
+            /**
+             * Wert zurückgeben.
+             */
             return $_value;
         }
 
@@ -102,6 +117,9 @@ class Session
             return $_value;
         }
 
+        /**
+         * Wird der übergeben $key nicht gefunden, so geben wir einen Standardwert zurück.
+         */
         return $default;
     }
 }

@@ -235,7 +235,8 @@ class Product extends BaseModel
     public function save ()
     {
         /**
-         * @todo
+         * Hier rufen wir die save() Methode der Elternklasse auf - in diesem Fall BaseModel. Würden wir das nicht tun,
+         * dann würde Product::save() die BaseModel::save() Methode überschreiben, so erweitern wir die Methode quasi.
          */
         parent::save();
 
@@ -255,7 +256,9 @@ class Product extends BaseModel
          * Hier ist es essenziell, dass die Werte in dem zweiten Funktionsparameter von $db->query() in der selben
          * Reihenfolge angegeben werden, wie sie im Query auftreten.
          *
-         *          * @todo
+         * Je nachdem, ob das aktuellen Objekt bereits eine ID hat oder nicht, speichern wir Änderungen oder eine neuen
+         * Datensatz in die Datenbank. Dadurch können wir die save() Methode verwenden egal ob wir eine Änderung oder
+         * ein neues Objekt speichern wollen.
          */
         if (!empty($this->id)) {
             return $db->query("UPDATE $tableName SET name = ?, description = ?, price = ?, stock = ?, images = ? WHERE id = ?", [
@@ -275,12 +278,21 @@ class Product extends BaseModel
                 's:images' => $this->images,
             ]);
 
+            /**
+             * Neu generierte ID abrufen. (vgl. auto_increment)
+             */
             $newId = $db->getInsertId();
 
+            /**
+             * Handelt es sich um einen Integer und somit nicht um einen Fehler, aktualisieren wir das aktuelle Objekt.
+             */
             if (is_int($newId)) {
                 $this->id = $newId;
             }
 
+            /**
+             * Ergebnis zurück geben.
+             */
             return $result;
         }
     }

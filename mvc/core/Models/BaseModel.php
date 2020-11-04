@@ -120,9 +120,9 @@ abstract class BaseModel
     }
 
     /**
-     * @return array|bool|mixed
+     * Den zum aktuellen Objekt gehörigen Datensatz aus der Datenbank löschen.
      *
-     * @todo: comment
+     * @return array|bool|mixed
      */
     public function delete ()
     {
@@ -185,7 +185,7 @@ abstract class BaseModel
     }
 
     /**
-     * @todo: comment
+     * Hier löschen wir die Werte, die in der Bootstrap::__construct() gesetzt werden.
      */
     public function save ()
     {

@@ -132,7 +132,7 @@ class ProductController
         /**
          * Hochgeladene, neue Bilder verarbeiten
          */
-        $product = $this->validateFileupload($product, $validationErrors);
+        $product = $this->validateFileUpload($product, $validationErrors);
 
         /**
          * Sind Validierungsfehler aufgetreten ...
@@ -141,11 +141,18 @@ class ProductController
             /**
              * ... dann speichern wir sie in die Session und leiten zurück zum Bearbeitungsformular, wo die Fehler über
              * das errors.php Partial ausgegeben werden.
-             *
-             * @todo: comment
              */
             Session::set('errors', $validationErrors);
+
+            /**
+             * Hier löschen wir alle Dateien, die hochgeladen wurden wieder, weil sie nicht ins Product gespeichert wurden
+             * und dadurch Dateien im Uploads Ordner wären, die nicht verwendet werden.
+             */
             $this->discardUploadedFiles();
+
+            /**
+             * Redirect zurück zum Bearbeitungsformular.
+             */
             header('Location: ' . BASE_URL . '/admin/products/' . $product->id . '/edit');
             exit;
         }
@@ -177,7 +184,7 @@ class ProductController
     }
 
     /**
-     * @todo: comment
+     * Formular zur Erstellung eines neune Products ausgeben.
      */
     public function createForm ()
     {
@@ -196,7 +203,7 @@ class ProductController
     }
 
     /**
-     * @todo: comment
+     * Daten aus dem Formular für ein neues Produkt entgegennehmen.
      */
     public function create ()
     {
@@ -229,7 +236,7 @@ class ProductController
         /**
          * Hochgeladene, neue Bilder verarbeiten
          */
-        $product = $this->validateFileupload($product, $validationErrors);
+        $product = $this->validateFileUpload($product, $validationErrors);
 
         /**
          * Sind Validierungsfehler aufgetreten ...
@@ -238,11 +245,18 @@ class ProductController
             /**
              * ... dann speichern wir sie in die Session und leiten zurück zum Bearbeitungsformular, wo die Fehler über
              * das errors.php Partial ausgegeben werden.
-             *
-             * @todo: comment
              */
             Session::set('errors', $validationErrors);
+
+            /**
+             * Hier löschen wir alle Dateien, die hochgeladen wurden wieder, weil sie nicht ins Product gespeichert wurden
+             * und dadurch Dateien im Uploads Ordner wären, die nicht verwendet werden.
+             */
             $this->discardUploadedFiles();
+
+            /**
+             * Redirect zurück zum Bearbeitungsformular.
+             */
             header('Location: ' . BASE_URL . '/admin/products/create');
             exit;
         }
@@ -250,28 +264,43 @@ class ProductController
         /**
          * Neues Produkt in die Datenbank speichern.
          *
-         * @todo: comment
+         * Die Product::save() Methode gibt true zurück, wenn die Speicherung in die Datenbank funktioniert hat.
          */
         if ($product->save()) {
             /**
              * Hat alles funktioniert und sind keine Fehler aufgetreten, leiten wir zurück zum Bearbeitungsformular. Hier
              * könnten wir auch auf die Produkt-Übersicht im Dashboard leiten oder irgendeine andere Route.
              *
-             *              * @todo: comment
+             * Um eine Erfolgsmeldung ausgeben zu können, verwenden wir die selbe Mechanik wie für die errors.
              */
             Session::set('success', ['Das Produkt wurde erfolgreich gespeichert.']);
+
+            /**
+             * Redirect zur Bearbeitungsseite.
+             */
             header('Location: ' . BASE_URL . '/admin/products/' . $product->id . '/edit');
             exit;
         } else {
             /**
              * Hat alles funktioniert und sind keine Fehler aufgetreten, leiten wir zurück zum Bearbeitungsformular. Hier
              * könnten wir auch auf die Produkt-Übersicht im Dashboard leiten oder irgendeine andere Route.
-             *
-             * @todo: comment
+             */
+
+            /**
+             * Fehlermeldung erstellung und in die Session speichern.
              */
             $validationErrors[] = 'Das Produkt konnte nicht gespeichert werden.';
             Session::set('errors', $validationErrors);
+
+            /**
+             * Hier löschen wir alle Dateien, die hochgeladen wurden wieder, weil sie nicht ins Product gespeichert wurden
+             * und dadurch Dateien im Uploads Ordner wären, die nicht verwendet werden.
+             */
             $this->discardUploadedFiles();
+
+            /**
+             * Redirect zurück zum Erstellungsformular.
+             */
             header('Location: ' . BASE_URL . '/admin/products/create');
             exit;
         }
@@ -279,27 +308,45 @@ class ProductController
     }
 
     /**
-     * @param int $id
+     * Ein Produkt aus der Datenbank löschen.
      *
-     * @todo: comment
+     * @param int $id
      */
     public function delete (int $id)
     {
+        /**
+         * Product, das gelöscht werden soll, aus der Datenbank abfragen.
+         */
         $product = Product::find($id);
 
+        /**
+         * Produkt löschen.
+         *
+         * Dadurch wird das Produkt aus der Datenbank gelöscht, die Daten, die schon abgefragt wurden, bleiben in dem
+         * Objekt $product aber erhalten.
+         */
         $product->delete();
 
+        /**
+         * Alle Bilder des Products von der Festplatte löschen.
+         */
         foreach ($product->getImages() as $filename) {
             unlink(__DIR__ . "/../../$filename");
         }
 
+        /**
+         * Redirect zur Produktübersicht.
+         */
         header('Location: ' . BASE_URL . '/admin');
         exit;
     }
 
     /**
+     * Wir haben die Validierung der Formulardaten für Erstellung und Bearbeitung eines Produkts in eine eigen Funktion
+     * ausgelagert, weil beide Formulare mehr oder weniger ident validiert werden und wir daher den Code nicht zu
+     * duplizieren brauchen.
+     *
      * @return array
-     * @todo: comment
      */
     private function validateAndGetErrors ()
     {
@@ -319,13 +366,16 @@ class ProductController
     }
 
     /**
+     * Nachdem die Formulare für Erstellung und Bearbeitung eines Produkts einen Datei-Upload haben und die Dateien in
+     * beiden Fällen ident behandelt werden müssen, haben wir auch hier eine Funktion dafür erstellt, damit wir Code
+     * Duplication vermeiden.
+     *
      * @param Product $product
      * @param array   $validationErrors
      *
      * @return Product
-     * @todo: comment
      */
-    private function validateFileupload (Product $product, array &$validationErrors)
+    private function validateFileUpload (Product $product, array &$validationErrors)
     {
         /**
          * Hochgeladenen, "neuen" Bilder verarbeiten
@@ -456,10 +506,15 @@ class ProductController
                          * wir möglicherweise noch eine Funktion bauen, die Leerzeichen in dem Pfad ersetzt oder etwas
                          * in der Art, dann macht es Sinn, hier den tatsächlich verwendeten Pfad heranzuziehen und den
                          * Dateinamen daraus zu berechnen.
-                         *
-                         * @todo: comment
                          */
                         $product->addImage(basename($destination));
+
+                        /**
+                         * Hier speichern wir den Pfad des aktuell verarbeiteten Bildes in eine Eigenschaft des
+                         * Controllers, damit wir die in diesem Programmdurchlauf hochgeladenen Bilder auch direkt
+                         * wieder löschen können, wenn die Validierung fehlschlagen sollte oder ein Fehler beim
+                         * Speichern des Produkts in die DB auftritt.
+                         */
                         $this->_uploadedFiles[] = $destination;
                     } else {
                         /**
@@ -478,7 +533,11 @@ class ProductController
     }
 
     /**
-     * @todo: comment
+     * Dateien, die im aktuellen Programmdurchlauf hochgeladen wurden, wieder löschen.
+     *
+     * Diese Funktion wird verwendet, wenn ein Fehler bei der Validierung oder Speicherung eines Produkts in die DB
+     * aufgetreten sind und die Dateien somit nicht erhalten bleiben sollten, weil sie nicht in der Datenbank vermerkt
+     * werden konnten.
      */
     private function discardUploadedFiles ()
     {

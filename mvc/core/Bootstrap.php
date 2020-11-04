@@ -23,7 +23,9 @@ class Bootstrap
         $this->updateSessionLifetime();
 
         /**
-         * @todo: comment
+         * Wurde ein Formular abgeschickt, so speichern wir die Werte aus dem Formular hier in die Session, damit wir
+         * mit der Session::old() Methode auf die zuvor eingegeben Werte zugreifen können. In der BaseModel::save()
+         * löschen wir die Werte wieder, damit keine Datenreste übrigbleiben in der Session.
          */
         if (!empty($_POST)) {
             Session::set('$_post', $_POST);
