@@ -136,7 +136,13 @@ class AuthController
          * alle Kriterien erfüllt, und wir hier nun prüfen, ob 'password' und 'password_repeat' ident sind, dann ergibt
          * sich daraus, dass auch 'password_repeat' ein valides Passwort ist.
          */
-        $validator->compare($_POST['password'], $_POST['password_repeat']);
+        $validator->compare([
+            $_POST['password'],
+            'Passwort'
+        ], [
+            $_POST['password_repeat'],
+            'Passwort wiederholen'
+        ]);
 
         /**
          * Standardwert für die AGB-Checkbox setzen.

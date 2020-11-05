@@ -34,12 +34,18 @@ class Validator
     private $errors = [];
 
     /**
-     * Die compare() Methode erlaubt es uns zwei Werte miteinander zu vergleichen.
-     *
      * @var string
      */
     private $currentName;
 
+    /**
+     * Die compare() Methode erlaubt es uns zwei Werte miteinander zu vergleichen.
+     *
+     * @param $data1
+     * @param $data2
+     *
+     * @return bool
+     */
     public function compare ($data1, $data2)
     {
         /**
