@@ -28,6 +28,11 @@ abstract class BaseUser extends BaseModel
     public static function findByEmailOrUsername (string $emailOrUsername)
     {
         /**
+         * Whitespace entfernen
+         */
+        $emailOrUsername = trim($emailOrUsername);
+
+        /**
          * Datenbankverbindung herstellen.
          */
         $db = new Database();
@@ -78,6 +83,16 @@ abstract class BaseUser extends BaseModel
          * Die folgende Funktion kann einen plaintext Passwort gegen einen bcrypt Hash prüfen.
          */
         return password_verify($password, $this->password);
+    }
+
+    /**
+     * @param string $password
+     *
+     * @todo: comment
+     */
+    public function setPassword (string $password)
+    {
+        $this->password = password_hash($password, PASSWORD_BCRYPT);
     }
 
     /**

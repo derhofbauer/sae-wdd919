@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Core\Database;
 use Core\Models\BaseUser;
 
 class User extends BaseUser
@@ -16,7 +17,7 @@ class User extends BaseUser
     public string $username;
     public string $firstname;
     public string $lastname;
-    public bool $is_admin;
+    public bool $is_admin = false;
 
     /**
      * Der Konstruktor befüllt das Objekt, sofern Daten übergeben worden sind.
@@ -39,11 +40,81 @@ class User extends BaseUser
     public function fill (array $data)
     {
         $this->id = (int)$data['id'];
-        $this->email = (string)$data['email'];
-        $this->password = (string)$data['password'];
-        $this->username = (string)$data['username'];
-        $this->firstname = (string)$data['firstname'];
-        $this->lastname = (string)$data['lastname'];
+        $this->email = trim((string)$data['email']);
+        $this->password = trim((string)$data['password']);
+        $this->username = trim((string)$data['username']);
+        $this->firstname = trim((string)$data['firstname']);
+        $this->lastname = trim((string)$data['lastname']);
         $this->is_admin = (bool)$data['is_admin'];
+    }
+
+    /**
+     * Aktuelle Properties dieses Objekts wieder in die Datenbank zurückspeichern.
+     */
+    public function save ()
+    {
+        /**
+         * Hier rufen wir die save() Methode der Elternklasse auf - in diesem Fall BaseModel. Würden wir das nicht tun,
+         * dann würde Product::save() die BaseModel::save() Methode überschreiben, so erweitern wir die Methode quasi.
+         */
+        parent::save();
+
+        /**
+         * Datenbankverbindung herstellen.
+         */
+        $db = new Database();
+
+        /**
+         * Tabellennamen berechnen.
+         */
+        $tableName = self::getTableNameFromClassName();
+
+        /**
+         * Query ausführen.
+         *
+         * Hier ist es essenziell, dass die Werte in dem zweiten Funktionsparameter von $db->query() in der selben
+         * Reihenfolge angegeben werden, wie sie im Query auftreten.
+         *
+         * Je nachdem, ob das aktuellen Objekt bereits eine ID hat oder nicht, speichern wir Änderungen oder eine neuen
+         * Datensatz in die Datenbank. Dadurch können wir die save() Methode verwenden egal ob wir eine Änderung oder
+         * ein neues Objekt speichern wollen.
+         */
+        if (!empty($this->id)) {
+            return $db->query("UPDATE $tableName SET email = ?, password = ?, username = ?, firstname = ?, lastname = ?, is_admin = ? WHERE id = ?", [
+                's:email' => $this->email,
+                's:password' => $this->password,
+                's:username' => $this->username,
+                's:firstname' => $this->firstname,
+                's:lastname' => $this->lastname,
+                'i:is_admin' => $this->is_admin,
+                'i:id' => $this->id
+            ]);
+        } else {
+            $result = $db->query("INSERT INTO $tableName SET email = ?, password = ?, username = ?, firstname = ?, lastname = ?, is_admin = ?", [
+                's:email' => $this->email,
+                's:password' => $this->password,
+                's:username' => $this->username,
+                's:firstname' => $this->firstname,
+                's:lastname' => $this->lastname,
+                'i:is_admin' => $this->is_admin
+            ]);
+
+            /**
+             * Neu generierte ID abrufen. (vgl. auto_increment)
+             */
+            $newId = $db->getInsertId();
+
+            /**
+             * Handelt es sich um einen Integer und somit nicht um einen Fehler, aktualisieren wir das aktuelle Objekt.
+             */
+            if (is_int($newId)) {
+                $this->id = $newId;
+            }
+
+            /**
+             * Ergebnis zurück geben.
+             */
+            return $result;
+        }
     }
 }

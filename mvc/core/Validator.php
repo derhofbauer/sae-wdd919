@@ -57,6 +57,7 @@ class Validator
                 $this->setError(4, [$data1[1], $data2[1]]);
                 return false;
             }
+            return true;
         }
 
         if ($data1 !== $data2) {

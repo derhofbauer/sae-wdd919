@@ -264,7 +264,7 @@ class ProductController
         /**
          * Neues Produkt in die Datenbank speichern.
          *
-         * Die Product::save() Methode gibt true zurück, wenn die Speicherung in die Datenbank funktioniert hat.
+         * Die User::save() Methode gibt true zurück, wenn die Speicherung in die Datenbank funktioniert hat.
          */
         if ($product->save()) {
             /**

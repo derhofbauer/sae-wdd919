@@ -109,6 +109,7 @@ class AuthController
 
     /**
      * Daten aus dem Registrierungsformular entgegen nehmen und verarbeiten
+     *
      * @todo: comment
      */
     public function doSignup ()
@@ -116,9 +117,9 @@ class AuthController
         /**
          * [x] Validierung - Erfolgreich?
          * [x] Ja: Weiter, Fehler: Fehler ausgeben
-         * [ ] Gibts E-Mail oder Username schon in der DB?
-         * [ ] Ja: Fehler ausgeben, Nein: weiter
-         * [ ] User Objekt erstellen & in DB speichern
+         * [x] Gibts E-Mail oder Username schon in der DB?
+         * [x] Ja: Fehler ausgeben, Nein: weiter
+         * [x] User Objekt erstellen & in DB speichern
          * [ ] Weiterleitung zum Login Formular
          */
 
@@ -166,6 +167,13 @@ class AuthController
         $errors = $validator->getErrors();
 
         /**
+         * Gibt es schon einen Account zur eingegebenen Email-Adresse?
+         */
+        if (User::findByEmailOrUsername($_POST['email']) !== false) {
+            $errors[] = 'Diese E-Mail-Adresse ist bereits in Verwendung.';
+        }
+
+        /**
          * Wenn der Fehler-Array nicht leer ist und es somit Fehler gibt ...
          */
         if (!empty($errors)) {
@@ -178,9 +186,48 @@ class AuthController
             exit;
         }
 
+        /**
+         * Kommen wir an diesen Punkt, können wir sicher sein, dass die E-Mail Adresse noch nicht verwendet wird und
+         * alle eingegebenen Daten korrekt validiert werden konnten.
+         */
+        $user = new User();
+        $user->email = $_POST['email'];
+        $user->username = $_POST['username'];
+        $user->firstname = $_POST['firstname'];
+        $user->lastname = $_POST['lastname'];
+        $user->setPassword($_POST['password']);
 
+        /**
+         * Neues Produkt in die Datenbank speichern.
+         *
+         * Die User::save() Methode gibt true zurück, wenn die Speicherung in die Datenbank funktioniert hat.
+         */
+        if ($user->save()) {
+            /**
+             * Hat alles funktioniert und sind keine Fehler aufgetreten, leiten wir zum Loginformular.
+             *
+             * Um eine Erfolgsmeldung ausgeben zu können, verwenden wir die selbe Mechanik wie für die errors.
+             */
+            Session::set('success', ['Der Account wurde erfolgreich angelegt. Sie können sich nun einloggen.']);
 
-        var_dump($_POST);
+            /**
+             * Redirect zum Login.
+             */
+            header('Location: ' . BASE_URL . '/login');
+            exit;
+        } else {
+            /**
+             * Fehlermeldung erstellung und in die Session speichern.
+             */
+            $validationErrors[] = 'Der Account konnte nicht gespeichert werden.';
+            Session::set('errors', $validationErrors);
+
+            /**
+             * Redirect zurück zum Registrierungsformular.
+             */
+            header('Location: ' . BASE_URL . '/sign-up');
+            exit;
+        }
     }
 
 }
