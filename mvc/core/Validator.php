@@ -34,7 +34,7 @@ class Validator
     private $errors = [];
 
     /**
-     * Definieren einer Property, in die immer der aktuell validierte Name rein gespeichert wird.
+     * Die compare() Methode erlaubt es uns zwei Werte miteinander zu vergleichen.
      *
      * @var string
      */
@@ -42,16 +42,27 @@ class Validator
 
     public function compare ($data1, $data2)
     {
+        /**
+         * Hier werden Arrays verglichen, weil für $data1 und $data2 jeweils Wert und Label für die Fehlermeldung
+         * übergeben werden können.
+         */
         if (is_array($data1) && is_array($data2)) {
             if ($data1[0] !== $data2[0]) {
                 $this->setError(4, [$data1[1], $data2[1]]);
                 return false;
             }
         }
+
+        if ($data1 !== $data2) {
+            $this->setError(4, [$data1, $data2]);
+            return false;
+        }
+
+        return true;
     }
 
     /**
-     * Die Validate Funktion dient dazu, ein Datum mit einer der $filter-Expressions zu validieren. Siehe die folgende
+     * Die validate() Funktion dient dazu, ein Datum mit einer der $filter-Expressions zu validieren. Siehe die folgende
      * Parameter Liste für die Bedeutung der Funktions-Parameter.
      *
      * @param string $data     Das zu validierende Datum (Datum als Singular von Daten)
