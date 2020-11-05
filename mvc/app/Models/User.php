@@ -4,9 +4,12 @@ namespace App\Models;
 
 use Core\Database;
 use Core\Models\BaseUser;
+use Core\Traits\SoftDelete;
 
 class User extends BaseUser
 {
+
+    use SoftDelete;
 
     /**
      * Wir definieren alle Spalten aus der Tabelle mit den richtigen Datentypen.
@@ -18,6 +21,7 @@ class User extends BaseUser
     public string $firstname;
     public string $lastname;
     public bool $is_admin = false;
+    public int $deleted_at;
 
     /**
      * Der Konstruktor befüllt das Objekt, sofern Daten übergeben worden sind.
@@ -46,6 +50,7 @@ class User extends BaseUser
         $this->firstname = trim((string)$data['firstname']);
         $this->lastname = trim((string)$data['lastname']);
         $this->is_admin = (bool)$data['is_admin'];
+        $this->deleted_at = (int)$data['deleted_at'];
     }
 
     /**
@@ -80,13 +85,14 @@ class User extends BaseUser
          * ein neues Objekt speichern wollen.
          */
         if (!empty($this->id)) {
-            return $db->query("UPDATE $tableName SET email = ?, password = ?, username = ?, firstname = ?, lastname = ?, is_admin = ? WHERE id = ?", [
+            return $db->query("UPDATE $tableName SET email = ?, password = ?, username = ?, firstname = ?, lastname = ?, is_admin = ?, deleted_at = ? WHERE id = ?", [
                 's:email' => $this->email,
                 's:password' => $this->password,
                 's:username' => $this->username,
                 's:firstname' => $this->firstname,
                 's:lastname' => $this->lastname,
                 'i:is_admin' => $this->is_admin,
+                'i:deleted_at' => $this->deleted_at,
                 'i:id' => $this->id
             ]);
         } else {

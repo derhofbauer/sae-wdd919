@@ -5,6 +5,7 @@ use App\Controllers\ProductController;
 use App\Controllers\CartController;
 use App\Controllers\AuthController;
 use App\Controllers\AdminController;
+use App\Controllers\UserController;
 
 /**
  * Die Dateien im /routes Ordner beinhalten ein Mapping von einer URL auf eine eindeutige Controller & Action
@@ -50,9 +51,20 @@ return [
      * Admin Route
      */
     '/admin' => [AdminController::class, 'dashboard'],
+
+    /**
+     * Admin Product Routes
+     */
     '/admin/products/{id}/edit' => [ProductController::class, 'updateForm'],
     '/admin/products/{id}/edit/do' => [ProductController::class, 'update'],
     '/admin/products/create' => [ProductController::class, 'createForm'],
     '/admin/products/create/do' => [ProductController::class, 'create'],
-    '/admin/products/{id}/delete' => [ProductController::class, 'delete']
+    '/admin/products/{id}/delete' => [ProductController::class, 'delete'],
+
+    /**
+     * Admin User Routes
+     */
+    '/admin/users/{id}/edit' => [UserController::class, 'updateForm'],
+    '/admin/users/{id}/edit/do' => [UserController::class, 'update'],
+    '/admin/users/{id}/delete' => [UserController::class, 'delete']
 ];

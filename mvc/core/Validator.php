@@ -45,6 +45,8 @@ class Validator
      * @param $data2
      *
      * @return bool
+     *
+     * @todo: comment
      */
     public function compare ($data1, $data2)
     {
@@ -60,6 +62,9 @@ class Validator
             return true;
         }
 
+        /**
+         * @todo: comment
+         */
         if ($data1 !== $data2) {
             $this->setError(4, [$data1, $data2]);
             return false;

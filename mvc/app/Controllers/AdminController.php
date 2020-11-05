@@ -38,10 +38,16 @@ class AdminController
         $products = Product::all('stock', 'ASC');
 
         /**
+         * Alle User aus der Datenbank holen
+         */
+        $users = User::all('lastname', 'ASC');
+
+        /**
          * View laden und sortierte Produkte übergeben
          */
         View::render('admin/dashboard', [
-            'products' => $products
+            'products' => $products,
+            'users' => $users
         ]);
     }
 
