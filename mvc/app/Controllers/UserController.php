@@ -13,7 +13,6 @@ use Core\View;
  * Class UserController
  *
  * @package App\Controllers
- * @todo    : comment
  */
 class UserController
 {
@@ -71,12 +70,15 @@ class UserController
         $validator->validate($_POST['email'], 'Email', true, 'email', 3, 255);
 
         /**
-         * @todo: comment
+         * Die Checkbox validieren wir nur dann, wenn sie auch wirklich gesetzt ist, da wir sonst ein Warning erhalten.
          */
         if (isset($_POST['is_admin'])) {
             $validator->validate($_POST['is_admin'], 'Is Admin', false, 'checkbox');
         }
 
+        /**
+         * Wenn ein Passwort in das Bearbeitungsformular eingegeben wurde, prüfen wir ob es alle Kriterien erfüllt.
+         */
         if (!empty($_POST['password'])) {
             /**
              * Wir validieren das Passwort nur dann, wenn es gesetzt wurde.
@@ -111,7 +113,8 @@ class UserController
         $user = User::find($id);
 
         /**
-         * @todo: comment
+         * Wurde die E-Mail Adresse im Bearbeitungsformular verändert, prüfen wir, ob die neue E-Mail Adresse schon in
+         * einem anderen Account verwendet wird.
          */
         if ($user->email !== $_POST['email']) {
             if (User::findByEmailOrUsername($_POST['email']) !== false) {
@@ -120,7 +123,8 @@ class UserController
         }
 
         /**
-         * @todo: comment
+         * Wurde der Username im Bearbeitungsformular verändert, prüfen wir, ob der neue Username schon in einem anderen
+         * Account verwendet wird.
          */
         if ($user->username !== $_POST['username']) {
             if (User::findByEmailOrUsername($_POST['username']) !== false) {
@@ -154,11 +158,19 @@ class UserController
         $user->lastname = $_POST['lastname'];
 
         /**
-         * @todo: comment
+         * Hier setzen wir die Berechtigung, ob ein Account Admin ist oder nicht.
          */
         if (isset($_POST['is_admin']) && $_POST['is_admin'] === 'on') {
+            /**
+             * Ist die Checkbox angehackerlt, so setzen wir den bearbeiteten Account auf Admin.
+             */
             $user->is_admin = true;
         } else {
+            /**
+             * Soll die Admin-Berechtigung entfernt werden, so machen wir das nur, wenn wir nicht den aktuell
+             * eingeloggten Account bearbeiten. Würden wir das nicht machen, so könnten es passieren, dass sich der
+             * letzte Admin-Account selbst das Admin-Recht nimmt und dadurch kein Admin mehr verfügbar ist.
+             */
             if ($user->id !== User::getLoggedIn()->id) {
                 $user->is_admin = false;
             }

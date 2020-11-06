@@ -86,9 +86,9 @@ abstract class BaseUser extends BaseModel
     }
 
     /**
-     * @param string $password
+     * Neues Passwort hashen und setzen.
      *
-     * @todo: comment
+     * @param string $password
      */
     public function setPassword (string $password)
     {

@@ -109,8 +109,6 @@ class AuthController
 
     /**
      * Daten aus dem Registrierungsformular entgegen nehmen und verarbeiten
-     *
-     * @todo: comment
      */
     public function doSignup ()
     {
@@ -120,7 +118,7 @@ class AuthController
          * [x] Gibts E-Mail oder Username schon in der DB?
          * [x] Ja: Fehler ausgeben, Nein: weiter
          * [x] User Objekt erstellen & in DB speichern
-         * [ ] Weiterleitung zum Login Formular
+         * [x] Weiterleitung zum Login Formular
          */
 
         /**

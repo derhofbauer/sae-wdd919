@@ -45,14 +45,12 @@ class Validator
      * @param $data2
      *
      * @return bool
-     *
-     * @todo: comment
      */
     public function compare ($data1, $data2)
     {
         /**
          * Hier werden Arrays verglichen, weil für $data1 und $data2 jeweils Wert und Label für die Fehlermeldung
-         * übergeben werden können.
+         * übergeben werden können. Index 0 wäre jeweils der Wert und Index 1 das Label für die Fehlermeldung.
          */
         if (is_array($data1) && is_array($data2)) {
             if ($data1[0] !== $data2[0]) {
@@ -63,7 +61,7 @@ class Validator
         }
 
         /**
-         * @todo: comment
+         * Werden keine Arrays übergeben, so prüfen wir die Werte und verwenden sie auch für die Fehlermeldung.
          */
         if ($data1 !== $data2) {
             $this->setError(4, [$data1, $data2]);

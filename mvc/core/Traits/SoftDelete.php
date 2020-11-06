@@ -7,18 +7,17 @@ use Core\Database;
 /**
  * Trait SoftDelete
  *
+ * Dieser Trait überschreibt einige Methoden des BaseModel, wenn Softdeletes verwendet werden sollen.
+ *
  * @package Core\Traits
- * @todo    : comment
  */
 trait SoftDelete
 {
 
     /**
-     * Den zum aktuellen Objekt gehörigen Datensatz aus der Datenbank löschen.
+     * Den zum aktuellen Objekt gehörigen Datensatz in der Datenbank als gelöscht markieren (Vgl. Softdelete).
      *
      * @return array|bool|mixed
-     *
-     * @todo: comment
      */
     public function delete ()
     {
@@ -52,13 +51,12 @@ trait SoftDelete
      * Die beiden Funktionsparameter bieten die Möglichkeit die Daten, die abgerufen werden, nach einer einzelnen Spalte
      * aufsteigend oder absteigend direkt über MySQL zu sortieren. Sortierungen sollten, sofern möglich, über die
      * Datenbank durchgeführt werden, weil das wesentlich performanter ist als über PHP.
+     * Dabei werden als gelöscht markierte Datensätze nicht abgerufen.
      *
      * @param string $orderbBy
      * @param string $direction
      *
      * @return array
-     *
-     * @todo: comment
      */
     public static function all (string $orderbBy = '', string $direction = 'ASC'): array
     {
