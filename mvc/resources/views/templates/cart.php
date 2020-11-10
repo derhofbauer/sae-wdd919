@@ -46,7 +46,14 @@
             </tr>
             </tfoot>
         </table>
-        <button class="btn btn-primary" type="submit">Update</button>
+        <?php /* @todo: comment */ if (!empty($products)): ?>
+            <?php if (\App\Models\User::isLoggedIn()): ?>
+                <a class="btn btn-primary" href="checkout">Checkout</a>
+            <?php else: ?>
+                <a class="btn btn-primary" href="login">Login to proceed</a>
+            <?php endif; ?>
+        <?php endif; ?>
+        <button class="btn" type="submit">Update</button>
     </form>
 
 </div>

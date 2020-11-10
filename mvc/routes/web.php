@@ -6,6 +6,7 @@ use App\Controllers\CartController;
 use App\Controllers\AuthController;
 use App\Controllers\AdminController;
 use App\Controllers\UserController;
+use App\Controllers\CheckoutController;
 
 /**
  * Die Dateien im /routes Ordner beinhalten ein Mapping von einer URL auf eine eindeutige Controller & Action
@@ -66,5 +67,12 @@ return [
      */
     '/admin/users/{id}/edit' => [UserController::class, 'updateForm'],
     '/admin/users/{id}/edit/do' => [UserController::class, 'update'],
-    '/admin/users/{id}/delete' => [UserController::class, 'delete']
+    '/admin/users/{id}/delete' => [UserController::class, 'delete'],
+
+    /**
+     * Checkout Routes
+     */
+    '/checkout' => [CheckoutController::class, 'paymentForm'],
+    '/checkout/payment/do' => [CheckoutController::class, 'handlePaymentForm'],
+    '/checkout/address' => [CheckoutController::class, 'addressForm'],
 ];

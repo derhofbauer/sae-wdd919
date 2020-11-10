@@ -120,6 +120,52 @@ abstract class BaseModel
     }
 
     /**
+     * @param int $userId
+     *
+     * @return false|mixed
+     * @todo: comment
+     */
+    public static function findByUserId (int $userId)
+    {
+        /**
+         * Datenbankverbindung herstellen.
+         */
+        $db = new Database();
+
+        /**
+         * Tabellennamen berechnen.
+         */
+        $tableName = self::getTableNameFromClassName();
+
+        /**
+         * Query ausführen.
+         */
+        $result = $db->query("SELECT * FROM $tableName WHERE user_id = ?", ['i:user_id' => $userId]);
+
+        /**
+         * Ergebnis-Array vorbereiten.
+         */
+        $objects = [];
+
+        /**
+         * Ergebnisse des Datenbank-Queries durchgehen und jeweils ein neues Objekt erzeugen.
+         */
+        foreach ($result as $object) {
+            /**
+             * Auslesen, welche Klasse aufgerufen wurde und ein Objekt dieser Klasse erstellen und in den Ergebnis-Array
+             * speichern.
+             */
+            $calledClass = get_called_class();
+            $objects[] = new $calledClass($object);
+        }
+
+        /**
+         * Ergebnisse zurückgeben.
+         */
+        return $objects;
+    }
+
+    /**
      * Den zum aktuellen Objekt gehörigen Datensatz aus der Datenbank löschen.
      *
      * @return array|bool|mixed
