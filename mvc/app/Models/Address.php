@@ -9,13 +9,15 @@ use Core\Models\BaseModel;
  * Class Payment
  *
  * @package App\Models
- * @todo    : comment
  */
 class Address extends BaseModel
 {
 
     /**
-     * @todo: comment (address's)
+     * Normalerweise wird der Name einer Tabelle automatisch anhand des Klassennamens berechnet, indem ein s an den
+     * Klassennamen gehängt wird um den Plural zu bilden. Bei 'address' funktioniert das nicht. Daher nutzen wir eine
+     * Funktionalität, die wir ganz am Anfang vorbereitet haben. Wenn eine Klasse eine Konstante TABLENAME definiert, so
+     * wird der Wert dieser Konstante verwendet und nicht ein berechneter Tabellenname.
      */
     const TABLENAME = 'addresses';
 

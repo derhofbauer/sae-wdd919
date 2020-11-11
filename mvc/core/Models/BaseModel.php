@@ -120,10 +120,12 @@ abstract class BaseModel
     }
 
     /**
+     * Diese Methode ist eine Mischung zwischen der BaseModel::find() und der BaseModel::all() Methode, weil anhand
+     * eines Wertes gesucht wird, aber mehr als ein Datensatz zurückkommen können.
+     *
      * @param int $userId
      *
      * @return false|mixed
-     * @todo: comment
      */
     public static function findByUserId (int $userId)
     {

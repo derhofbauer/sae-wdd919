@@ -46,7 +46,7 @@
             </tr>
             </tfoot>
         </table>
-        <?php /* @todo: comment */ if (!empty($products)): ?>
+        <?php if (!empty($products)): ?>
             <?php if (\App\Models\User::isLoggedIn()): ?>
                 <a class="btn btn-primary" href="checkout">Checkout</a>
             <?php else: ?>

@@ -5,8 +5,10 @@ namespace Core\Helpers;
 /**
  * Class StaticData
  *
+ * Diese Klasse bietet die Möglichkeit statische Daten einfach abzurufen. Aktuell verwenden wir sie nur für eine Liste
+ * aller Länder der Welt, damit wir das Country-Dropdown im Adress-Formular befüllen können.
+ *
  * @package Core\Helpers
- * @todo: comment
  */
 class StaticData
 {

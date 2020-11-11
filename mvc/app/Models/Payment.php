@@ -9,7 +9,6 @@ use Core\Models\BaseModel;
  * Class Payment
  *
  * @package App\Models
- * @todo    : comment
  */
 class Payment extends BaseModel
 {
