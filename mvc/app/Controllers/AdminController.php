@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
 use Core\View;
@@ -43,11 +44,17 @@ class AdminController
         $users = User::all('lastname', 'ASC');
 
         /**
+         * Alle nicht abgeschlossenen und nicht stornierten Orders aus der Datenbank holen
+         */
+        $orders = Order::getOpenOrders();
+
+        /**
          * View laden und sortierte Produkte übergeben
          */
         View::render('admin/dashboard', [
             'products' => $products,
-            'users' => $users
+            'users' => $users,
+            'orders' => $orders
         ]);
     }
 

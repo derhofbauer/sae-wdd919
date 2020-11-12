@@ -1174,5 +1174,20 @@ class StaticData
         ],
     ];
 
+    /**
+     * @param string $alpha2
+     *
+     * @return array
+     * @todo: comment
+     */
+    public static function getCountryFromAlpha2 (string $alpha2): array
+    {
+        $alpha2 = strtolower($alpha2);
 
+        return array_filter(self::COUNTRIES, function ($country) use ($alpha2) {
+            if ($country['alpha2'] === $alpha2) {
+                return true;
+            }
+        });
+    }
 }

@@ -39,4 +39,18 @@
         </ul>
     </div>
 
+    <div class="col orders">
+        <h2>Orders</h2>
+        <ul class="list-group">
+            <?php foreach ($orders as $order): ?>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <a href="admin/orders/<?php echo $order->id; ?>/edit">
+                        <?php echo "Order #{$order->id}"; ?>
+                    </a>
+                    <span class="badge badge-primary badge-pill"><?php echo $order->status; ?></span>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+
 </div>

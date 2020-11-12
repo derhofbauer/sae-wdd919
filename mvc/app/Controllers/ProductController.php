@@ -88,7 +88,7 @@ class ProductController
          * [x] Product abrufen
          * [x] Geänderte Formulardaten ins Product schreiben
          * [x] Bilder ggf. löschen
-         * [ ] Datei-Upload verwalten
+         * [x] Datei-Upload verwalten
          * [x] Daten in die Datenbank speichern
          */
 

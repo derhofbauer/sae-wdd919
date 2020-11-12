@@ -67,46 +67,11 @@ class CartController
     public function show ()
     {
         /**
-         * Cart aus der Session laden. Falls kein Cart in der Session gesetzt ist, nehmen wir hier ein leeres Array als
-         * Standardwert.
+         * @todo: comment
          */
-        $cart = Session::get(self::CART_SESSION_KEY, []);
-
-        /**
-         * Variablen vorbereiten; $total wird den Gesamtwert der Waren im Warenkorb beinhalten
-         */
-        $products = [];
-        $total = 0;
-
-        /**
-         * Alle Einträge im Warenkorb durchgehen
-         */
-        foreach ($cart as $productId => $quantity) {
-            /**
-             * Zugehöriges Produkt aus der Datenbank laden
-             */
-            $product = Product::find($productId);
-
-            /**
-             * $quantity Property dynamisch in dem Produkt Objekt erstellen und mit der Wert aus der Session befüllen
-             */
-            $product->quantity = $quantity;
-
-            /**
-             * $subtotal Property dynamisch in dem Produkt Objekt erstellen und berechnen
-             */
-            $product->subtotal = $product->quantity * $product->price;
-
-            /**
-             * "fertig" geladenes Produkt zu den übrigen geladenen Produkten pushen
-             */
-            $products[] = $product;
-
-            /**
-             * Gesamten Warenwert des Warenkorbs erhöhen
-             */
-            $total += $product->subtotal;
-        }
+        $productsAndTotal = self::getCartContent();
+        $products = $productsAndTotal[0];
+        $total = $productsAndTotal[1];
 
         /**
          * View laden und Werte übergebem
@@ -239,6 +204,61 @@ class CartController
     public static function numberOfProducts (): int
     {
         return array_sum(Session::get(self::CART_SESSION_KEY, []));
+    }
+
+    /**
+     * @param bool $calculateSubTotal
+     *
+     * @return array
+     * @todo: comment (incl. Props)
+     */
+    public static function getCartContent ($calculateSubTotal = true): array
+    {
+        /**
+         * Cart aus der Session laden. Falls kein Cart in der Session gesetzt ist, nehmen wir hier ein leeres Array als
+         * Standardwert.
+         */
+        $cart = Session::get(self::CART_SESSION_KEY, []);
+
+        /**
+         * Variablen vorbereiten; $total wird den Gesamtwert der Waren im Warenkorb beinhalten
+         */
+        $products = [];
+        $total = 0;
+
+        /**
+         * Alle Einträge im Warenkorb durchgehen
+         */
+        foreach ($cart as $productId => $quantity) {
+            /**
+             * Zugehöriges Produkt aus der Datenbank laden
+             */
+            $product = Product::find($productId);
+
+            /**
+             * $quantity Property dynamisch in dem Produkt Objekt erstellen und mit der Wert aus der Session befüllen
+             */
+            $product->quantity = $quantity;
+
+            /**
+             * $subtotal Property dynamisch in dem Produkt Objekt erstellen und berechnen
+             */
+            if ($calculateSubTotal === true) {
+                $product->subtotal = $product->quantity * $product->price;
+            }
+
+            /**
+             * "fertig" geladenes Produkt zu den übrigen geladenen Produkten pushen
+             */
+            $products[] = $product;
+
+            /**
+             * Gesamten Warenwert des Warenkorbs erhöhen
+             */
+            $total += $product->subtotal;
+        }
+
+        return [$products, $total];
     }
 
 }

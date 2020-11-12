@@ -6,7 +6,7 @@ use Core\Database;
 use Core\Models\BaseModel;
 
 /**
- * Class Payment
+ * Class Address
  *
  * @package App\Models
  */

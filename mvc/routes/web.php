@@ -7,6 +7,7 @@ use App\Controllers\AuthController;
 use App\Controllers\AdminController;
 use App\Controllers\UserController;
 use App\Controllers\CheckoutController;
+use App\Controllers\OrderController;
 
 /**
  * Die Dateien im /routes Ordner beinhalten ein Mapping von einer URL auf eine eindeutige Controller & Action
@@ -70,9 +71,18 @@ return [
     '/admin/users/{id}/delete' => [UserController::class, 'delete'],
 
     /**
+     * Admin Order Routes
+     */
+    '/admin/orders/{id}/edit' => [OrderController::class, 'updateForm'],
+    '/admin/orders/{id}/edit/do' => [OrderController::class, 'update'],
+
+    /**
      * Checkout Routes
      */
     '/checkout' => [CheckoutController::class, 'paymentForm'],
     '/checkout/payment/do' => [CheckoutController::class, 'handlePaymentForm'],
     '/checkout/address' => [CheckoutController::class, 'addressForm'],
+    '/checkout/address/do' => [CheckoutController::class, 'handleAddressForm'],
+    '/checkout/final' => [CheckoutController::class, 'finalForm'],
+    '/checkout/finish' => [CheckoutController::class, 'finish']
 ];

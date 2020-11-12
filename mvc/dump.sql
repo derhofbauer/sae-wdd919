@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.4
+-- version 5.0.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Erstellungszeit: 10. Nov 2020 um 19:52
--- Server-Version: 10.5.6-MariaDB-1:10.5.6+maria~focal
--- PHP-Version: 7.4.11
+-- Erstellungszeit: 12. Nov 2020 um 19:33
+-- Server-Version: 10.4.12-MariaDB-1:10.4.12+maria~bionic
+-- PHP-Version: 7.4.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -43,7 +44,34 @@ CREATE TABLE `addresses` (
 --
 
 INSERT INTO `addresses` (`id`, `user_id`, `country`, `city`, `zip`, `street`, `street_nr`, `extra`) VALUES
-(1, 2, 'AT', 'Vienna', '1010', 'Hohenstauffengasse', '6', NULL);
+(1, 1, 'AT', 'Vienna', '1010', 'Hohenstauffengasse', '6', NULL),
+(2, 2, 'AT', 'Vienna', '1010', 'Hohenstauffengasse', '7', NULL),
+(3, 1, 'at', 'Vienna', '1010', 'Hohenstaufengasse', '8', 'Whole Building');
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `orders`
+--
+
+CREATE TABLE `orders` (
+  `id` int(11) NOT NULL,
+  `crdate` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE current_timestamp() COMMENT 'creation date',
+  `user_id` int(11) NOT NULL,
+  `address_id` int(11) NOT NULL,
+  `payment_id` int(11) NOT NULL,
+  `products` text COLLATE utf8_unicode_ci NOT NULL COMMENT 'Serialized JSON of ordered products',
+  `status` enum('open','in progress','in delivery','storno','delivered') COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Daten für Tabelle `orders`
+--
+
+INSERT INTO `orders` (`id`, `crdate`, `user_id`, `address_id`, `payment_id`, `products`, `status`) VALUES
+(1, '2020-11-12 19:30:09', 1, 4, 2, '[{\"id\":1,\"name\":\"Product 1\",\"description\":\"Product 2 Description\",\"price\":42.99,\"stock\":10,\"images\":\"1603997590_pimp-rollator.jpg\",\"quantity\":\"5\",\"subtotal\":214.95000000000002}]', 'open'),
+(2, '2020-11-12 19:29:54', 1, 1, 2, '[{\"id\":1,\"name\":\"Product 1\",\"description\":\"Product 2 Description\",\"price\":42.99,\"stock\":10,\"images\":\"1603997590_pimp-rollator.jpg\",\"quantity\":\"5\",\"subtotal\":214.95000000000002}]', 'in delivery'),
+(3, '2020-11-12 19:30:03', 1, 1, 2, '[{\"id\":1,\"name\":\"Product 1\",\"description\":\"Product 2 Description\",\"price\":42.99,\"stock\":10,\"images\":\"1603997590_pimp-rollator.jpg\",\"quantity\":\"5\"}]', 'open');
 
 -- --------------------------------------------------------
 
@@ -128,6 +156,12 @@ ALTER TABLE `addresses`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indizes für die Tabelle `orders`
+--
+ALTER TABLE `orders`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indizes für die Tabelle `payments`
 --
 ALTER TABLE `payments`
@@ -155,7 +189,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT für Tabelle `addresses`
 --
 ALTER TABLE `addresses`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT für Tabelle `orders`
+--
+ALTER TABLE `orders`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT für Tabelle `payments`
