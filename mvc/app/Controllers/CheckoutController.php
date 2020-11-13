@@ -186,7 +186,7 @@ class CheckoutController
     }
 
     /**
-     * @todo: comment
+     * Daten aus dem Adress Formular entgegennehmen und verarbeiten.
      */
     public function handleAddressForm ()
     {
@@ -294,7 +294,7 @@ class CheckoutController
     }
 
     /**
-     * @todo: comment
+     * Finale Anzeige der zu bestellenden Produkte und von gewählter Lieferadresse und Zahlungsmethode.
      */
     public function finalForm ()
     {
@@ -303,20 +303,36 @@ class CheckoutController
          */
         $this->redirectIfNotLoggedIn();
 
+        /**
+         * IDs von gewählter Lieferadresse und Zahlungsmethode aus der Session holen.
+         */
         $payment_id = Session::get('checkout_payment', false);
         $address_id = Session::get('checkout_address', false);
 
+        /**
+         * Fehler-Array vorbereiten
+         */
         $errors = [];
 
+        /**
+         * Wenn sowohl eine payment_id als auch eine address_id in der Session gefunden wurden ...
+         */
         if ($payment_id && $address_id) {
 
+            /**
+             * ... laden wir beide Datensätze aus der Datenbank.
+             */
             $payment = Payment::find($payment_id);
             $address = Address::find($address_id);
 
-            $productsAndTotal = CartController::getCartContent();
-            $products = $productsAndTotal[0];
-            $total = $productsAndTotal[1];
+            /**
+             * Inhalt des Carts und Gesamtpreis laden.
+             */
+            [$products, $total] = CartController::getCartContent();
 
+            /**
+             * Alle Daten in den View übergeben.
+             */
             View::render('checkout-final', [
                 'payment' => $payment,
                 'address' => $address,
@@ -325,8 +341,14 @@ class CheckoutController
             ]);
 
         } else {
+            /**
+             * Fehler schreiben, wenn Zahlungsmethode und/oder Adresse nicht aus der Session abgerufen werden konnten.
+             */
             $errors[] = 'Adresse oder Zahlungsinformationen konnten nicht geladen werden.';
 
+            /**
+             * Fehler in die Session speichern, damit wir sie nach dem Redirect ausgeben können.
+             */
             Session::set('errors', $errors);
             header('Location: ' . BASE_URL . '/checkout/address');
             exit;
@@ -334,7 +356,7 @@ class CheckoutController
     }
 
     /**
-     * @todo: comment
+     * Nach der finalen Kontrollübersicht eine Bestellung aus den Daten in der Session erstellen.
      */
     public function finish ()
     {
@@ -343,33 +365,67 @@ class CheckoutController
          */
         $this->redirectIfNotLoggedIn();
 
+        /**
+         * IDs von gewählter Lieferadresse und Zahlungsmethode aus der Session holen.
+         */
         $payment_id = Session::get('checkout_payment', false);
         $address_id = Session::get('checkout_address', false);
 
+        /**
+         * Fehler-Array vorbereiten
+         */
         $errors = [];
 
+        /**
+         * Wenn sowohl eine payment_id als auch eine address_id in der Session gefunden wurden ...
+         */
         if ($payment_id && $address_id) {
 
+            /**
+             * ... laden wir beide Datensätze aus der Datenbank.
+             */
             $productsAndTotal = CartController::getCartContent(false);
             $products = $productsAndTotal[0];
 
+            /**
+             * Neues Order-Objekt anlegen und Werte aus der Session übergeben.
+             */
             $order = new Order();
             $order->user_id = User::getLoggedIn()->id;
             $order->payment_id = $payment_id;
             $order->address_id = $address_id;
             $order->products = $products;
+            /**
+             * Order-Objekt in die Datenbank speichern.
+             */
             $order->save();
 
+            /**
+             * Cart leeren und IDs, die für die Order verwendet wurden, aus der Session löschen.
+             */
             Session::forget(CartController::CART_SESSION_KEY);
             Session::forget('checkout_payment');
             Session::forget('checkout_address');
 
+            /**
+             * Erfolgsmeldung in die Session speichern.
+             */
             Session::set('success', ["Bestellug #{$order->id} wurde erfolgreich gespeichert!"]);
+
+            /**
+             * Redirect.
+             */
             header('Location: ' . BASE_URL . '/home');
             exit;
         } else {
+            /**
+             * Fehler schreiben, wenn Zahlungsmethode und/oder Adresse nicht aus der Session abgerufen werden konnten.
+             */
             $errors[] = 'Adresse oder Zahlungsinformationen konnten nicht geladen werden.';
 
+            /**
+             * Fehler in die Session speichern, damit wir sie nach dem Redirect ausgeben können.
+             */
             Session::set('errors', $errors);
             header('Location: ' . BASE_URL . '/checkout/final');
             exit;

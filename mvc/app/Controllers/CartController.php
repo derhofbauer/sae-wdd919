@@ -67,11 +67,11 @@ class CartController
     public function show ()
     {
         /**
-         * @todo: comment
+         * Dammit wir den Inhalt des Carts auch an anderen Stellen einfach auslesen können, haben wir hier eine eigene
+         * statische Methode dafür definiert. Die Syntax hier erlaubt es uns, wie in JavaScript, einen zurückgegebenen
+         * Array zu destrukturieren. Dadurch sind im Prinzip mehrere Rückgabewerte aus einer Funktion möglich.
          */
-        $productsAndTotal = self::getCartContent();
-        $products = $productsAndTotal[0];
-        $total = $productsAndTotal[1];
+        [$products, $total] = self::getCartContent();
 
         /**
          * View laden und Werte übergebem
@@ -207,10 +207,15 @@ class CartController
     }
 
     /**
+     * Inhalt des Carts auslesen und Gesamtpreis berechnen.
+     *
+     * Der Funktionsparameter kann die Berechnung der dynamisch hinzugefügten Eigenschaft "subtotal" unterbinden. Das
+     * ist nützlich, wenn die Produkte für die Speicherung in einer Order serialisiert werden sollen und wir so wenig
+     * wie möglich speichern möchten.
+     *
      * @param bool $calculateSubTotal
      *
      * @return array
-     * @todo: comment (incl. Props)
      */
     public static function getCartContent ($calculateSubTotal = true): array
     {
@@ -241,7 +246,8 @@ class CartController
             $product->quantity = $quantity;
 
             /**
-             * $subtotal Property dynamisch in dem Produkt Objekt erstellen und berechnen
+             * $subtotal Property dynamisch in dem Produkt Objekt erstellen und berechnen, sofern das nicht aktiv
+             * deaktiviert wurde durch den Funktionsparameter.
              */
             if ($calculateSubTotal === true) {
                 $product->subtotal = $product->quantity * $product->price;

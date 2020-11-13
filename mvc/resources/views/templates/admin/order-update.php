@@ -46,13 +46,7 @@
                 <label for="status">Status</label>
                 <select name="status" id="status" class="form-control">
                     <?php
-                    $stati = [
-                        "open" => "Open",
-                        "in progress" => "In progress",
-                        "in delivery" => "In delivery",
-                        "storno" => "Storno",
-                        "delivered" => "Delivered! :D",
-                    ];
+                    $stati = \App\Controllers\OrderController::STATI;
 
                     foreach ($stati as $htmlValue => $label) {
                         $checkedParticle = '';

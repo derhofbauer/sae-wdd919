@@ -75,7 +75,10 @@ class Order extends BaseModel
         $tableName = self::getTableNameFromClassName();
 
         /**
-         * @todo: comment (double encoding!!)
+         * $this->products kann manchmal ein Array an Produkten und manchmal einen JSON-String beinhalten. Wir dürfen
+         * die JSON-Serialisierung nur dann durchführen, wenn es sich nicht schon um einen JSON-String handelt.
+         * Andernfalls würden Sonderzeichen escaped werden und es würde sich nicht mehr um sauber serialisierte Daten
+         * handeln.
          */
         $products = $this->products;
         if (is_array($this->products)) {
@@ -130,8 +133,9 @@ class Order extends BaseModel
     }
 
     /**
+     * Orders abrufen, die nicht storniert oder abgeschlossen sind.
+     *
      * @return array
-     * @todo: comment
      */
     public static function getOpenOrders ()
     {
@@ -174,14 +178,27 @@ class Order extends BaseModel
     }
 
     /**
+     * Produkte aus der Order als Objekte abrufen.
+     *
      * @return array|mixed
-     * @todo: comment
      */
     public function getProducts ()
     {
+        /**
+         * Ist $this->products ein String, weil die Daten aus der Datenbank geladen wurden und somit ein JSON-String
+         * auf $this->products geschrieben wurde, so de-serialisieren wir diesen String und geben die dadurch
+         * entstandenen Objekte vom Typ StdClass zurück. StdClass wird von PHP Mitgeliefert und stellt Objekte dar, die
+         * keine explizit definierte Klasse haben.
+         *
+         * s. https://www.php.net/manual/de/reserved.classes.php
+         */
         if (is_string($this->products)) {
             return json_decode($this->products);
         }
+
+        /**
+         * Handelt es sich nicht um einen String, geben wir den Wert unverändert zurück.
+         */
         return $this->products;
     }
 }

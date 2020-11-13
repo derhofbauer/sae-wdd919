@@ -1175,16 +1175,34 @@ class StaticData
     ];
 
     /**
+     * Ländernamen für das Alpha2 Kürzel abrufen.
+     *
      * @param string $alpha2
      *
      * @return array
-     * @todo: comment
      */
     public static function getCountryFromAlpha2 (string $alpha2): array
     {
+        /**
+         * $alpha2 in Kleinbuchstaben umwandeln, damit sowohl bspw. at als auch AT funktionieren.
+         */
         $alpha2 = strtolower($alpha2);
 
+        /**
+         * Die array_filter()-Funktion kann einen Array mittels einer Callback Funktion filtern. Diese Callback Funktion
+         * muss true zurückgeben, wenn ein Element in die gefilterte Ausgabe aufgenommen werden soll.
+         *
+         * Hier ist wichtig zu beachten, dass die Callback Funktion eine anonyme Funktion ist und daher ein 'use (...)'
+         * benötigt, damit die $alpha2 Variable in den Scope der anonymen Funktion aufgenommen wird.
+         *
+         * Die Callback-Funktion wird auf jedes Element in dem zu filternden Array angewendet und sollte daher möglichst
+         * einfach und effizient sein.
+         */
         return array_filter(self::COUNTRIES, function ($country) use ($alpha2) {
+            /**
+             * Stimmt der $alpha2 Code überein, so geben wir true zurück und nehmen das aktuelle Element daher in das
+             * Filterergebnis auf.
+             */
             if ($country['alpha2'] === $alpha2) {
                 return true;
             }
