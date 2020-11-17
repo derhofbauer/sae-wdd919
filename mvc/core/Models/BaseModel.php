@@ -125,9 +125,9 @@ abstract class BaseModel
      *
      * @param int $userId
      *
-     * @return false|mixed
+     * @return array
      */
-    public static function findByUserId (int $userId)
+    public static function findByUserId (int $userId): array
     {
         /**
          * Datenbankverbindung herstellen.

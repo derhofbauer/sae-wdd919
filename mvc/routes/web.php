@@ -1,14 +1,14 @@
 <?php
 
-use App\Controllers\HomeController;
-use App\Controllers\ProductController;
-use App\Controllers\CartController;
-use App\Controllers\AuthController;
 use App\Controllers\AdminController;
-use App\Controllers\UserController;
+use App\Controllers\AuthController;
+use App\Controllers\CartController;
 use App\Controllers\CheckoutController;
+use App\Controllers\HomeController;
 use App\Controllers\OrderController;
+use App\Controllers\ProductController;
 use App\Controllers\ProfileController;
+use App\Controllers\UserController;
 
 /**
  * Die Dateien im /routes Ordner beinhalten ein Mapping von einer URL auf eine eindeutige Controller & Action
@@ -91,5 +91,6 @@ return [
      * Profile Routes
      */
     '/profile' => [ProfileController::class, 'profileForm'],
-    '/profile/do' => [ProfileController::class, 'profileUpdate']
+    '/profile/do' => [ProfileController::class, 'profileUpdate'],
+    '/profile/orders' => [ProfileController::class, 'orders']
 ];

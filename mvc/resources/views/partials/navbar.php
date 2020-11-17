@@ -28,16 +28,19 @@
              * kein Admin, so kriegt sie nur den Logout link.
              */
             if (\App\Models\User::isLoggedIn()): ?>
-                <?php if (\App\Models\User::getLoggedIn()->is_admin === true): ?>
-                    <li class="nav-item">
-                        <a href="admin" class="nav-link">Dashboard</a>
-                    </li>
-                <?php endif; ?>
+                <li class="nav-item">
+                    <a href="profile/orders" class="nav-link">Orders</a>
+                </li>
                 <li class="nav-item">
                     <a href="profile" class="nav-link">
                         Edit Profile (<?php echo \App\Models\User::getLoggedIn()->username; ?>)
                     </a>
                 </li>
+                <?php if (\App\Models\User::getLoggedIn()->is_admin === true): ?>
+                    <li class="nav-item">
+                        <a href="admin" class="nav-link">Dashboard</a>
+                    </li>
+                <?php endif; ?>
                 <li class="nav-item">
                     <a href="logout" class="nav-link">Logout</a>
                 </li>

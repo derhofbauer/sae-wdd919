@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\Order;
 use App\Models\User;
 use Core\Session;
 use Core\Validator;
@@ -41,6 +42,9 @@ class ProfileController
          * [x] Redirect mit Erfolgsmeldung
          */
 
+        /**
+         * @todo: comment
+         */
         $user = User::getLoggedIn();
 
         /**
@@ -143,6 +147,43 @@ class ProfileController
         Session::set('success', ['Ihr Profil wurde erfolgreich aktualisiert.']);
         header('Location: ' . BASE_URL . '/profile');
         exit;
+    }
+
+    /**
+     * Übersicht aller Bestellungen des/der aktuell eingeloggten User*in auflisten
+     *
+     * @todo: comment
+     */
+    public function orders ()
+    {
+        /**
+         * [x] Aktuell eingeloggte*n User*in aus der Datenbank abfragen
+         * [x] Zugehörige Orders aus der Datenbank holen
+         * [x] Orders an View übergeben
+         */
+
+        $user = User::getLoggedIn();
+
+        $orders = Order::findByUserId($user->id);
+
+        foreach ($orders as $key => $order) {
+            /**
+             * Gesamtpreis berechnen
+             */
+            $total = 0;
+            foreach ($order->getProducts() as $product) {
+                $total += $product->price * $product->quantity;
+            }
+
+            $order->total = $total;
+            $orders[$key] = $order;
+        }
+
+        View::render('orders', [
+            'user' => $user,
+            'orders' => $orders,
+            'total' => $total
+        ]);
     }
 
 }

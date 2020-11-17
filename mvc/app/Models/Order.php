@@ -201,4 +201,19 @@ class Order extends BaseModel
          */
         return $this->products;
     }
+
+    /**
+     * @param string $timestamp
+     *
+     * @return string
+     *
+     * @todo: comment
+     *
+     *      https://www.php.net/manual/de/class.datetime.php
+     */
+    public static function formatDate (string $timestamp): string
+    {
+        $time = new \DateTime($timestamp);
+        return $time->format("d.m.Y");
+    }
 }
