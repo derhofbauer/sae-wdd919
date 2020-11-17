@@ -155,6 +155,8 @@ abstract class BaseUser extends BaseModel
     }
 
     /**
+     * Prüfen, ob aktuell ein*e User*in eingeloggt ist.
+     *
      * @return bool
      */
     public static function isLoggedIn (): bool
@@ -176,6 +178,8 @@ abstract class BaseUser extends BaseModel
     }
 
     /**
+     * Aktuell eingeloggten User mit Informationen aus der Session aus der Datenbank abfragen.
+     *
      * @return bool
      */
     public static function getLoggedIn ()

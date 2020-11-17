@@ -8,6 +8,7 @@ use App\Controllers\AdminController;
 use App\Controllers\UserController;
 use App\Controllers\CheckoutController;
 use App\Controllers\OrderController;
+use App\Controllers\ProfileController;
 
 /**
  * Die Dateien im /routes Ordner beinhalten ein Mapping von einer URL auf eine eindeutige Controller & Action
@@ -84,5 +85,11 @@ return [
     '/checkout/address' => [CheckoutController::class, 'addressForm'],
     '/checkout/address/do' => [CheckoutController::class, 'handleAddressForm'],
     '/checkout/final' => [CheckoutController::class, 'finalForm'],
-    '/checkout/finish' => [CheckoutController::class, 'finish']
+    '/checkout/finish' => [CheckoutController::class, 'finish'],
+
+    /**
+     * Profile Routes
+     */
+    '/profile' => [ProfileController::class, 'profileForm'],
+    '/profile/do' => [ProfileController::class, 'profileUpdate']
 ];

@@ -1,64 +1,47 @@
 <?php
 
-
 namespace App\Controllers;
 
-use App\Models\Product;
 use App\Models\User;
 use Core\Session;
 use Core\Validator;
 use Core\View;
 
 /**
- * Class UserController
+ * Class ProfileController
  *
  * @package App\Controllers
  */
-class UserController
+class ProfileController
 {
 
     /**
-     * User*innen Bearbeitungsformular anzeigen.
-     *
-     * @param int $id
+     * Profil Bearbeitungsformular anzeigen.
      */
-    public function updateForm (int $id)
+    public function profileForm ()
     {
-        /**
-         * Prüfen ob ein User eingeloggt ist und ob dieser eingeloggt User Admin ist. Wenn nicht, geben wir einen
-         * Fehler 403 Forbidden zurück.
-         */
-        if (!User::isLoggedIn() || !User::getLoggedIn()->is_admin) {
-            View::error403();
-        }
+        $user = User::getLoggedIn();
 
-        /**
-         * User*in, die/der bearbeitet werden soll, aus der Datenbank abfragen
-         */
-        $user = User::find($id);
-
-        /**
-         * User*in, die/der bearbeitet werden soll, an den View übergeben.
-         */
-        View::render('admin/user-update', [
+        View::render('profile-form', [
             'user' => $user
         ]);
     }
 
     /**
-     * User*in mit den Daten aus dem Bearbeitungsformular aktualisieren.
-     *
-     * @param int $id
+     * Aktuell eingeloggte*n User*in mit den Daten aus dem Profil-Formular aktualisieren.
      */
-    public function update (int $id)
+    public function profileUpdate ()
     {
         /**
-         * Prüfen ob ein User eingeloggt ist und ob dieser eingeloggt User Admin ist. Wenn nicht, geben wir einen
-         * Fehler 403 Forbidden zurück.
+         * [x] Aktuell eingeloggte*n User*in aus der Datenbank abfragen
+         * [x] Daten aus dem Formular validieren
+         * [x] Validierungsfehler handeln
+         * [x] Formulardaten im/in der User*in aktualisieren
+         * [x] User zurück in die DB speichern
+         * [x] Redirect mit Erfolgsmeldung
          */
-        if (!User::isLoggedIn() || !User::getLoggedIn()->is_admin) {
-            View::error403();
-        }
+
+        $user = User::getLoggedIn();
 
         /**
          * Formulardaten validieren.
@@ -68,13 +51,6 @@ class UserController
         $validator->validate($_POST['lastname'], 'Lastname', true, 'text', 2, 255);
         $validator->validate($_POST['username'], 'Username', false, 'textnum', null, 255);
         $validator->validate($_POST['email'], 'Email', true, 'email', 3, 255);
-
-        /**
-         * Die Checkbox validieren wir nur dann, wenn sie auch wirklich gesetzt ist, da wir sonst ein Warning erhalten.
-         */
-        if (isset($_POST['is_admin'])) {
-            $validator->validate($_POST['is_admin'], 'Is Admin', false, 'checkbox');
-        }
 
         /**
          * Wenn ein Passwort in das Bearbeitungsformular eingegeben wurde, prüfen wir ob es alle Kriterien erfüllt.
@@ -103,14 +79,6 @@ class UserController
          * Validierungsfehler aus dem Validator holen
          */
         $validationErrors = $validator->getErrors();
-
-        /**
-         * User*in, die/der bearbeitet werden soll, aus der Datenbank abfragen.
-         *
-         * Wir stellen die Abfrage hier rauf, damit wir prüfen können, ob die E-Mail Adresse oder der Username geändert
-         * wurden.
-         */
-        $user = User::find($id);
 
         /**
          * Wurde die E-Mail Adresse im Bearbeitungsformular verändert, prüfen wir, ob die neue E-Mail Adresse schon in
@@ -145,7 +113,7 @@ class UserController
             /**
              * Redirect zurück zum Bearbeitungsformular.
              */
-            header('Location: ' . BASE_URL . '/admin/users/' . $user->id . '/edit');
+            header('Location: ' . BASE_URL . '/profile');
             exit;
         }
 
@@ -158,25 +126,6 @@ class UserController
         $user->lastname = $_POST['lastname'];
 
         /**
-         * Hier setzen wir die Berechtigung, ob ein Account Admin ist oder nicht.
-         */
-        if (isset($_POST['is_admin']) && $_POST['is_admin'] === 'on') {
-            /**
-             * Ist die Checkbox angehackerlt, so setzen wir den bearbeiteten Account auf Admin.
-             */
-            $user->is_admin = true;
-        } else {
-            /**
-             * Soll die Admin-Berechtigung entfernt werden, so machen wir das nur, wenn wir nicht den aktuell
-             * eingeloggten Account bearbeiten. Würden wir das nicht machen, so könnten es passieren, dass sich der
-             * letzte Admin-Account selbst das Admin-Recht nimmt und dadurch kein Admin mehr verfügbar ist.
-             */
-            if ($user->id !== User::getLoggedIn()->id) {
-                $user->is_admin = false;
-            }
-        }
-
-        /**
          * Wurde ein neues Passwort ins Formular eingegeben, dann setzen wir dem/der User*in einen neuen Hash
          */
         if (!empty($_POST['password'])) {
@@ -184,39 +133,15 @@ class UserController
         }
 
         /**
-         * Geänderte/n User*in in der Datenbank aktualisieren.
+         * Geänderte*n User*in in der Datenbank aktualisieren.
          */
         $user->save();
 
         /**
-         * Hat alles funktioniert und sind keine Fehler aufgetreten, leiten wir zurück zum Dashboard.
+         * Hat alles funktioniert und sind keine Fehler aufgetreten, leiten wir zurück zum Profil-Formular.
          */
-        Session::set('success', ['Der Account wurde erfolgreich aktualisiert.']);
-        header('Location: ' . BASE_URL . '/admin');
-        exit;
-    }
-
-    /**
-     * Ein/e User*in aus der Datenbank löschen.
-     *
-     * @param int $id
-     */
-    public function delete (int $id)
-    {
-        /**
-         * User*in, der/die gelöscht werden soll, aus der Datenbank abfragen.
-         */
-        $user = User::find($id);
-
-        /**
-         * User*in löschen (Softdelete!)
-         */
-        $user->delete();
-
-        /**
-         * Redirect zum Dashboard.
-         */
-        header('Location: ' . BASE_URL . '/admin');
+        Session::set('success', ['Ihr Profil wurde erfolgreich aktualisiert.']);
+        header('Location: ' . BASE_URL . '/profile');
         exit;
     }
 

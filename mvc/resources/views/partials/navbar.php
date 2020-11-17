@@ -34,9 +34,12 @@
                     </li>
                 <?php endif; ?>
                 <li class="nav-item">
-                    <a href="logout" class="nav-link">
-                        <?php echo \App\Models\User::getLoggedIn()->username; ?>, Logout
+                    <a href="profile" class="nav-link">
+                        Edit Profile (<?php echo \App\Models\User::getLoggedIn()->username; ?>)
                     </a>
+                </li>
+                <li class="nav-item">
+                    <a href="logout" class="nav-link">Logout</a>
                 </li>
             <? else: ?>
                 <li class="nav-item">
