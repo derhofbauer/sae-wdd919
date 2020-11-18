@@ -206,14 +206,23 @@ class Order extends BaseModel
      * @param string $timestamp
      *
      * @return string
-     *
-     * @todo: comment
-     *
-     *      https://www.php.net/manual/de/class.datetime.php
+     * @throws \Exception
      */
     public static function formatDate (string $timestamp): string
     {
+        /**
+         * Damit wir den ISO $timestamp aus der Datenbank formatieren können, können wir nicht die date() Funktion
+         * verwenden, weil diese Funktion kann nur UNIX-Timestamps formatieren. Wir müssen die DateTime Klasse, die von
+         * PHP mitgeliefert wird, verwenden.
+         *
+         * s. https://www.php.net/manual/de/class.datetime.php
+         */
         $time = new \DateTime($timestamp);
+
+        /**
+         * Objekte vom Typ DateTime haben eine format() Methode, die die selben Platzhalter für die Formatierung
+         * akzeptiert, wie die date() Funktion.
+         */
         return $time->format("d.m.Y");
     }
 }

@@ -21,8 +21,14 @@ class ProfileController
      */
     public function profileForm ()
     {
+        /**
+         * Eingeloggte*n User*in abfragen
+         */
         $user = User::getLoggedIn();
 
+        /**
+         * View laden und Account übergeben
+         */
         View::render('profile-form', [
             'user' => $user
         ]);
@@ -43,7 +49,7 @@ class ProfileController
          */
 
         /**
-         * @todo: comment
+         * Eingeloggte*n User*in abfragen
          */
         $user = User::getLoggedIn();
 
@@ -151,8 +157,6 @@ class ProfileController
 
     /**
      * Übersicht aller Bestellungen des/der aktuell eingeloggten User*in auflisten
-     *
-     * @todo: comment
      */
     public function orders ()
     {
@@ -162,23 +166,47 @@ class ProfileController
          * [x] Orders an View übergeben
          */
 
+        /**
+         * Eingeloggte*n User*in abfragen
+         */
         $user = User::getLoggedIn();
 
+        /**
+         * Alle Orders zu dem Account aus der Datenbank abfragen
+         */
         $orders = Order::findByUserId($user->id);
 
+        /**
+         * Gesamtpreis für alle abgefragten Orders berechnen. Hierzu brauchen wir zwei Schleifen, einmal um alle Orders
+         * durchzugehen und darin eine, um alle Produkte einer Order durchzugehen und den Gesamtpreis zu berechnen.
+         */
         foreach ($orders as $key => $order) {
             /**
              * Gesamtpreis berechnen
              */
             $total = 0;
+
+            /**
+             * Alle Produkte der Order durchgehen und die Subtotal zur Total dazu rechnen.
+             */
             foreach ($order->getProducts() as $product) {
                 $total += $product->price * $product->quantity;
             }
 
+            /**
+             * Neue Property $total in der Order erstellen
+             */
             $order->total = $total;
+
+            /**
+             * Aktualisierte Order zurück in den Array speichern.
+             */
             $orders[$key] = $order;
         }
 
+        /**
+         * View laden und Werte übergeben
+         */
         View::render('orders', [
             'user' => $user,
             'orders' => $orders,
