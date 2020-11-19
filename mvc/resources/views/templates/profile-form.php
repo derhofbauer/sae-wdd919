@@ -47,4 +47,46 @@
         </div>
     </div>
 
+    <div class="row">
+
+        <div class="col addresses">
+            <h2>Addresses</h2>
+            <div class="list-group">
+                <?php foreach ($addresses as $address): ?>
+                    <a href="profile/addresses/<?php echo $address->id; ?>/edit" class="list-group-item">
+                        <small>#<?php echo $address->id; ?></small>
+                        <strong><?php echo "{$address->street}  {$address->street_nr}" ?></strong>
+                        <p>
+                            <?php
+                            if (!empty($address->extra)) {
+                                echo "$address->extra<br>";
+                            }
+                            ?>
+                            <?php echo "{$address->zip}  {$address->city}" ?><br>
+                            <?php
+                            $countryArray = \Core\Helpers\StaticData::getCountryFromAlpha2($address->country);
+                            $firstCountry = array_shift($countryArray);
+                            echo $firstCountry['name'];
+                            ?>
+                        </p>
+                    </a>
+                <?php endforeach; ?>
+            </div>
+        </div>
+
+        <div class="col payments">
+            <h2>Payment Methods</h2>
+            <div class="list-group">
+                <?php foreach ($payments as $payment): ?>
+                    <a href="profile/payments/<?php echo $payment->id; ?>/edit" class="list-group-item">
+                        <small>#<?php echo $payment->id; ?></small>
+                        <strong><?php echo $payment->name; ?></strong><br>
+                        Number: ...<?php echo substr($payment->number, -4); ?>
+                    </a>
+                <?php endforeach; ?>
+            </div>
+        </div>
+
+    </div>
+
 </form>

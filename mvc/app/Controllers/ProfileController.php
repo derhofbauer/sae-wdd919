@@ -2,7 +2,9 @@
 
 namespace App\Controllers;
 
+use App\Models\Address;
 use App\Models\Order;
+use App\Models\Payment;
 use App\Models\User;
 use Core\Session;
 use Core\Validator;
@@ -27,10 +29,22 @@ class ProfileController
         $user = User::getLoggedIn();
 
         /**
+         * Alle Adressen des/der User*in aus der DB abfragen
+         */
+        $addresses = Address::findByUserId($user->id);
+
+        /**
+         * Alle Payments des/der User*in aus der DB abfragen
+         */
+        $payments = Payment::findByUserId($user->id);
+
+        /**
          * View laden und Account übergeben
          */
         View::render('profile-form', [
-            'user' => $user
+            'user' => $user,
+            'addresses' => $addresses,
+            'payments' => $payments
         ]);
     }
 

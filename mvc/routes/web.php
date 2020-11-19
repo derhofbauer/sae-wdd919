@@ -9,6 +9,7 @@ use App\Controllers\OrderController;
 use App\Controllers\ProductController;
 use App\Controllers\ProfileController;
 use App\Controllers\UserController;
+use App\Controllers\AddressController;
 
 /**
  * Die Dateien im /routes Ordner beinhalten ein Mapping von einer URL auf eine eindeutige Controller & Action
@@ -92,5 +93,8 @@ return [
      */
     '/profile' => [ProfileController::class, 'profileForm'],
     '/profile/do' => [ProfileController::class, 'profileUpdate'],
-    '/profile/orders' => [ProfileController::class, 'orders']
+    '/profile/orders' => [ProfileController::class, 'orders'],
+
+    '/profile/addresses/{id}/edit' => [AddressController::class, 'updateForm'],
+    '/profile/addresses/{id}/edit/do' => [AddressController::class, 'update']
 ];

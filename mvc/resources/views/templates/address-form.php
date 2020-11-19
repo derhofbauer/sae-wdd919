@@ -36,7 +36,7 @@
             </div>
             <div class="form-group">
                 <label for="extra">Additional address line</label>
-                <input type="text" name="extra" id="extra" class="form-control" required>
+                <input type="text" name="extra" id="extra" class="form-control">
             </div>
 
             <button type="submit" class="btn btn-primary mt-2" value="create-new" name="submit-button">Save & Proceed</button>
