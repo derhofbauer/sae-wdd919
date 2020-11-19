@@ -6,7 +6,16 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
+            <!--@todo: Produkt Filter über das Kategorie-Menü-->
+            <?php foreach (\App\Models\Category::all() as $category): ?>
+                <li class="nav-item">
+                    <a href="shop/category/<?php echo $category->id; ?>" class="nav-link"><?php echo $category->name; ?></a>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+
+        <ul class="navbar-nav">
+            <li class="nav-item">
                 <?php
                 /**
                  * Hier laden wir die statische Funktion numberOfProducts() aus dem CartController, damit wir die Summe
@@ -18,9 +27,6 @@
                     Cart (<?php echo \App\Controllers\CartController::numberOfProducts(); ?>)
                 </a>
             </li>
-        </ul>
-
-        <ul class="navbar-nav">
 
             <?php
             /**

@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\User;
 use Core\Config;
@@ -29,10 +30,16 @@ class ProductController
         $product = Product::find($id);
 
         /**
+         * Kategorien zu dem Produkt abrufen
+         */
+        $categories = Category::findByProductId($product->id);
+
+        /**
          * Produkt an View übergeben
          */
         View::render('product-single', [
-            'product' => $product
+            'product' => $product,
+            'categories' => $categories
         ]);
     }
 

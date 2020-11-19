@@ -23,6 +23,17 @@
         <h2><?php echo $product->name; ?></h2>
         <div>Price: <strong><?php echo $product->getPrice() ?></strong></div>
         <div><?php echo $product->description; ?></div>
+        <div>
+            Categories:
+
+            <ul>
+                <?php
+                foreach ($categories as $category) {
+                    echo "<li>$category->name</li>";
+                }
+                ?>
+            </ul>
+        </div>
 
         <form action="cart/add/<?php echo $product->id; ?>" method="post">
             <div class="input-group">

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Erstellungszeit: 12. Nov 2020 um 19:33
+-- Erstellungszeit: 19. Nov 2020 um 19:30
 -- Server-Version: 10.4.12-MariaDB-1:10.4.12+maria~bionic
 -- PHP-Version: 7.4.3
 
@@ -45,8 +45,29 @@ CREATE TABLE `addresses` (
 
 INSERT INTO `addresses` (`id`, `user_id`, `country`, `city`, `zip`, `street`, `street_nr`, `extra`) VALUES
 (1, 1, 'AT', 'Vienna', '1010', 'Hohenstauffengasse', '6', NULL),
-(2, 2, 'AT', 'Vienna', '1010', 'Hohenstauffengasse', '7', NULL),
-(3, 1, 'at', 'Vienna', '1010', 'Hohenstaufengasse', '8', 'Whole Building');
+(2, 2, 'AT', 'Vienna', '1010', 'Hohenstauffengasse', '6', NULL),
+(3, 1, 'at', 'Vienna', '1010', 'Hohenstaufengasse', '8', ''),
+(4, 1, 'at', 'Vienna', '1010', 'Hohenstaufengasse', '6', 'Whole Building');
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `categories`
+--
+
+CREATE TABLE `categories` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Daten für Tabelle `categories`
+--
+
+INSERT INTO `categories` (`id`, `name`) VALUES
+(1, 'Cool stuff'),
+(2, 'Ok stuff'),
+(3, 'Boring stuff');
 
 -- --------------------------------------------------------
 
@@ -94,7 +115,7 @@ CREATE TABLE `payments` (
 
 INSERT INTO `payments` (`id`, `name`, `number`, `expires`, `ccv`, `user_id`) VALUES
 (1, 'Max Mustermann', '123456789', '12-2022', '0123', 2),
-(2, 'Arthur Dent', '987654321', '12-2022', '4321', 1);
+(2, 'Arthur Dent Jr', '987654321', '12-2022', '4321', 1);
 
 -- --------------------------------------------------------
 
@@ -119,6 +140,28 @@ INSERT INTO `products` (`id`, `name`, `description`, `price`, `stock`, `images`)
 (1, 'Product 1', 'Product 2 Description', 42.99, 10, '1603997590_pimp-rollator.jpg'),
 (2, 'Product 2', 'Product 2 Description', 42, 15, '1604432186_37844315_454803461597516_8815318794768482304_n (1).jpg'),
 (3, 'Product 3', 'Product 3 Description', 41.99, 29, '');
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `products_categories_mm`
+--
+
+CREATE TABLE `products_categories_mm` (
+  `id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `category_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Daten für Tabelle `products_categories_mm`
+--
+
+INSERT INTO `products_categories_mm` (`id`, `product_id`, `category_id`) VALUES
+(1, 1, 1),
+(2, 2, 2),
+(3, 3, 2),
+(4, 3, 3);
 
 -- --------------------------------------------------------
 
@@ -156,6 +199,12 @@ ALTER TABLE `addresses`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indizes für die Tabelle `categories`
+--
+ALTER TABLE `categories`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indizes für die Tabelle `orders`
 --
 ALTER TABLE `orders`
@@ -171,6 +220,12 @@ ALTER TABLE `payments`
 -- Indizes für die Tabelle `products`
 --
 ALTER TABLE `products`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indizes für die Tabelle `products_categories_mm`
+--
+ALTER TABLE `products_categories_mm`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -192,10 +247,16 @@ ALTER TABLE `addresses`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT für Tabelle `categories`
+--
+ALTER TABLE `categories`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT für Tabelle `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT für Tabelle `payments`
@@ -208,6 +269,12 @@ ALTER TABLE `payments`
 --
 ALTER TABLE `products`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT für Tabelle `products_categories_mm`
+--
+ALTER TABLE `products_categories_mm`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT für Tabelle `users`

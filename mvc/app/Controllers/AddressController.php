@@ -33,7 +33,7 @@ class AddressController
 
         $address = Address::find($id);
 
-        if ($address->user_id !== User::getLoggedIn()->id) {
+        if (!User::isLoggedIn() || $address->user_id !== User::getLoggedIn()->id) {
             View::error403();
         }
 

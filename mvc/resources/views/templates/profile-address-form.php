@@ -1,7 +1,7 @@
 <?php require __DIR__ . '/../partials/success.php'; ?>
 <?php require __DIR__ . '/../partials/errors.php'; ?>
 
-<h2>Create new address</h2>
+<h2>Edit address</h2>
 <form action="profile/addresses/<?php echo $address->id; ?>/edit/do" method="post" novalidate>
     <div class="row">
         <div class="form-group col">

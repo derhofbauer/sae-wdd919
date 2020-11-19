@@ -212,10 +212,11 @@ class Product extends BaseModel
     }
 
     /**
-     * Diese Funktion haben wir angelegt, weil wir die beiden beinhalteten Zeilen sowohl in $this->removeImage() als auch
-     * in $this->addImage() verwenden wollen. Best-Practice ist, Code-Duplikate so gut es geht zu vermeiden.
+     * Diese Funktion haben wir angelegt, weil wir die beiden beinhalteten Zeilen sowohl in $this->removeImage() als
+     * auch in $this->addImage() verwenden wollen. Best-Practice ist, Code-Duplikate so gut es geht zu vermeiden.
      */
-    private function sanitizeImages () {
+    private function sanitizeImages ()
+    {
         /**
          * Dadurch kann es passieren, dass zwei Trennzeichen direkt aufeinanderfolgen. Hier ersetzen wir also 2 direkt
          * aufeinanderfolgende Trennzeichen durch ein einzelnes Trennzeichen.
