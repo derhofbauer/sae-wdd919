@@ -13,15 +13,14 @@ use Core\View;
  * Class AddressController
  *
  * @package App\Controllers
- * @todo    : comment
  */
 class AddressController
 {
 
     /**
-     * @param int $id
+     * Formular zur Änderung einer Adresse anzeigen.
      *
-     * @todo: comment
+     * @param int $id
      */
     public function updateForm (int $id)
     {
@@ -30,10 +29,19 @@ class AddressController
          * [x] Adresse in den Formlar-View übergeben
          */
 
-
+        /**
+         * Adresse aus der Datenbank laden.
+         */
         $address = Address::find($id);
 
+        /**
+         * Prüfen ob ein*e User*in eingeloggt ist und Eigentümer*in der zu bearbeitenden Adresse ist.
+         */
         if (!User::isLoggedIn() || $address->user_id !== User::getLoggedIn()->id) {
+            /**
+             * Wenn kein*s User*in eingeloggt ist ODER versucht wird, eine fremde Adresse zu bearbeiten, geben wir einen
+             * Fehler 403 Forbidden zurück.
+             */
             View::error403();
         }
 
@@ -42,6 +50,9 @@ class AddressController
          */
         $countries = StaticData::COUNTRIES;
 
+        /**
+         * View laden und Werte übergeben
+         */
         View::render('profile-address-form', [
             'address' => $address,
             'countries' => $countries
@@ -49,17 +60,14 @@ class AddressController
     }
 
     /**
-     * @param int $id
+     * Daten aus dem Adresse Bearbeitungsformular entgegen nehmen und verarbeiten.
      *
-     * @todo: comment
+     * @param int $id
      */
     public function update (int $id)
     {
         /**
-         * Prüfen ob ein User eingeloggt ist. Wenn nicht, geben wir einen
-         * Fehler 403 Forbidden zurück.
-         *
-         * @todo
+         * Prüfen ob ein*e User*in eingeloggt ist. Wenn nicht, geben wir einen Fehler 403 Forbidden zurück.
          */
         if (!User::isLoggedIn()) {
             View::error403();
@@ -97,13 +105,14 @@ class AddressController
         $errors = $validator->getErrors();
 
         /**
-         * Gibt es keine Fehler, legen wir ein neues Address Objekt an, übergeben die Werte und speichern das Objekt
-         * in die Datenbank.
-         *
-         * @todo
+         * Gibt es keine Fehler, legen wir ein neues Address Objekt an, übergeben die Werte und speichern das Objekt in
+         * die Datenbank.
          */
         if (empty($errors)) {
 
+            /**
+             * Werte des zuvor geladenen Objekts im den Daten aus dem Formular überschreiben.
+             */
             $address->country = $_POST['country'];
             $address->city = $_POST['city'];
             $address->zip = $_POST['zip'];
@@ -111,8 +120,14 @@ class AddressController
             $address->street_nr = $_POST['street_nr'];
             $address->extra = $_POST['extra'];
 
+            /**
+             * Adress-Objekt in die Datenbank zurück speichern.
+             */
             $address->save();
 
+            /**
+             * Erfolgsmeldung in die Session speichern und weiterleiten.
+             */
             Session::set('success', ['Adresse erfolgreich aktualisiert']);
             header('Location: ' . BASE_URL . '/profile');
             exit;

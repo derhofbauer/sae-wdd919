@@ -10,8 +10,20 @@
                 <option value="_default">Bitte auswählen ...</option>
                 <?php foreach ($countries as $country): ?>
                     <?php
-                    // @todo: comment
+                    /**
+                     * Damit wir hier den in der Datenbank gespeicherten Wert vorauswählen können, müssen wir die Liste
+                     * dynamisch generieren und für jedes Element prüfen, ob es mit dem Wert aus der Datenbank
+                     * übereinstimmt.
+                     *
+                     * Wir bereiten uns also einen Partikel vor, der nur in einem einzigen Fall kein leerer String ist.
+                     */
                     $selectedParticle = '';
+
+                    /**
+                     * Stimmt der Wert der aktuellen Option mit dem Wert in der Datenbank überein, setzen wir den
+                     * vorbereiteten Partikel. Wir verwenden die strtolower() Funktion um die Werte aus der Datenbank in
+                     * Kleinbuchstaben umzuwandeln, falls sie in Großbuchstaben gespeichert worden sein sollten.
+                     */
                     if ($country['alpha2'] === strtolower($address->country)) {
                         $selectedParticle = ' selected';
                     }
