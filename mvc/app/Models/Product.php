@@ -298,4 +298,58 @@ class Product extends BaseModel
         }
     }
 
+    /**
+     * Diese Methode ist eine Mischung zwischen der BaseModel::find() und der BaseModel::all() Methode, weil anhand
+     * eines Wertes gesucht wird, aber mehr als ein Datensatz zurückkommen können.
+     *
+     * @param int $categoryId
+     *
+     * @return array
+     * @todo: comment
+     */
+    public static function findByCategoryId (int $categoryId): array
+    {
+        /**
+         * Datenbankverbindung herstellen.
+         */
+        $db = new Database();
+
+        /**
+         * Tabellennamen berechnen.
+         */
+        $tableName = self::getTableNameFromClassName();
+
+        /**
+         * Query ausführen.
+         */
+        $result = $db->query("
+            SELECT $tableName.* FROM $tableName 
+                JOIN products_categories_mm
+                    ON products_categories_mm.product_id = $tableName.id
+            WHERE products_categories_mm.category_id = ?
+            ", ['i:category_id' => $categoryId]);
+
+        /**
+         * Ergebnis-Array vorbereiten.
+         */
+        $objects = [];
+
+        /**
+         * Ergebnisse des Datenbank-Queries durchgehen und jeweils ein neues Objekt erzeugen.
+         */
+        foreach ($result as $object) {
+            /**
+             * Auslesen, welche Klasse aufgerufen wurde und ein Objekt dieser Klasse erstellen und in den Ergebnis-Array
+             * speichern.
+             */
+            $calledClass = get_called_class();
+            $objects[] = new $calledClass($object);
+        }
+
+        /**
+         * Ergebnisse zurückgeben.
+         */
+        return $objects;
+    }
+
 }

@@ -9,7 +9,7 @@
             <!--@todo: Produkt Filter über das Kategorie-Menü-->
             <?php foreach (\App\Models\Category::all() as $category): ?>
                 <li class="nav-item">
-                    <a href="shop/category/<?php echo $category->id; ?>" class="nav-link"><?php echo $category->name; ?></a>
+                    <a href="products/category/<?php echo $category->id; ?>" class="nav-link"><?php echo $category->name; ?></a>
                 </li>
             <?php endforeach; ?>
         </ul>

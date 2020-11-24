@@ -24,6 +24,7 @@ return [
     '/' => [HomeController::class, 'show'],
     '/home' => [HomeController::class, 'show'],
     '/products' => [HomeController::class, 'show'],
+    '/products/category/{id}' => [HomeController::class, 'category'],
 
     /**
      * Product Routes

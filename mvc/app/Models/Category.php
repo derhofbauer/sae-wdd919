@@ -134,9 +134,12 @@ class Category extends BaseModel
         /**
          * Query ausführen.
          */
-        $result = $db->query("SELECT categories.* FROM products_categories_mm JOIN categories ON products_categories_mm.category_id = categories.id WHERE products_categories_mm.product_id = ?", [
-            'i:product_id' => $productId
-        ]);
+        $result = $db->query("
+            SELECT $tableName.* FROM products_categories_mm
+                JOIN $tableName
+                    ON products_categories_mm.category_id = $tableName.id
+            WHERE products_categories_mm.product_id = ?
+            ", ['i:product_id' => $productId]);
 
         /**
          * Ergebnis-Array vorbereiten.
