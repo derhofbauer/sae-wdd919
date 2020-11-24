@@ -37,17 +37,38 @@
             <textarea name="description" id="description" class="form-control"><?php echo $product->description; ?></textarea>
         </div>
 
+        <div class="col">
+            <label>Categories</label>
+
+            <?php
+            foreach ($allCategories as $category) {
+                $checkedParticle = '';
+
+                if (in_array($category, $productCategories)) {
+                    $checkedParticle = ' checked';
+                }
+
+                ?>
+
+                <div class="form-check">
+                    <input type="checkbox" name="categories[<?php echo $category->id; ?>]" id="categories[<?php echo $category->id; ?>]"<?php echo $checkedParticle; ?> class="form-check-input">
+                    <label for="categories[<?php echo $category->id; ?>]" class="form-check-label"><?php echo $category->name; ?></label>
+                </div>
+            <?php } ?>
+        </div>
+
     </div>
 
-    <div class="row">
+    <div class=" row">
 
         <?php foreach ($product->getImages() as $image): ?>
-        <div class="form-group col">
-            <label for="delete-image[<?php echo $image; ?>]">
-                <img src="<?php echo $image ?>" width="150">
-                <input type="checkbox" name="delete-image[<?php echo $image; ?>]" id="delete-image[<?php echo $image; ?>]"> Delete?
-            </label>
-        </div>
+            <div class="form-group col">
+                <label for="delete-image[<?php echo $image; ?>]">
+                    <img src="<?php echo $image ?>" width="150">
+                    <input type="checkbox" name="delete-image[<?php echo $image; ?>]" id="delete-image[<?php echo $image; ?>]">
+                    Delete?
+                </label>
+            </div>
         <?php endforeach; ?>
 
     </div>
@@ -56,7 +77,8 @@
         <div class="col">
             <button type="submit" class="btn btn-primary">Save</button>
             <a href="admin" class="btn btn-danger float-right">Abort</a>
-            <a href="admin/products/<?php echo $product->id; ?>/delete" class="btn btn-danger">DELETE THIS PRODUCT!</a>
+            <a href="admin/products/<?php echo $product->id; ?>/delete" class="btn btn-danger">DELETE THIS
+                                                                                               PRODUCT!</a>
         </div>
     </div>
 

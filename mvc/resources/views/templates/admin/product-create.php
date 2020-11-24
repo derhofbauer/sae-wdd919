@@ -37,6 +37,19 @@
             <textarea name="description" id="description" class="form-control"><?php echo \Core\Session::old('description'); ?></textarea>
         </div>
 
+        <div class="col">
+            <label>Categories</label>
+
+            <?php foreach ($categories as $category) : ?>
+
+                <div class="form-check">
+                    <input type="checkbox" name="categories[<?php echo $category->id; ?>]" id="categories[<?php echo $category->id; ?>]" class="form-check-input">
+                    <label for="categories[<?php echo $category->id; ?>]" class="form-check-label"><?php echo $category->name; ?></label>
+                </div>
+
+            <?php endforeach; ?>
+        </div>
+
     </div>
 
     <div class="row">

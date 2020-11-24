@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\User;
 use Core\Config;
+use Core\Database;
 use Core\Session;
 use Core\Validator;
 use Core\View;
@@ -64,10 +65,18 @@ class ProductController
         $product = Product::find($id);
 
         /**
+         * @todo: comment
+         */
+        $productCategories = Category::findByProductId($product->id);
+        $allCategories = Category::all();
+
+        /**
          * Produkt, das bearbeitet werden soll, an den View übergeben.
          */
         View::render('admin/product-update', [
-            'product' => $product
+            'product' => $product,
+            'productCategories' => $productCategories,
+            'allCategories' => $allCategories
         ]);
     }
 
@@ -170,6 +179,11 @@ class ProductController
         $product->save();
 
         /**
+         * @todo: comment
+         */
+        $this->handleCategories($product);
+
+        /**
          * Wie oben, werden hier jetzt die Bilder, die gelöscht werden sollen, physisch aus dem uploads-Ordner gelöscht.
          * Das ganze muss in einem eigenen Schritt passieren, weil sonst Bilder gelöscht werden könnten, die in der
          * Datenbank noch referenziert sind - das darf nicht passieren. Lieber haben wir Bilder, die nicht mehr
@@ -204,9 +218,16 @@ class ProductController
         }
 
         /**
+         * @todo: comment
+         */
+        $categories = Category::all();
+
+        /**
          * Produkt, das bearbeitet werden soll, an den View übergeben.
          */
-        View::render('admin/product-create');
+        View::render('admin/product-create', [
+            'categories' => $categories
+        ]);
     }
 
     /**
@@ -274,6 +295,11 @@ class ProductController
          * Die User::save() Methode gibt true zurück, wenn die Speicherung in die Datenbank funktioniert hat.
          */
         if ($product->save()) {
+            /**
+             * @todo: comment
+             */
+            $this->handleCategories($product);
+
             /**
              * Hat alles funktioniert und sind keine Fehler aufgetreten, leiten wir zurück zum Bearbeitungsformular. Hier
              * könnten wir auch auf die Produkt-Übersicht im Dashboard leiten oder irgendeine andere Route.
@@ -550,6 +576,51 @@ class ProductController
     {
         foreach ($this->_uploadedFiles as $uploadedFile) {
             unlink($uploadedFile);
+        }
+    }
+
+    /**
+     * @param Product $product
+     *
+     * @todo: comment
+     */
+    private function handleCategories (Product $product)
+    {
+        /**
+         * @todo: comment
+         */
+        $productCategories = Category::findByProductId($product->id);
+        $newCategoryIds = array_keys($_POST['categories']);
+        $idsOfLinkedCategories = [];
+
+        /**
+         * Bestehende Kategorisierung durchgehen
+         *          * @todo: comment
+         */
+        foreach ($productCategories as $category) {
+            /**
+             * Category ist bereits zugewiesen
+             */
+            if (in_array($category->id, $newCategoryIds)) {
+                $idsOfLinkedCategories[] = $category->id;
+            } else {
+                /**
+                 * Category ist zugewiesen, sollte aber nicht mehr zugewiesen sein.
+                 */
+                // Product-Category Mapping löschen.
+                $product->detachFromCategory($category->id);
+            }
+        }
+
+        /**
+         * Neue Kategorisierung herstellen
+         *          * @todo: comment
+         */
+        foreach ($newCategoryIds as $categoryId) {
+            if (!in_array($categoryId, $idsOfLinkedCategories)) {
+                // Product-Category Mapping herstellen.
+                $product->attachToCategory($categoryId);
+            }
         }
     }
 }

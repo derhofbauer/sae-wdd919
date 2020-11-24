@@ -352,4 +352,29 @@ class Product extends BaseModel
         return $objects;
     }
 
+    /**
+     * @param int $categoryId
+     * @todo: comment
+     */
+    public function attachToCategory (int $categoryId) {
+        $db = new Database();
+        $db->query('INSERT INTO products_categories_mm SET product_id = ?, category_id = ?', [
+            'i:product_id' => $this->id,
+            'i:category_id' => $categoryId
+        ]);
+    }
+
+    /**
+     * @param int $categoryId
+     *
+     * @todo: comment
+     */
+    public function detachFromCategory (int $categoryId) {
+        $db = new Database();
+        $db->query('DELETE FROM products_categories_mm WHERE product_id = ? AND category_id = ?', [
+            'i:product_id' => $this->id,
+            'i:category_id' => $categoryId
+        ]);
+    }
+
 }
