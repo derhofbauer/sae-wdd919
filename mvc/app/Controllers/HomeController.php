@@ -32,13 +32,12 @@ class HomeController
     }
 
     /**
-     * @todo: comment
      * @param int $id
      */
     public function category (int $id)
     {
         /**
-         * Alle Produkte über das Product-Model aus der Datenbank laden.
+         * Alle Produkte, die der Category $id zugewiesen sind, über das Product-Model aus der Datenbank laden.
          */
         $products = Product::findByCategoryId($id);
 

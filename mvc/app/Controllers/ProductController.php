@@ -65,9 +65,16 @@ class ProductController
         $product = Product::find($id);
 
         /**
-         * @todo: comment
+         * Kategorien abrufen, die dem Produkt zugewiesen sind
          */
         $productCategories = Category::findByProductId($product->id);
+        /**
+         * Alle Kategorien abrufen
+         *
+         * Wir machen das, damit wir im View prüfen können, ob eine Kategorie aus $allCategories auch in
+         * $productCategories vorkommt - in diesem Fall werden wir die Checkbox schon vorauswählen, weil die
+         * Zuweisung bereits besteht in der products_categories_mm Tabelle.
+         */
         $allCategories = Category::all();
 
         /**
@@ -179,7 +186,7 @@ class ProductController
         $product->save();
 
         /**
-         * @todo: comment
+         * Category-Checkboxen verarbeiten
          */
         $this->handleCategories($product);
 
@@ -218,7 +225,7 @@ class ProductController
         }
 
         /**
-         * @todo: comment
+         * Alle Kategorien aus der Datenbank auslesen
          */
         $categories = Category::all();
 
@@ -296,7 +303,7 @@ class ProductController
          */
         if ($product->save()) {
             /**
-             * @todo: comment
+             * Category-Checkboxen verarbeiten
              */
             $this->handleCategories($product);
 
@@ -580,45 +587,57 @@ class ProductController
     }
 
     /**
-     * @param Product $product
+     * Category-Checkboxen aus dem Produkt-Formular entgegennehmen und verarbeiten.
      *
-     * @todo: comment
+     * @param Product $product
      */
     private function handleCategories (Product $product)
     {
         /**
-         * @todo: comment
+         * Alle Kategorien zu dem $product aus der Datenbank abfragen
          */
         $productCategories = Category::findByProductId($product->id);
+        /**
+         * Indizes des Arrays, der aus dem Formular übergeben wird, als Werte eines neuen Arrays speichern, damit wir
+         * leichter damit arbeiten können.
+         */
         $newCategoryIds = array_keys($_POST['categories']);
+        /**
+         * Array vorbereiten, in den wir die IDs der bereits verknüpften Categories rein speichern, wenn wir durchgehen,
+         * welche Verknüpfungen gelöst werden müssen.
+         */
         $idsOfLinkedCategories = [];
 
         /**
-         * Bestehende Kategorisierung durchgehen
-         *          * @todo: comment
+         * Nun gehen wir alle Kategorien durch, die mit dem Produkt verknüpft sind.
          */
         foreach ($productCategories as $category) {
             /**
-             * Category ist bereits zugewiesen
+             * Ist eine Category verknüpft, die auch im Formular angehakerlt ist, so soll die Verknüpfung bestehen
+             * bleiben und wir speichern die ID der Category in unser vorbereitetes Array.
              */
             if (in_array($category->id, $newCategoryIds)) {
                 $idsOfLinkedCategories[] = $category->id;
             } else {
                 /**
-                 * Category ist zugewiesen, sollte aber nicht mehr zugewiesen sein.
+                 * Ist eine Category verknüpft, die nicht im Formular angehakerlt ist, so soll die Verknüpfung gelöst
+                 * werden.
                  */
-                // Product-Category Mapping löschen.
                 $product->detachFromCategory($category->id);
             }
         }
 
         /**
-         * Neue Kategorisierung herstellen
-         *          * @todo: comment
+         * Nun gehen wir alle angehakerlten Checkboxen durch.
          */
         foreach ($newCategoryIds as $categoryId) {
+            /**
+             * Wenn eine Category Checkbox angehakerlt wurde, die in $idsOfLinkedCategories vorhanden ist, so besteht
+             * die Verbindung zwischen Category und Product bereits. Daher invertieren wir die Bedingung und prüfen, ob
+             * die Checkbox noch nicht in dem vorbereiteten Array vorkommt - in diesem Fall muss eine neue Verknüpfung
+             * zwischen Produkt und Kategorie angelegt werden.
+             */
             if (!in_array($categoryId, $idsOfLinkedCategories)) {
-                // Product-Category Mapping herstellen.
                 $product->attachToCategory($categoryId);
             }
         }

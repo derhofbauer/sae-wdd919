@@ -6,7 +6,6 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <!--@todo: Produkt Filter über das Kategorie-Menü-->
             <?php foreach (\App\Models\Category::all() as $category): ?>
                 <li class="nav-item">
                     <a href="products/category/<?php echo $category->id; ?>" class="nav-link"><?php echo $category->name; ?></a>

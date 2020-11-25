@@ -305,7 +305,6 @@ class Product extends BaseModel
      * @param int $categoryId
      *
      * @return array
-     * @todo: comment
      */
     public static function findByCategoryId (int $categoryId): array
     {
@@ -321,6 +320,9 @@ class Product extends BaseModel
 
         /**
          * Query ausführen.
+         *
+         * Hier können wir leider nicht alle benötigten Tabellen-Namen generieren, weil die Benennung der Mapping
+         * Tabelle komplex ist. Technisch geht das natürlich schon, wir haben es aber nicht im Core gebaut.
          */
         $result = $db->query("
             SELECT $tableName.* FROM $tableName 
@@ -353,28 +355,65 @@ class Product extends BaseModel
     }
 
     /**
+     * Verknüpfung zwischen einem Produkt und einer Kategorie herstellen.
+     *
      * @param int $categoryId
-     * @todo: comment
+     *
+     * @return array|bool|mixed
      */
-    public function attachToCategory (int $categoryId) {
+    public function attachToCategory (int $categoryId)
+    {
+        /**
+         * Datenbankverbindung herstellen.
+         */
         $db = new Database();
-        $db->query('INSERT INTO products_categories_mm SET product_id = ?, category_id = ?', [
+
+        /**
+         * Query ausführen.
+         *
+         * Hier können wir leider nicht alle benötigten Tabellen-Namen generieren, weil die Benennung der Mapping
+         * Tabelle komplex ist. Technisch geht das natürlich schon, wir haben es aber nicht im Core gebaut.
+         */
+        $result = $db->query('INSERT INTO products_categories_mm SET product_id = ?, category_id = ?', [
             'i:product_id' => $this->id,
             'i:category_id' => $categoryId
         ]);
+
+        /**
+         * Rückgabewert des Queries zurückgeben.
+         */
+        return $result;
     }
 
     /**
+     * Verknüpfung zwischen einem Produkt und einer Kategorie aufheben.
+     *
      * @param int $categoryId
      *
-     * @todo: comment
+     * @return mixed
      */
-    public function detachFromCategory (int $categoryId) {
+    public function detachFromCategory (int $categoryId)
+    {
+        /**
+         * Datenbankverbindung herstellen.
+         */
         $db = new Database();
+
+        /**
+         * Query ausführen.
+         *
+         * Hier können wir leider nicht alle benötigten Tabellen-Namen generieren, weil die Benennung der Mapping
+         * Tabelle komplex ist. Technisch geht das natürlich schon, wir haben es aber nicht im Core gebaut.
+         */
         $db->query('DELETE FROM products_categories_mm WHERE product_id = ? AND category_id = ?', [
             'i:product_id' => $this->id,
             'i:category_id' => $categoryId
         ]);
+
+        /**
+         * Rückgabewert des Queries zurückgeben.
+         */
+        return $result;
     }
 
 }
