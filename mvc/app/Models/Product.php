@@ -405,7 +405,7 @@ class Product extends BaseModel
          * Hier können wir leider nicht alle benötigten Tabellen-Namen generieren, weil die Benennung der Mapping
          * Tabelle komplex ist. Technisch geht das natürlich schon, wir haben es aber nicht im Core gebaut.
          */
-        $db->query('DELETE FROM products_categories_mm WHERE product_id = ? AND category_id = ?', [
+        $result = $db->query('DELETE FROM products_categories_mm WHERE product_id = ? AND category_id = ?', [
             'i:product_id' => $this->id,
             'i:category_id' => $categoryId
         ]);

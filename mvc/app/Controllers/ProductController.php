@@ -322,12 +322,7 @@ class ProductController
             exit;
         } else {
             /**
-             * Hat alles funktioniert und sind keine Fehler aufgetreten, leiten wir zurück zum Bearbeitungsformular. Hier
-             * könnten wir auch auf die Produkt-Übersicht im Dashboard leiten oder irgendeine andere Route.
-             */
-
-            /**
-             * Fehlermeldung erstellung und in die Session speichern.
+             * Fehlermeldung erstellen und in die Session speichern.
              */
             $validationErrors[] = 'Das Produkt konnte nicht gespeichert werden.';
             Session::set('errors', $validationErrors);

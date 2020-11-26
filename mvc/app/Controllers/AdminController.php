@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\Category;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
@@ -49,12 +50,24 @@ class AdminController
         $orders = Order::getOpenOrders();
 
         /**
+         * Alle Categorien aus der Datenbank abfragen
+         * @todo: comment
+         */
+        $categories = Category::all('name', 'ASC');
+        foreach ($categories as $key => $category) {
+            $productOfCategory = Product::findByCategoryId($category->id);
+            $category->numberOfProducts = count($productOfCategory);
+            $categories[$key] = $category;
+        }
+
+        /**
          * View laden und sortierte Produkte übergeben
          */
         View::render('admin/dashboard', [
             'products' => $products,
             'users' => $users,
-            'orders' => $orders
+            'orders' => $orders,
+            'categories' => $categories
         ]);
     }
 

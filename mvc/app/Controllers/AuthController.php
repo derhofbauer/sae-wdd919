@@ -215,7 +215,7 @@ class AuthController
             exit;
         } else {
             /**
-             * Fehlermeldung erstellung und in die Session speichern.
+             * Fehlermeldung erstellen und in die Session speichern.
              */
             $validationErrors[] = 'Der Account konnte nicht gespeichert werden.';
             Session::set('errors', $validationErrors);

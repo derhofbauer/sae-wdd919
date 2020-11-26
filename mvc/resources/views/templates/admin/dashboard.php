@@ -39,6 +39,10 @@
         </ul>
     </div>
 
+</div>
+
+<div class="row">
+
     <div class="col orders">
         <h2>Orders</h2>
         <ul class="list-group">
@@ -48,6 +52,23 @@
                         <?php echo "Order #{$order->id}"; ?>
                     </a>
                     <span class="badge badge-primary badge-pill"><?php echo $order->status; ?></span>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+
+    <div class="col categories">
+        <h2>Categories
+            <a href="admin/categories/create" class="btn btn-primary btn-sm">Add</a>
+        </h2>
+        <ul class="list-group">
+            <!-- Hier gehen wir alle Produkte durch und geben sie in einer Liste aus. -->
+            <?php foreach ($categories as $category): ?>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <a href="admin/categories/<?php echo $category->id; ?>/edit">
+                        <?php echo $category->name; ?>
+                    </a>
+                    <span class="badge badge-primary badge-pill"><?php echo $category->numberOfProducts; ?></span>
                 </li>
             <?php endforeach; ?>
         </ul>

@@ -6,9 +6,9 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <?php foreach (\App\Models\Category::all() as $category): ?>
+            <?php foreach (\App\Models\Category::all() as $navbarCategory): ?>
                 <li class="nav-item">
-                    <a href="products/category/<?php echo $category->id; ?>" class="nav-link"><?php echo $category->name; ?></a>
+                    <a href="products/category/<?php echo $navbarCategory->id; ?>" class="nav-link"><?php echo $navbarCategory->name; ?></a>
                 </li>
             <?php endforeach; ?>
         </ul>

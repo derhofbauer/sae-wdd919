@@ -11,6 +11,7 @@ use App\Controllers\ProfileController;
 use App\Controllers\UserController;
 use App\Controllers\AddressController;
 use App\Controllers\PaymentController;
+use App\Controllers\CategoryController;
 
 /**
  * Die Dateien im /routes Ordner beinhalten ein Mapping von einer URL auf eine eindeutige Controller & Action
@@ -79,6 +80,14 @@ return [
      */
     '/admin/orders/{id}/edit' => [OrderController::class, 'updateForm'],
     '/admin/orders/{id}/edit/do' => [OrderController::class, 'update'],
+
+    /**
+     * Admin Category Routes
+     */
+    '/admin/categories/{id}/edit' => [CategoryController::class, 'updateForm'],
+    '/admin/categories/{id}/edit/do' => [CategoryController::class, 'update'],
+    '/admin/categories/create' => [CategoryController::class, 'createForm'],
+    '/admin/categories/create/do' => [CategoryController::class, 'create'],
 
     /**
      * Checkout Routes

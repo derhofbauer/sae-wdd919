@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Erstellungszeit: 19. Nov 2020 um 19:30
+-- Erstellungszeit: 26. Nov 2020 um 19:36
 -- Server-Version: 10.4.12-MariaDB-1:10.4.12+maria~bionic
 -- PHP-Version: 7.4.3
 
@@ -65,9 +65,10 @@ CREATE TABLE `categories` (
 --
 
 INSERT INTO `categories` (`id`, `name`) VALUES
-(1, 'Cool stuff'),
-(2, 'Ok stuff'),
-(3, 'Boring stuff');
+(1, 'Cool Stuff'),
+(2, 'Ok Stuff'),
+(3, 'Boring Stuff'),
+(4, 'New Category');
 
 -- --------------------------------------------------------
 
@@ -137,9 +138,10 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `name`, `description`, `price`, `stock`, `images`) VALUES
-(1, 'Product 1', 'Product 2 Description', 42.99, 10, '1603997590_pimp-rollator.jpg'),
+(1, 'Product 1', 'Product 2 Description', 42.99, 8, '1603997590_pimp-rollator.jpg'),
 (2, 'Product 2', 'Product 2 Description', 42, 15, '1604432186_37844315_454803461597516_8815318794768482304_n (1).jpg'),
-(3, 'Product 3', 'Product 3 Description', 41.99, 29, '');
+(3, 'Product 3', 'Product 3 Description', 41.99, 29, ''),
+(4, 'New Product', '', 10, 11, '');
 
 -- --------------------------------------------------------
 
@@ -160,8 +162,11 @@ CREATE TABLE `products_categories_mm` (
 INSERT INTO `products_categories_mm` (`id`, `product_id`, `category_id`) VALUES
 (1, 1, 1),
 (2, 2, 2),
-(3, 3, 2),
-(4, 3, 3);
+(4, 3, 3),
+(6, 3, 2),
+(10, 4, 4),
+(11, 1, 4),
+(12, 2, 4);
 
 -- --------------------------------------------------------
 
@@ -185,7 +190,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `email`, `password`, `username`, `firstname`, `lastname`, `is_admin`, `deleted_at`) VALUES
-(1, 'admin@shop.com', '$2y$12$mONZuM2SJSo425/axQfqcOBPYfFew8TXDAKt9rwGjWQLOlO8xAkwi', 'admin', 'User', 'One', 1, NULL),
+(1, 'admin@shop.com', '$2y$12$Ffz4qqdZT.SXrqxVYj1seOQ1w6CTlejM.ktrAZwXEROaxM4i/9p1W', 'admin', 'User', 'One', 1, NULL),
 (2, 'user@shop.com', '$2y$12$.P6HA4LEjI7qT5jBTBlB5uY1UgLThZkYS6KDKe2BdgqoDFZvrOanq', 'user', 'User', 'Two (regular User)', NULL, NULL);
 
 --
@@ -250,7 +255,7 @@ ALTER TABLE `addresses`
 -- AUTO_INCREMENT für Tabelle `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT für Tabelle `orders`
@@ -268,13 +273,13 @@ ALTER TABLE `payments`
 -- AUTO_INCREMENT für Tabelle `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT für Tabelle `products_categories_mm`
 --
 ALTER TABLE `products_categories_mm`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT für Tabelle `users`
