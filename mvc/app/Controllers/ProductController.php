@@ -383,7 +383,7 @@ class ProductController
      *
      * @return array
      */
-    private function validateAndGetErrors ()
+    private function validateAndGetErrors (): array
     {
         /**
          * Formulardaten validieren.

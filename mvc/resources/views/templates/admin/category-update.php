@@ -16,11 +16,18 @@
 
             <?php
             /**
-             * @todo: comment
+             * Alle Produkte durchgehen, nicht nur die aus der Kategorie
              */
             foreach ($allProducts as $product) {
+                /**
+                 * Partikel vorbereiten
+                 */
                 $checkedParticle = '';
 
+                /**
+                 * Ist ein Produkt aus $allProducts auch in den Produkten der Kartegorie ($categoryProducts) vorhanden,
+                 * bedeutet das für uns, dass die Checkbox vorausgewählt sein muss.
+                 */
                 if (in_array($product, $categoryProducts)) {
                     $checkedParticle = ' checked';
                 }

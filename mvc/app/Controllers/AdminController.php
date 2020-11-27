@@ -50,13 +50,29 @@ class AdminController
         $orders = Order::getOpenOrders();
 
         /**
-         * Alle Categorien aus der Datenbank abfragen
-         * @todo: comment
+         * Alle Kategorien aus der Datenbank abfragen
          */
         $categories = Category::all('name', 'ASC');
+
+        /**
+         * Hier gehen wir alle Kategorien durch, damit wir die Anzahl der Produkte pro Kategorie ermitteln können.
+         */
         foreach ($categories as $key => $category) {
+            /**
+             * Produkte in der aktuellen Kategorie aus der Datenbank abfragen.
+             */
             $productOfCategory = Product::findByCategoryId($category->id);
+
+            /**
+             * Neue Property zur $category dynamisch hinzufügen und die Anzahl der Produkte drauf speichern.
+             *
+             * Die count() Funktion zählt die Elemente in einem Array.
+             */
             $category->numberOfProducts = count($productOfCategory);
+
+            /**
+             * Aktualisierte $category ins $categories Array zurückspeichern.
+             */
             $categories[$key] = $category;
         }
 

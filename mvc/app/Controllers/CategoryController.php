@@ -13,18 +13,19 @@ use Core\View;
  * Class CategoryController
  *
  * @package App\Controllers
- * @todo    : comment
  */
 class CategoryController
 {
 
     /**
-     * @todo: comment
+     * Bearbeitungsformular anzeigen.
+     *
+     * @param int $id
      */
     public function updateForm (int $id)
     {
         /**
-         * [x] Prüfen ob der Zugriff authorisiert ist
+         * [x] Prüfen ob der Zugriff autorisiert ist
          * [x] Category aus DB laden
          * [x] View laden
          */
@@ -63,12 +64,14 @@ class CategoryController
     }
 
     /**
-     * @todo: comment
+     * Daten aus Bearbeitungsformular entgegennehmen und verarbeiten.
+     *
+     * @param int $id
      */
     public function update (int $id)
     {
         /**
-         * [x] Prüfen ob der Zugriff authorisiert ist
+         * [x] Prüfen ob der Zugriff autorisiert ist
          * [x] Validierung
          * [x] Category aus DB laden
          * [x] Werte aus Formular in Category speichern
@@ -150,12 +153,15 @@ class CategoryController
     }
 
     /**
-     * @todo: comment
+     * Formular zur Erstellung einer neuen Kategorie ausgeben.
+     *
+     * Hier bieten wir keine Liste aller Produkte an, weil diese Liste sowieso nach dem ersten Speichern angezeigt wird.
+     * Das hat aber keinen speziellen Grund, wir könnten die Produkt-Checkboxen auch schon hier anzeigen.
      */
     public function createForm ()
     {
         /**
-         * [x] Prüfen ob der Zugriff authorisiert ist
+         * [x] Prüfen ob der Zugriff autorisiert ist
          * [x] View laden
          */
 
@@ -174,7 +180,7 @@ class CategoryController
     }
 
     /**
-     * @todo: comment
+     * Daten aus Erstellungsformular entgegennehmen und verarbeiten.
      */
     public function create ()
     {
@@ -221,22 +227,10 @@ class CategoryController
         /**
          * Neues Produkt in die Datenbank speichern.
          *
-         * Die User::save() Methode gibt true zurück, wenn die Speicherung in die Datenbank funktioniert hat.
+         * Die User::save() Methode gibt true zurück, wenn die Speicherung in die Datenbank funktioniert hat und false,
+         * wenn ein Fehler aufgetreten ist.
          */
-        if ($category->save()) {
-            /**
-             * Hat alles funktioniert und sind keine Fehler aufgetreten, leiten wir zurück zum Bearbeitungsformular.
-             *
-             * Um eine Erfolgsmeldung ausgeben zu können, verwenden wir die selbe Mechanik wie für die errors.
-             */
-            Session::set('success', ['Das Produkt wurde erfolgreich gespeichert.']);
-
-            /**
-             * Redirect zur Bearbeitungsseite.
-             */
-            header('Location: ' . BASE_URL . '/admin/categories/' . $category->id . '/edit');
-            exit;
-        } else {
+        if (!$category->save()) {
             /**
              * Fehlermeldung erstellen und in die Session speichern.
              */
@@ -250,13 +244,29 @@ class CategoryController
             exit;
         }
 
+        /**
+         * Hat alles funktioniert und sind keine Fehler aufgetreten, leiten wir zurück zum Bearbeitungsformular.
+         *
+         * Um eine Erfolgsmeldung ausgeben zu können, verwenden wir die selbe Mechanik wie für die errors.
+         */
+        Session::set('success', ['Das Produkt wurde erfolgreich gespeichert.']);
+
+        /**
+         * Redirect zur Bearbeitungsseite.
+         */
+        header('Location: ' . BASE_URL . '/admin/categories/' . $category->id . '/edit');
+        exit;
+
 
     }
 
     /**
-     * @todo: comment
+     * Wir haben die Validierung der Formulardaten für Erstellung und Bearbeitung einer Kategorie in eine eigen Funktion
+     * ausgelagert, weil beide Formulare ident validiert werden und wir daher den Code nicht zu duplizieren brauchen.
+     *
+     * @return array
      */
-    public function validateAndGetErrors ()
+    public function validateAndGetErrors (): array
     {
         /**
          * Formulardaten validieren.
@@ -274,9 +284,8 @@ class CategoryController
      * Product-Checkboxen aus dem Category-Formular entgegennehmen und verarbeiten.
      *
      * @param Category $category
-     * @todo: comment
      */
-    private function handleProducts (Category $category)
+    function handleProducts (Category $category)
     {
         /**
          * Alle Produkte zu der $category aus der Datenbank abfragen
