@@ -58,7 +58,8 @@ class CartController
         /**
          * Redirect auf die Seite, von der wir gekommen sind.
          */
-        header("Location: " . Session::get('referer'));
+        header('Location: ' . Session::get('referer'));
+        exit;
     }
 
     /**
@@ -113,6 +114,7 @@ class CartController
          * Zurück zum Cart leiten
          */
         header("Location: " . BASE_URL . '/cart');
+        exit;
     }
 
     /**
@@ -149,6 +151,7 @@ class CartController
          * Zurück zum Warenkorb View leiten
          */
         header("Location: " . BASE_URL . '/cart');
+        exit;
     }
 
     /**
@@ -193,6 +196,7 @@ class CartController
          * Zurück zum Cart-View leiten
          */
         header("Location: " . BASE_URL . '/cart');
+        exit;
     }
 
     /**
