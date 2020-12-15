@@ -1,5 +1,7 @@
 <?php
 
+use App\Controllers\AjaxController;
+
 /**
  * Die Dateien im /routes Ordner beinhalten ein Mapping von einer URL auf eine eindeutige Controller & Action
  * kombination. Als Konvention definieren wir, dass URL-Parameter mit {xyz} definiert werden müssen, damit das Routing
@@ -9,5 +11,10 @@
  * keine Views laden, sondern lediglich Daten zurückgeben oder empfangen.
  */
 return [
-  // '/some/api/route' => [AjaxController::class, 'something']
+    /**
+     * Cart Routes
+     */
+    '/cart/add/{id}' => [AjaxController::class, 'addToCart'],
+    '/cart/add-one/{id}' => [AjaxController::class, 'addOneToCart'],
+    '/cart/remove-one/{id}' => [AjaxController::class, 'removeOneFromCart'],
 ];

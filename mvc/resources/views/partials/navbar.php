@@ -23,7 +23,7 @@
                  */
                 ?>
                 <a class="nav-link" href="cart">
-                    Cart (<?php echo \App\Controllers\CartController::numberOfProducts(); ?>)
+                    Cart <span class="number-of-products">(<?php echo \App\Controllers\CartController::numberOfProducts(); ?>)</span>
                 </a>
             </li>
 

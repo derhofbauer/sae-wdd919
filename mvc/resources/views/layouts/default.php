@@ -23,5 +23,6 @@
 <div class="container mt-5">
     <?php require_once $viewPath; ?>
 </div>
+<script src="js/app.js"></script>
 </body>
 </html>

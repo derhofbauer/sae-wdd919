@@ -35,7 +35,9 @@
             </ul>
         </div>
 
-        <form action="cart/add/<?php echo $product->id; ?>" method="post">
+        <form action="cart/add/<?php echo $product->id; ?>" method="post" class="add-to-cart">
+            <input type="hidden" value="<?php echo $product->id; ?>" name="product_id">
+
             <div class="input-group">
                 <div class="input-group-prepend">
                     <button type="submit" class="btn btn-primary">Add to cart</button>

@@ -55,6 +55,15 @@ class View
     }
 
     /**
+     * @param array $params
+     * @todo: comment
+     */
+    public static function json (array $params = [])
+    {
+        echo json_encode($params);
+    }
+
+    /**
      * Das ist eine einfache Hilfsfunktion die den HTTP Status Code 404 an den Browser schickt und danach abbricht.
      */
     public static function error404 ()
