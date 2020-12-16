@@ -55,8 +55,10 @@ class View
     }
 
     /**
+     * Diese Methode erlaubt es uns innerhalb der Controller der App, Daten als JSON Antwort an API Requests
+     * zurückzugeben. Die Syntax ähnelt dabei der View::render() Methode.
+     *
      * @param array $params
-     * @todo: comment
      */
     public static function json (array $params = [])
     {

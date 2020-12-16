@@ -10,7 +10,6 @@ use Core\View;
  * Class AjaxController
  *
  * @package App\Controllers
- * @todo    : comment
  */
 class AjaxController
 {
@@ -35,7 +34,8 @@ class AjaxController
         Session::set(CartController::CART_SESSION_KEY, $cart);
 
         /**
-         * @todo: comment
+         * Hier laden wir nicht wie bisher einen View, sondern geben einfach nur JSON zurück. Wir haben diese Helper
+         * Methode geschrieben, damit wir eine sehr ähnliche Syntax haben wie mit View::render().
          */
         View::json([
             'numberOfProducts' => CartController::numberOfProducts()
@@ -62,9 +62,14 @@ class AjaxController
         Session::set(CartController::CART_SESSION_KEY, $cart);
 
         /**
-         * @todo:comment
+         * Benötigte Daten mit Array Destructuring aus der Methode holen.
          */
         [$cartContent, $total] = CartController::getCartContent();
+
+        /**
+         * Hier laden wir nicht wie bisher einen View, sondern geben einfach nur JSON zurück. Wir haben diese Helper
+         * Methode geschrieben, damit wir eine sehr ähnliche Syntax haben wie mit View::render().
+         */
         View::json([
             'numberOfProducts' => CartController::numberOfProducts(),
             'cartContent' => $cartContent,
@@ -96,9 +101,14 @@ class AjaxController
         Session::set(CartController::CART_SESSION_KEY, $cart);
 
         /**
-         * @todo:comment
+         * Benötigte Daten mit Array Destructuring aus der Methode holen.
          */
         [$cartContent, $total] = CartController::getCartContent();
+
+        /**
+         * Hier laden wir nicht wie bisher einen View, sondern geben einfach nur JSON zurück. Wir haben diese Helper
+         * Methode geschrieben, damit wir eine sehr ähnliche Syntax haben wie mit View::render().
+         */
         View::json([
             'numberOfProducts' => CartController::numberOfProducts(),
             'cartContent' => $cartContent,
