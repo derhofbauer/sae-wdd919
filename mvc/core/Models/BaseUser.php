@@ -180,7 +180,7 @@ abstract class BaseUser extends BaseModel
     /**
      * Aktuell eingeloggten User mit Informationen aus der Session aus der Datenbank abfragen.
      *
-     * @return bool
+     * @return bool|object
      */
     public static function getLoggedIn ()
     {
