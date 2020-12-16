@@ -16,6 +16,7 @@
 
     <!-- CSS -->
     <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/gallery.css">
 </head>
 <body>
 <?php require_once __DIR__ . '/../partials/navbar.php'; ?>
@@ -24,5 +25,6 @@
     <?php require_once $viewPath; ?>
 </div>
 <script src="js/app.js"></script>
+<script src="js/gallery.js"></script>
 </body>
 </html>

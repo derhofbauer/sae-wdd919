@@ -12,11 +12,12 @@
      */
     ?>
     <?php if (count($product->getImages()) > 0): ?>
-        <div class="col-6">
-            <?php foreach ($product->getImages() as $image): ?>
-                <img src="<?php echo $image ?>" alt="<?php echo $product->name ?>" class="img-thumbnail">
-            <?php endforeach; ?>
-        </div>
+        <!--<div class="col-6">
+            <?php /*foreach ($product->getImages() as $image): */?>
+                <img src="<?php /*echo $image */?>" alt="<?php /*echo $product->name */?>" class="img-thumbnail">
+            <?php /*endforeach; */?>
+        </div>-->
+        <?php require_once __DIR__ . '/../partials/gallery.php'; ?>
     <?php endif; ?>
 
     <div class="col-6">

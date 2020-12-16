@@ -1,0 +1,40 @@
+.gallery {
+  max-width: 50%;
+}
+
+.gallery__full {
+  width: 100%;
+}
+
+.figure,
+.figure img {
+  max-width: 100%;
+}
+
+.figure img {
+  max-height: 100%;
+}
+
+.gallery__thumbs {
+  display:         flex;
+  justify-content: center;
+  height:          150px;
+}
+
+.gallery__thumbs .figure {
+  margin-left:  5px;
+  margin-right: 5px;
+  height:       100%;
+  cursor:       pointer;
+  transition:   0.1s padding, 0.1s border-width;
+}
+
+.gallery__thumbs .figure:hover {
+  padding: 5px;
+}
+
+.gallery__thumbs .figure.current {
+  padding:       15px;
+  border:        2px solid grey;
+  border-radius: 3px;
+}
