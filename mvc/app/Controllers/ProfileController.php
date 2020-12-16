@@ -223,8 +223,7 @@ class ProfileController
          */
         View::render('orders', [
             'user' => $user,
-            'orders' => $orders,
-            'total' => $total
+            'orders' => $orders
         ]);
     }
 

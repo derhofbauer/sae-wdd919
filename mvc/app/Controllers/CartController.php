@@ -100,9 +100,13 @@ class CartController
          */
         foreach ($_POST['cart-quantity'] as $productId => $newQuantity) {
             /**
-             * Neue Quantity setzen
+             * Neue Quantity setzen oder Product löschen, wenn es auf 0 gesetzt wird
              */
-            $cart[$productId] = $newQuantity;
+            if ($newQuantity >= 1) {
+                $cart[$productId] = $newQuantity;
+            } else {
+                unset($cart[$productId]);
+            }
         }
 
         /**

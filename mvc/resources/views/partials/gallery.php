@@ -14,7 +14,7 @@
     </div>
     <div class="gallery__navigation">
 
-        <nav aria-label="Page navigation example">
+        <nav>
             <ul class="pagination">
                 <li class="page-item">
                     <button class="page-link btn-link">&laquo;</button>

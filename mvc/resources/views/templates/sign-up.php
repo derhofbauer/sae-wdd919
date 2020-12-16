@@ -45,6 +45,10 @@
 
             <button type="submit" class="btn btn-primary mt-2">Login</button>
         </form>
+
+        <p>
+            Hast du bereits einen Account? <a href="login">Login</a>
+        </p>
     </div>
 
 </div>

@@ -23,7 +23,8 @@
                  */
                 ?>
                 <a class="nav-link" href="cart">
-                    Cart <span class="number-of-products">(<?php echo \App\Controllers\CartController::numberOfProducts(); ?>)</span>
+                    Cart
+                    <span class="number-of-products">(<?php echo \App\Controllers\CartController::numberOfProducts(); ?>)</span>
                 </a>
             </li>
 
@@ -52,6 +53,9 @@
             <? else: ?>
                 <li class="nav-item">
                     <a href="login" class="nav-link">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a href="sign-up" class="nav-link">Sign-up</a>
                 </li>
             <?php endif; ?>
         </ul>

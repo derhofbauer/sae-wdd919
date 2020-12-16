@@ -16,7 +16,8 @@ class Validator
      * @var string[]
      */
     private $types = [
-        'text' => '/^[a-zA-Z ]*$/',
+        'letters' => '/^[a-zA-Z ]*$/',
+        'text' => '/^[a-zA-Z .\-,;_]*&/',
         'int' => '/^[\d]*$/',
         'float' => '/^[\d]+[.,]?[\d]{0,}$/',
         'textnum' => '/^[\w .,#-]*$/',

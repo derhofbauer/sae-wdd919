@@ -25,6 +25,9 @@
 
             <button type="submit" class="btn btn-primary">Login</button>
         </form>
+        <p>
+            Noch kein Account? <a href="sign-up">Sign-up</a>
+        </p>
     </div>
 
 </div>
