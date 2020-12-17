@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Erstellungszeit: 26. Nov 2020 um 19:36
+-- Erstellungszeit: 17. Dez 2020 um 10:56
 -- Server-Version: 10.4.12-MariaDB-1:10.4.12+maria~bionic
 -- PHP-Version: 7.4.3
 
@@ -138,7 +138,7 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `name`, `description`, `price`, `stock`, `images`) VALUES
-(1, 'Product 1', 'Product 2 Description', 42.99, 8, '1603997590_pimp-rollator.jpg'),
+(1, 'Product 1', 'Product 2 Description', 42.99, 8, '1603997590_pimp-rollator.jpg;1608138666_8ef4d82f6746c4f0f46c307890b07da6.jpg;1608140919_26f40791-aa6e-40f9-a335-48ad6af4fc4d.jpg;1608140946_23172392_360831787715208_3008937089625978137_n.jpg'),
 (2, 'Product 2', 'Product 2 Description', 42, 15, '1604432186_37844315_454803461597516_8815318794768482304_n (1).jpg'),
 (3, 'Product 3', 'Product 3 Description', 41.99, 29, ''),
 (4, 'New Product', '', 10, 11, '');
