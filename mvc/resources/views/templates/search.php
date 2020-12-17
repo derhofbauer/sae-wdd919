@@ -5,7 +5,8 @@
 require __DIR__ . '/../partials/errors.php';
 ?>
 
-<div class="number-of-results">Sie sucher lieferte <?php echo count($results); ?> Treffer.</div>
+<!--@todo: comment-->
+<div class="number-of-results" data-searchresults="<?php echo base64_encode(json_encode($results)); ?>">Sie sucher lieferte <?php echo count($results); ?> Treffer.</div>
 
 <div class="products row">
     <?php
@@ -32,3 +33,8 @@ require __DIR__ . '/../partials/errors.php';
     <?php endforeach; ?>
 
 </div>
+
+<!--@todo: comment-->
+<script>
+    const _searchresults = <?php echo json_encode($results); ?>
+</script>
