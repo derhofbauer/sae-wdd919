@@ -225,7 +225,7 @@ class CartController
      *
      * @return array
      */
-    public static function getCartContent ($calculateSubTotal = true): array
+    public static function getCartContent ($calculateSubTotal = true, $expandImages = false): array
     {
         /**
          * Cart aus der Session laden. Falls kein Cart in der Session gesetzt ist, nehmen wir hier ein leeres Array als
@@ -254,22 +254,29 @@ class CartController
             $product->quantity = $quantity;
 
             /**
+             * @todo: comment
+             */
+            if ($expandImages === true) {
+                $product->_images = $product->getImages();
+            }
+
+            /**
              * $subtotal Property dynamisch in dem Produkt Objekt erstellen und berechnen, sofern das nicht aktiv
              * deaktiviert wurde durch den Funktionsparameter.
              */
             if ($calculateSubTotal === true) {
                 $product->subtotal = $product->quantity * $product->price;
+
+                /**
+                 * Gesamten Warenwert des Warenkorbs erhöhen
+                 */
+                $total += $product->subtotal;
             }
 
             /**
              * "fertig" geladenes Produkt zu den übrigen geladenen Produkten pushen
              */
             $products[] = $product;
-
-            /**
-             * Gesamten Warenwert des Warenkorbs erhöhen
-             */
-            $total += $product->subtotal;
         }
 
         return [$products, $total];

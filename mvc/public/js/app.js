@@ -30,6 +30,48 @@
   }
 
   /**
+   * @todo: comment
+   * @param {Array} cartContent
+   */
+  const updateCartPopup = (cartContent) => {
+    const newPopupItems = []
+
+    cartContent.forEach((product) => {
+      const $popupItem = document.createElement('div')
+      $popupItem.classList.add('popup-item')
+
+      if (product._images.length > 0) {
+        const $img = document.createElement('img')
+        $img.src = product._images[0]
+        $img.alt = product.name
+        $img.classList.add('img-thumbnail')
+
+        $popupItem.append($img)
+      }
+
+      const $quantity = document.createElement('span')
+      $quantity.classList.add('quantity')
+      $quantity.textContent = product.quantity + 'x'
+      $popupItem.append($quantity)
+
+      const $name = document.createElement('span')
+      $name.classList.add('name')
+      $name.textContent = product.name
+      $popupItem.append($name)
+
+      newPopupItems.push($popupItem)
+    })
+
+    const $currentPopupItems = document.querySelectorAll('.cart-popup .popup-item')
+    $currentPopupItems.forEach(($node) => $node.remove())
+
+    const $popupContent = document.querySelector('.cart-popup .popup-content')
+    newPopupItems.forEach((newPopupItem) => {
+      $popupContent.append(newPopupItem)
+    })
+  }
+
+  /**
    * Cart Table Input Value ändern
    *
    * @param {number} productId
@@ -237,11 +279,12 @@
         /**
          * Daten aus API Response verarbeiten
          */
-        then(({ numberOfProducts }) => {
+        then(({ numberOfProducts, cartContent }) => {
           /**
            * Cart Counter in Navbar aktualisieren
            */
           updateCartCount(numberOfProducts)
+          updateCartPopup(cartContent)
 
           /**
            * Toast Message erzeugen
@@ -307,6 +350,7 @@
            */
           updateCartTable(cartContent)
           updateCartCount(numberOfProducts)
+          updateCartPopup(cartContent)
           updateTotal(total)
 
           /**

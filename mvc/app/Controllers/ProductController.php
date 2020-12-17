@@ -36,11 +36,17 @@ class ProductController
         $categories = Category::findByProductId($product->id);
 
         /**
+         * @todo: comment
+         */
+        $relatedProducts = $product->getRelatedProducts();
+
+        /**
          * Produkt an View übergeben
          */
         View::render('product-single', [
             'product' => $product,
-            'categories' => $categories
+            'categories' => $categories,
+            'relatedProducts' => $relatedProducts
         ]);
     }
 

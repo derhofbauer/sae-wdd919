@@ -38,3 +38,41 @@
   border:        2px solid grey;
   border-radius: 3px;
 }
+
+.popup-container {
+  position: relative;
+}
+
+.popup-container:hover .cart-popup {
+  display: block;
+}
+
+.cart-popup {
+  position:         absolute;
+  background-color: #fff;
+  border-radius:    3px;
+  padding:          15px;
+  z-index:          99;
+  box-shadow:       grey 0px 1px 2px;
+  display:          none;
+  width:            200px;
+}
+
+.cart-popup img {
+  max-width: 50px;
+  height:    auto;
+}
+
+.cart-popup .quantity {
+  color:     grey;
+  font-size: 0.8em;
+}
+
+.popup-content {
+  display:        flex;
+  flex-direction: column;
+}
+
+.popup-item {
+  display: flex;
+}

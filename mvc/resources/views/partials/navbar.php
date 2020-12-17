@@ -25,7 +25,7 @@
         </form>
 
         <ul class="navbar-nav">
-            <li class="nav-item">
+            <li class="nav-item popup-container">
                 <?php
                 /**
                  * Hier laden wir die statische Funktion numberOfProducts() aus dem CartController, damit wir die Summe
@@ -37,6 +37,7 @@
                     Cart
                     <span class="number-of-products">(<?php echo \App\Controllers\CartController::numberOfProducts(); ?>)</span>
                 </a>
+                <?php require_once __DIR__ . '/../partials/cart-popup.php'; ?>
             </li>
 
             <?php
