@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Erstellungszeit: 17. Dez 2020 um 10:56
+-- Erstellungszeit: 17. Dez 2020 um 19:31
 -- Server-Version: 10.4.12-MariaDB-1:10.4.12+maria~bionic
 -- PHP-Version: 7.4.3
 
@@ -138,10 +138,12 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `name`, `description`, `price`, `stock`, `images`) VALUES
-(1, 'Product 1', 'Product 2 Description', 42.99, 8, '1603997590_pimp-rollator.jpg;1608138666_8ef4d82f6746c4f0f46c307890b07da6.jpg;1608140919_26f40791-aa6e-40f9-a335-48ad6af4fc4d.jpg;1608140946_23172392_360831787715208_3008937089625978137_n.jpg'),
-(2, 'Product 2', 'Product 2 Description', 42, 15, '1604432186_37844315_454803461597516_8815318794768482304_n (1).jpg'),
-(3, 'Product 3', 'Product 3 Description', 41.99, 29, ''),
-(4, 'New Product', '', 10, 11, '');
+(1, 'Grumpy Cat', 'Product 2 Description', 42.99, 8, '1603997590_pimp-rollator.jpg;1608138666_8ef4d82f6746c4f0f46c307890b07da6.jpg;1608140919_26f40791-aa6e-40f9-a335-48ad6af4fc4d.jpg;1608140946_23172392_360831787715208_3008937089625978137_n.jpg'),
+(2, 'Hide The Pain Harold', 'Product 2 Description', 42, 15, '1604432186_37844315_454803461597516_8815318794768482304_n (1).jpg'),
+(3, 'Overly Attached Girlfriend', 'Product 3 Description', 41.99, 29, ''),
+(4, 'Meme 4', 'Bad Luck Brian', 10, 11, ''),
+(5, 'Baumeister', 'Baumeister', 10, 10, NULL),
+(6, 'Baum', 'Baum', 10, 10, NULL);
 
 -- --------------------------------------------------------
 
@@ -226,6 +228,7 @@ ALTER TABLE `payments`
 --
 ALTER TABLE `products`
   ADD PRIMARY KEY (`id`);
+ALTER TABLE `products` ADD FULLTEXT KEY `searchindex` (`name`,`description`);
 
 --
 -- Indizes für die Tabelle `products_categories_mm`
@@ -273,7 +276,7 @@ ALTER TABLE `payments`
 -- AUTO_INCREMENT für Tabelle `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT für Tabelle `products_categories_mm`
