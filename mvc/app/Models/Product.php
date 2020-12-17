@@ -464,4 +464,73 @@ class Product extends BaseModel
         return $result;
     }
 
+    /**
+     * @param int $limit
+     *
+     * @return array
+     * @todo: comment
+     */
+    public function getRelatedProducts (int $limit = 4): array
+    {
+        /**
+         * Datenbankverbindung herstellen.
+         */
+        $db = new Database();
+
+        /**
+         * Tabellennamen berechnen.
+         */
+        $tableName = self::getTableNameFromClassName();
+
+        $categories = Category::findByProductId($this->id);
+        $numberOfCategories = count($categories); // bspw. 2
+
+        if ($numberOfCategories > 0) {
+            $inClauseParams = array_fill(0, $numberOfCategories, '?'); // ['?', '?']
+            $inClause = implode(',', $inClauseParams); // ?,?
+
+            $categoryIds = [];
+            foreach ($categories as $category) {
+                $categoryId = $category->id;
+                $categoryIds["i:category-$categoryId"] = $categoryId;
+            } // ['i:category-1' => 1, 'i:category-4' => 4]
+
+            $queryParams = $categoryIds;
+            $queryParams['i:limit'] = $limit;
+
+            /**
+             * Query ausführen.
+             */
+            $result = $db->query("SELECT DISTINCT $tableName.* FROM $tableName
+            JOIN products_categories_mm ON products_categories_mm.product_id = products.id
+                WHERE products_categories_mm.category_id IN ($inClause) LIMIT ?", $queryParams);
+        } else {
+            $result = $db->query("SELECT * FROM $tableName LIMIT ?",[
+                'i:limit' => $limit
+            ]);
+        }
+
+        /**
+         * Ergebnis-Array vorbereiten.
+         */
+        $objects = [];
+
+        /**
+         * Ergebnisse des Datenbank-Queries durchgehen und jeweils ein neues Objekt erzeugen.
+         */
+        foreach ($result as $object) {
+            /**
+             * Auslesen, welche Klasse aufgerufen wurde und ein Objekt dieser Klasse erstellen und in den Ergebnis-Array
+             * speichern.
+             */
+            $calledClass = get_called_class();
+            $objects[] = new $calledClass($object);
+        }
+
+        /**
+         * Ergebnisse zurückgeben.
+         */
+        return $objects;
+    }
+
 }

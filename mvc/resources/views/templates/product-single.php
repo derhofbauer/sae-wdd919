@@ -13,9 +13,9 @@
     ?>
     <?php if (count($product->getImages()) > 0): ?>
         <!--<div class="col-6">
-            <?php /*foreach ($product->getImages() as $image): */?>
-                <img src="<?php /*echo $image */?>" alt="<?php /*echo $product->name */?>" class="img-thumbnail">
-            <?php /*endforeach; */?>
+            <?php /*foreach ($product->getImages() as $image): */ ?>
+                <img src="<?php /*echo $image */ ?>" alt="<?php /*echo $product->name */ ?>" class="img-thumbnail">
+            <?php /*endforeach; */ ?>
         </div>-->
         <?php require_once __DIR__ . '/../partials/gallery.php'; ?>
     <?php endif; ?>
@@ -46,6 +46,15 @@
                 <input type="number" class="form-control" min="1" name="numberToAdd" value="1">
             </div>
         </form>
+
+        <div class="related-products">
+            <h3>Verwandte Produkte</h3>
+            <ul>
+                <?php foreach ($relatedProducts as $relatedProduct): ?>
+                    <li><?php echo $relatedProduct->name; ?></li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
 
     </div>
 
