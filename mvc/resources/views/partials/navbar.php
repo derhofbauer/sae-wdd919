@@ -13,6 +13,17 @@
             <?php endforeach; ?>
         </ul>
 
+        <form class="form-inline my-2 my-lg-0" method="get" action="search">
+            <?php
+            $value = '';
+            if (isset($_GET['searchterm']) && !empty($_GET['searchterm'])) {
+                $value = $_GET['searchterm'];
+            }
+            ?>
+            <input class="form-control mr-sm-2" type="search" placeholder="Produktsuche ..." aria-label="Search" name="searchterm" value="<?php echo $value; ?>">
+            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
+        </form>
+
         <ul class="navbar-nav">
             <li class="nav-item">
                 <?php

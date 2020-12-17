@@ -355,6 +355,54 @@ class Product extends BaseModel
     }
 
     /**
+     * @param string $searchterm
+     *
+     * @return array
+     * @todo: comment
+     */
+    public static function search (string $searchterm): array
+    {
+        /**
+         * Datenbankverbindung herstellen.
+         */
+        $db = new Database();
+
+        /**
+         * Tabellennamen berechnen.
+         */
+        $tableName = self::getTableNameFromClassName();
+
+        /**
+         * Query ausführen.
+         */
+        $result = $db->query("SELECT * FROM $tableName WHERE MATCH(name, description) AGAINST(? IN BOOLEAN MODE)", [
+            's:term' => $searchterm
+        ]);
+
+        /**
+         * Ergebnis-Array vorbereiten.
+         */
+        $objects = [];
+
+        /**
+         * Ergebnisse des Datenbank-Queries durchgehen und jeweils ein neues Objekt erzeugen.
+         */
+        foreach ($result as $object) {
+            /**
+             * Auslesen, welche Klasse aufgerufen wurde und ein Objekt dieser Klasse erstellen und in den Ergebnis-Array
+             * speichern.
+             */
+            $calledClass = get_called_class();
+            $objects[] = new $calledClass($object);
+        }
+
+        /**
+         * Ergebnisse zurückgeben.
+         */
+        return $objects;
+    }
+
+    /**
      * Verknüpfung zwischen einem Produkt und einer Kategorie herstellen.
      *
      * @param int $categoryId

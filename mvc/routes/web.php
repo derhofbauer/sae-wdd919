@@ -12,6 +12,7 @@ use App\Controllers\UserController;
 use App\Controllers\AddressController;
 use App\Controllers\PaymentController;
 use App\Controllers\CategoryController;
+use App\Controllers\SearchController;
 
 /**
  * Die Dateien im /routes Ordner beinhalten ein Mapping von einer URL auf eine eindeutige Controller & Action
@@ -110,5 +111,10 @@ return [
     '/profile/addresses/{id}/edit/do' => [AddressController::class, 'update'],
 
     '/profile/payments/{id}/edit' => [PaymentController::class, 'updateForm'],
-    '/profile/payments/{id}/edit/do' => [PaymentController::class, 'update']
+    '/profile/payments/{id}/edit/do' => [PaymentController::class, 'update'],
+
+    /**
+     * Search Routes
+     */
+    '/search' => [SearchController::class, 'search']
 ];
