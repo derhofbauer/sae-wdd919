@@ -36,7 +36,7 @@ class ProductController
         $categories = Category::findByProductId($product->id);
 
         /**
-         * @todo: comment
+         * Verwandte Produkte laden
          */
         $relatedProducts = $product->getRelatedProducts();
 

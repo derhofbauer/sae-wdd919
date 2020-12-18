@@ -254,7 +254,9 @@ class CartController
             $product->quantity = $quantity;
 
             /**
-             * @todo: comment
+             * Hier bieten wir die Möglichkeit über einen Funktionsparameter an, die Bilder direkt auch zu exploden und
+             * somit zusätzlich auch als Array auszugeben. Das ist dann sinnvoll, wenn die Daten des Produkts in
+             * irgendeiner Form als JSON ans JavaScript übergeben und dort weiterverwendet werden sollen.
              */
             if ($expandImages === true) {
                 $product->_images = $product->getImages();
