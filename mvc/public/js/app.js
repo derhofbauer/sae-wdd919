@@ -30,41 +30,97 @@
   }
 
   /**
-   * @todo: comment
+   * Cart Popup aktualisieren
+   *
+   * Hier gehen wir vom Prinzip her vor, wie Vue.js und React vorgehen würden.
+   * Wir suchen nicht die einzelnen Nodes aus dem DOM, die aktualisiert werden
+   * müssen, sondern wir erstellen sie einfach neu und ersetzen die alten, nicht
+   * mehr aktuellen Nodes, mit den neuen Nodes.
+   *
    * @param {Array} cartContent
    */
   const updateCartPopup = (cartContent) => {
+    /**
+     * Array vorbereiten
+     */
     const newPopupItems = []
 
+    /**
+     * API Response durchgenen und für jedes Produkt die benötigten HTMLElements
+     * erstellen.
+     */
     cartContent.forEach((product) => {
+      /**
+       * <div.popup-item> erstellen und Klasse hinzufügen
+       * @type {HTMLDivElement}
+       */
       const $popupItem = document.createElement('div')
       $popupItem.classList.add('popup-item')
 
+      /**
+       * Gibt es für das aktuell verarbeitete Produkt Bilder?
+       */
       if (product._images.length > 0) {
+        /**
+         * Wenn ja, erstellen wir einen <img>-Node und setzen die src- und alt-
+         * Attribute und fügen eine Klasse hinzu.
+         * @type {HTMLImageElement}
+         */
         const $img = document.createElement('img')
         $img.src = product._images[0]
         $img.alt = product.name
         $img.classList.add('img-thumbnail')
 
+        /**
+         * Den fertigen <img>-Node hängen wir in $popupItem ein.
+         */
         $popupItem.append($img)
       }
 
+      /**
+       * Wir gehen für die Quantity vor, wie für das Bild, nur setzen wir hier
+       * einen Text Inhalt für den Node und nicht src und alt.
+       * @type {HTMLSpanElement}
+       */
       const $quantity = document.createElement('span')
       $quantity.classList.add('quantity')
       $quantity.textContent = product.quantity + 'x'
+      /**
+       * Auch dieses Element wird in $popupItem eingehängt.
+       */
       $popupItem.append($quantity)
 
+      /**
+       * Wir gehen für den Produktnamen vor, wie für die Quantit.
+       * @type {HTMLSpanElement}
+       */
       const $name = document.createElement('span')
       $name.classList.add('name')
       $name.textContent = product.name
+      /**
+       * Auch dieses Element wird in $popupItem eingehängt.
+       */
       $popupItem.append($name)
 
+      /**
+       * Haben wir dieses einzelne $popupItem fertig zusammengebaut, fügen wir
+       * es in den Array hinzu.
+       */
       newPopupItems.push($popupItem)
     })
 
+    /**
+     * Nun holen wir uns alle aktuell im HTML befindlichen .popup-items, gehen
+     * sie durch und löschen sie.
+     */
     const $currentPopupItems = document.querySelectorAll('.cart-popup .popup-item')
     $currentPopupItems.forEach(($node) => $node.remove())
 
+    /**
+     * Nachdem das Cart Popup jetzt nur noch einen Button hat, gehen wir die
+     * zuvor neu erstellen $newPopupItems durch und fügen jedes einzelne inkl.
+     * seiner Kindelemente (img, quantity, name) in .popup-content ein.
+     */
     const $popupContent = document.querySelector('.cart-popup .popup-content')
     newPopupItems.forEach((newPopupItem) => {
       $popupContent.append(newPopupItem)

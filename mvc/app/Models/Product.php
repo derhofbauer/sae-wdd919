@@ -355,10 +355,11 @@ class Product extends BaseModel
     }
 
     /**
+     * Produkte durchsuchen
+     *
      * @param string $searchterm
      *
      * @return array
-     * @todo: comment
      */
     public static function search (string $searchterm): array
     {
@@ -374,6 +375,12 @@ class Product extends BaseModel
 
         /**
          * Query ausführen.
+         *
+         * Hier führen wird eine Volltextsuche ausgeführt. MySQL unterstützt dabei nur eine sehr grundlegende Suche,
+         * die für unsere Zwecke aber ausreichen ist. Im MATCH() Statement werden die Spalten angegeben, die durchsucht
+         * werden sollen. Im AGAINST() Statement wird der Suchbegriff und der Suchmodus übergeben. Wichtig dabei ist,
+         * dass die Spalten, die durchsucht werden sollen, in der Datenbank als kombinierter FULLTEXT-Index definiert
+         * sind.
          */
         $result = $db->query("SELECT * FROM $tableName WHERE MATCH(name, description) AGAINST(? IN BOOLEAN MODE)", [
             's:term' => $searchterm
@@ -465,10 +472,14 @@ class Product extends BaseModel
     }
 
     /**
+     * Verwandte Produkte anhang gemeinsamer Kategorien holen.
+     *
+     * Befindet sich das Ausgangsprodukt nicht in einer Kategorie, werden $limit Produkte aus der Menge [alle Produkte]
+     * ausgewählt.
+     *
      * @param int $limit
      *
      * @return array
-     * @todo: comment
      */
     public function getRelatedProducts (int $limit = 4): array
     {
@@ -482,30 +493,62 @@ class Product extends BaseModel
          */
         $tableName = self::getTableNameFromClassName();
 
+        /**
+         * Kategorien zum aktuellen Produkt abfragen
+         */
         $categories = Category::findByProductId($this->id);
+
+        /**
+         * Zählen, wie viele Kategorien diesem Produkt zugewiesen sind.
+         *
+         * Das brauchen wir, damit wir ein Prepared-Statement für den Datenbank-Query dynamisch generieren können.
+         */
         $numberOfCategories = count($categories); // bspw. 2
 
+        /**
+         * Sind Kategorien zugewiesen ...
+         */
         if ($numberOfCategories > 0) {
+            /**
+             * ... so bereiten wir eine Liste an Query Parametern vor ...
+             */
             $inClauseParams = array_fill(0, $numberOfCategories, '?'); // ['?', '?']
             $inClause = implode(',', $inClauseParams); // ?,?
 
+            /**
+             * ... und danach die Liste an Werten, die auf die Parameter gelegt werden sollen.
+             */
             $categoryIds = [];
             foreach ($categories as $category) {
                 $categoryId = $category->id;
+
+                /**
+                 * Hier kommt für jede zugewiesen Kategorie ein neuer Wert in den Parameter Array.
+                 */
                 $categoryIds["i:category-$categoryId"] = $categoryId;
             } // ['i:category-1' => 1, 'i:category-4' => 4]
 
             $queryParams = $categoryIds;
+            /**
+             * Zum Schluss wird noch der letzte Query Parameter $limit hinzugefügt.
+             */
             $queryParams['i:limit'] = $limit;
 
             /**
              * Query ausführen.
+             *
+             * Hier wird ein WHERE ... IN() Query ausgeführt. Nachdem die Anzahl der Werte in den IN()-Klammern dynamisch
+             * ist, muss auch das Prepared Statement dynamisch generiert werden. Demzufolge gibt es aber auch
+             * eine dynamische Anzahl an Werten für diese Parameter und auch $queryParams muss flexibel definiert werden.
              */
             $result = $db->query("SELECT DISTINCT $tableName.* FROM $tableName
             JOIN products_categories_mm ON products_categories_mm.product_id = products.id
                 WHERE products_categories_mm.category_id IN ($inClause) LIMIT ?", $queryParams);
         } else {
-            $result = $db->query("SELECT * FROM $tableName LIMIT ?",[
+            /**
+             * Ist das Produkt keiner Kategorie zugewiesen, so laden wir einfach alle Produkte und nehmen davon nur $limit.
+             */
+            $result = $db->query("SELECT * FROM $tableName LIMIT ?", [
                 'i:limit' => $limit
             ]);
         }
