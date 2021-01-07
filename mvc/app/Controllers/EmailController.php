@@ -32,11 +32,16 @@ class EmailController
 
         $to = "$name <$email>";
         $subject = "Contact Form";
+        $headers = [
+            'From' => 'no-reply@localhost',
+            'X-Mailer' => 'PHP/' . phpversion()
+        ];
 
-        $result = mail($to, $subject, $message);
+        $result = mail($to, $subject, $message, $headers);
 
         if ($result === false) {
-            $errors[] = 'Die E-Mail konnte nicht verschickt werden.';
+            $errorMessage = error_get_last()['message'];
+            $errors[] = "Die E-Mail konnte nicht verschickt werden: $errorMessage";
             Session::set('errors', $errors);
         } else {
             Session::set('success', ['Das Produkt wurde erfolgreich gespeichert.']);
