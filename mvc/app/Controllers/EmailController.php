@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use Core\Mail;
 use Core\Session;
 use Core\View;
 
@@ -30,21 +31,20 @@ class EmailController
         $email = $_POST['email'];
         $message = $_POST['message'];
 
-        $to = "$name <$email>";
-        $subject = "Contact Form";
-        $headers = [
-            'From' => 'no-reply@localhost',
-            'X-Mailer' => 'PHP/' . phpversion()
-        ];
+        $mail = new Mail();
+        $mail->setFrom($name, $email);
+        $mail->addTo('Webshop Contact Form', 'contact@webshop.domain');
+        $mail->subject = "Contact Form";
+        $mail->message = $message;
 
-        $result = mail($to, $subject, $message, $headers);
-
-        if ($result === false) {
-            $errorMessage = error_get_last()['message'];
+        if ($mail->send() === false) {
+            $errorMessage = $mail->error['message'];
             $errors[] = "Die E-Mail konnte nicht verschickt werden: $errorMessage";
             Session::set('errors', $errors);
         } else {
-            Session::set('success', ['Das Produkt wurde erfolgreich gespeichert.']);
+            Session::set('success', ['Das E-Mail wurde erfolgreich versendet.']);
+            Session::forget('$_post');
+            Session::forget('$_get');
         }
 
         /**

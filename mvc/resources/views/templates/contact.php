@@ -1,6 +1,7 @@
 <form action="contact/send" method="post">
 
     <?php require_once __DIR__ . '/../partials/errors.php'; ?>
+    <?php require_once __DIR__ . '/../partials/success.php'; ?>
 
     <div class="form-group">
         <label for="name">Name</label>
