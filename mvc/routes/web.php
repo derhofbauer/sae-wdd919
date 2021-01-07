@@ -14,6 +14,7 @@ use App\Controllers\PaymentController;
 use App\Controllers\CategoryController;
 use App\Controllers\SearchController;
 use App\Controllers\ApiDemoController;
+use App\Controllers\EmailController;
 
 /**
  * Die Dateien im /routes Ordner beinhalten ein Mapping von einer URL auf eine eindeutige Controller & Action
@@ -118,6 +119,12 @@ return [
      * Search Routes
      */
     '/search' => [SearchController::class, 'search'],
+
+    /**
+     * Contact form Routes
+     */
+    '/contact' => [EmailController::class, 'contactForm'],
+    '/contact/send' => [EmailController::class, 'contact'],
 
     /**
      * API Demos

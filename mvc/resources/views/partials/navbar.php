@@ -11,6 +11,10 @@
                     <a href="products/category/<?php echo $navbarCategory->id; ?>" class="nav-link"><?php echo $navbarCategory->name; ?></a>
                 </li>
             <?php endforeach; ?>
+
+            <li class="nav-item">
+                <a href="contact" class="nav-link">Contact</a>
+            </li>
         </ul>
 
         <form class="form-inline my-2 my-lg-0" method="get" action="search">
