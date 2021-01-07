@@ -11,7 +11,16 @@
     <?php foreach ($products as $product): ?>
         <tr class="product-<?php echo $product->id; ?>">
             <td><?php echo $product->id; ?></td>
-            <td><?php echo $product->name; ?></td>
+            <td>
+                <?php echo $product->name; ?>
+                <?php if (isset($showCommentInputs) && $showCommentInputs === true): ?>
+                    <hr>
+                    <div class="form-group">
+                        <label for="comments[<?php echo $product->id; ?>]">Kommentar</label>
+                        <textarea name="comments[<?php echo $product->id; ?>]" id="comments[<?php echo $product->id; ?>]" class="form-control"></textarea>
+                    </div>
+                <?php endif; ?>
+            </td>
             <td>
                 <div class="input-group">
                     <div class="input-group-prepend">

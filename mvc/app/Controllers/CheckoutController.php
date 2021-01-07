@@ -337,7 +337,8 @@ class CheckoutController
                 'payment' => $payment,
                 'address' => $address,
                 'products' => $products,
-                'total' => $total
+                'total' => $total,
+                'showCommentInputs' => true
             ]);
 
         } else {
@@ -387,6 +388,13 @@ class CheckoutController
             $productsAndTotal = CartController::getCartContent(false);
             $products = $productsAndTotal[0];
 
+            foreach ($products as $key => $product) {
+                if (isset($_POST['comments'][$product->id])) {
+                    $product->comment = $_POST['comments'][$product->id];
+                    $products[$key] = $product;
+                }
+            }
+
             /**
              * Neues Order-Objekt anlegen und Werte aus der Session übergeben.
              */
@@ -395,6 +403,7 @@ class CheckoutController
             $order->payment_id = $payment_id;
             $order->address_id = $address_id;
             $order->products = $products;
+
             /**
              * Order-Objekt in die Datenbank speichern.
              */

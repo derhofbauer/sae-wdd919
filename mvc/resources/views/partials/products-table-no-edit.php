@@ -11,7 +11,13 @@
     <?php foreach ($products as $product): ?>
         <tr>
             <td><?php echo $product->id; ?></td>
-            <td><?php echo $product->name; ?></td>
+            <td>
+                <?php echo $product->name; ?>
+                <?php if (isset($product->comment)): ?>
+                    <hr>
+                    <strong class="comment"><?php echo $product->comment; ?></strong>
+                <?php endif; ?>
+            </td>
             <td><?php echo $product->quantity; ?></td>
             <td><?php echo \App\Models\Product::formatPrice($product->subtotal); ?></td>
         </tr>

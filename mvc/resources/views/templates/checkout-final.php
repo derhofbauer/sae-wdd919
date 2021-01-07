@@ -32,7 +32,9 @@
 </div>
 
 <h2>Produktübersicher</h2>
-<?php require_once __DIR__ . '/../partials/products-table.php'; ?>
+<form action="checkout/finish" method="post">
+    <?php require_once __DIR__ . '/../partials/products-table.php'; ?>
 
-<a href="cart" class="btn btn-link">Bestellung abbrechen :(</a>
-<a href="checkout/finish" class="btn btn-primary">Zahlungspflichtig bestellen</a>
+    <a href="cart" class="btn btn-link">Bestellung abbrechen :(</a>
+    <button type="submit" class="btn btn-primary">Zahlungspflichtig bestellen</button>
+</form>
