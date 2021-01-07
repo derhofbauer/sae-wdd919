@@ -13,6 +13,7 @@ use App\Controllers\AddressController;
 use App\Controllers\PaymentController;
 use App\Controllers\CategoryController;
 use App\Controllers\SearchController;
+use App\Controllers\ApiDemoController;
 
 /**
  * Die Dateien im /routes Ordner beinhalten ein Mapping von einer URL auf eine eindeutige Controller & Action
@@ -116,5 +117,10 @@ return [
     /**
      * Search Routes
      */
-    '/search' => [SearchController::class, 'search']
+    '/search' => [SearchController::class, 'search'],
+
+    /**
+     * API Demos
+     */
+    '/api-demos/colors' => [ApiDemoController::class, 'colors']
 ];

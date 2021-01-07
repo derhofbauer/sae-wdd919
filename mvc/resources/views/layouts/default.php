@@ -17,6 +17,7 @@
     <!-- CSS -->
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/gallery.css">
+    <link rel="stylesheet" href="css/api-samples.css">
 </head>
 <body>
 <?php require_once __DIR__ . '/../partials/navbar.php'; ?>
