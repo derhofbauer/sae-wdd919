@@ -1,10 +1,14 @@
+<?php
+require __DIR__ . '/../partials/errors.php';
+require __DIR__ . '/../partials/success.php';
+?>
+
 <div class="product row">
     <?php
     /**
      * [ ] Produkt-Detailseite
      */
     ?>
-
 
     <?php
     /**
@@ -21,7 +25,17 @@
     <?php endif; ?>
 
     <div class="col-6">
-        <h2><?php echo $product->name; ?></h2>
+        <h2>
+            <?php
+            /**
+             * @todo: comment
+             */
+            ?>
+            <?php echo $product->name; ?>
+            <?php if ($product->getAverageRating() !== null): ?>
+                <small>(Rating: <?php echo $product->getAverageRating(); ?>)</small>
+            <?php endif; ?>
+        </h2>
         <div>Price: <strong><?php echo $product->getPrice() ?></strong></div>
         <div><?php echo $product->description; ?></div>
         <div>
@@ -46,6 +60,8 @@
                 <input type="number" class="form-control" min="1" name="numberToAdd" value="1">
             </div>
         </form>
+
+        <?php require_once __DIR__ . '/../partials/ratings.php'; ?>
 
         <div class="related-products">
             <h3>Verwandte Produkte</h3>

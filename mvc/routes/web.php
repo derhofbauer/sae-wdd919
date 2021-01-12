@@ -15,6 +15,7 @@ use App\Controllers\CategoryController;
 use App\Controllers\SearchController;
 use App\Controllers\ApiDemoController;
 use App\Controllers\EmailController;
+use App\Controllers\RatingController;
 
 /**
  * Die Dateien im /routes Ordner beinhalten ein Mapping von einer URL auf eine eindeutige Controller & Action
@@ -34,6 +35,7 @@ return [
      * Product Routes
      */
     '/products/{id}' => [ProductController::class, 'show'],
+    '/products/{id}/add-rating' => [RatingController::class, 'create'],
 
     /**
      * Cart Routes

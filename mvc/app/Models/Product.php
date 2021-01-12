@@ -23,6 +23,10 @@ class Product extends BaseModel
     public float $price = 0.0;
     public int $stock = 0;
     public string $images = '';
+    /**
+     * @todo: comment
+     */
+    public float $_rating = 0;
 
     /**
      * Die abstrakte Klasse BaseModel kann den Namen, der zu diesem Model gehörigen Tabelle, automatisch berechnen. Es
@@ -574,6 +578,37 @@ class Product extends BaseModel
          * Ergebnisse zurückgeben.
          */
         return $objects;
+    }
+
+    /**
+     * @return float|int
+     * @todo: comment
+     */
+    public function getAverageRating ()
+    {
+        if ($this->_rating > 0) {
+            return $this->_rating;
+        }
+
+        $ratings = Rating::findByProductId($this->id);
+
+        if (!empty($ratings)) {
+            $_ratings = [];
+
+            foreach ($ratings as $rating) {
+                $_ratings[] = $rating->rating;
+            }
+
+            $ratingSum = array_sum($_ratings);
+
+            /**
+             * SUM(<aller Werte>) / COUNT(<aller Werte>)
+             */
+            $this->_rating = round($ratingSum / count($_ratings), 1);
+            return $this->_rating;
+        }
+
+        return null;
     }
 
 }

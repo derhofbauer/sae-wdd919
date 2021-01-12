@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Rating;
 use App\Models\User;
 use Core\Config;
 use Core\Database;
@@ -41,12 +42,18 @@ class ProductController
         $relatedProducts = $product->getRelatedProducts();
 
         /**
+         * Ratings laden
+         */
+        $ratings = Rating::findByProductId($product->id);
+
+        /**
          * Produkt an View übergeben
          */
         View::render('product-single', [
             'product' => $product,
             'categories' => $categories,
-            'relatedProducts' => $relatedProducts
+            'relatedProducts' => $relatedProducts,
+            'ratings' => $ratings
         ]);
     }
 

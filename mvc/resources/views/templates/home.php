@@ -22,7 +22,12 @@ require_once __DIR__ . '/../partials/success.php';
             <?php if (count($product->getImages()) > 0): ?>
                 <img src="<?php echo $product->getImages()[0]; ?>" alt="<?php echo $product->name ?>" class="img-thumbnail">
             <?php endif; ?>
-            <h2><?php echo $product->name; ?></h2>
+            <h2><?php /** @todo: comment */ ?>
+                <?php echo $product->name; ?>
+                <?php if ($product->getAverageRating() !== null): ?>
+                    <small>(Rating: <?php echo $product->getAverageRating(); ?>)</small>
+                <?php endif; ?>
+            </h2>
             <div><?php echo $product->description; ?></div>
             <a href="products/<?php echo $product->id; ?>">more ...</a>
         </div>
