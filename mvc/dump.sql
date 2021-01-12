@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Erstellungszeit: 12. Jan 2021 um 18:25
+-- Erstellungszeit: 12. Jan 2021 um 19:27
 -- Server-Version: 10.4.12-MariaDB-1:10.4.12+maria~bionic
 -- PHP-Version: 7.4.3
 
@@ -82,7 +82,7 @@ CREATE TABLE `orders` (
   `user_id` int(11) NOT NULL,
   `address_id` int(11) NOT NULL,
   `payment_id` int(11) NOT NULL,
-  `products` text COLLATE utf8_unicode_ci NOT NULL COMMENT 'Serialized JSON of ordered products',
+  `products` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT 'Serialized JSON of ordered products',
   `status` enum('open','in progress','in delivery','storno','delivered') COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -93,7 +93,7 @@ CREATE TABLE `orders` (
 INSERT INTO `orders` (`id`, `crdate`, `user_id`, `address_id`, `payment_id`, `products`, `status`) VALUES
 (1, '2020-11-12 19:30:09', 1, 4, 2, '[{\"id\":1,\"name\":\"Product 1\",\"description\":\"Product 2 Description\",\"price\":42.99,\"stock\":10,\"images\":\"1603997590_pimp-rollator.jpg\",\"quantity\":\"5\",\"subtotal\":214.95000000000002}]', 'open'),
 (2, '2020-11-12 19:29:54', 1, 1, 2, '[{\"id\":1,\"name\":\"Product 1\",\"description\":\"Product 2 Description\",\"price\":42.99,\"stock\":10,\"images\":\"1603997590_pimp-rollator.jpg\",\"quantity\":\"5\",\"subtotal\":214.95000000000002}]', 'in delivery'),
-(3, '2020-11-12 19:30:03', 1, 1, 2, '[{\"id\":1,\"name\":\"Product 1\",\"description\":\"Product 2 Description\",\"price\":42.99,\"stock\":10,\"images\":\"1603997590_pimp-rollator.jpg\",\"quantity\":\"5\"}]', 'open'),
+(3, '2021-01-12 19:02:29', 1, 1, 2, '[{\"id\":2,\"name\":\"Product 1\",\"description\":\"Product 2 Description\",\"price\":42.99,\"stock\":10,\"images\":\"1603997590_pimp-rollator.jpg\",\"quantity\":\"5\"},{\"id\":1,\"name\":\"Product 1\",\"description\":\"Product 2 Description\",\"price\":42.99,\"stock\":10,\"images\":\"1603997590_pimp-rollator.jpg\",\"quantity\":\"5\"}]', 'open'),
 (4, '2021-01-07 14:31:32', 1, 1, 2, '[{\"id\":1,\"name\":\"Grumpy Cat\",\"description\":\"Product 2 Description\",\"price\":42.99,\"stock\":8,\"images\":\"1603997590_pimp-rollator.jpg;1608138666_8ef4d82f6746c4f0f46c307890b07da6.jpg;1608140919_26f40791-aa6e-40f9-a335-48ad6af4fc4d.jpg;1608140946_23172392_360831787715208_3008937089625978137_n.jpg\",\"quantity\":5,\"comment\":\"Bitte als Geschenk verpacken! :D\"}]', 'open');
 
 -- --------------------------------------------------------
@@ -191,7 +191,7 @@ CREATE TABLE `ratings` (
 INSERT INTO `ratings` (`id`, `user_id`, `product_id`, `rating`, `comment`) VALUES
 (1, 1, 1, 3, 'Why is this product in \"Cool Stuff\"?'),
 (2, 2, 1, 5, 'This product is totally awesome!'),
-(4, 1, 1, 5, 'This product is the best product in the world, it\'s huge, best product evet!');
+(4, 1, 1, 5, 'This product is the best product in the world, it\'s huge, best product ever!');
 
 -- --------------------------------------------------------
 

@@ -1,25 +1,39 @@
 # PHP Basics - WDD919
 
-Dieses README enhält einige Infos zu dieser Repository, nützliche Links und andere Infos, die sich in den letzten Unterrichten als hilfreich erwiesen haben. Ich werde versuchen die Datei aktuell zu halten und mit weiteren Infos zu füllen.
+Dieses README enhält einige Infos zu dieser Repository, nützliche Links und andere Infos, die sich in den letzten
+Unterrichten als hilfreich erwiesen haben. Ich werde versuchen die Datei aktuell zu halten und mit weiteren Infos zu
+füllen.
 
 ## Text Editor
 
-Ihr braucht für den Unterricht einen Text-Editor. Im Prinzip könnt ihr jeden beliebigen Plaintext Editor verwenden. Ich bin persönlich bin ein großer Fan von PhpStorm. Als SAE Studenten kriegt ihr das gesamte Programm Angebot vom Hersteller JetBrains, also auch PhpStorm kostenlos als Student Version. Nähere Infos auf der Hersteller Website: https://www.jetbrains.com/community/education/#students
+Ihr braucht für den Unterricht einen Text-Editor. Im Prinzip könnt ihr jeden beliebigen Plaintext Editor verwenden. Ich
+bin persönlich bin ein großer Fan von PhpStorm. Als SAE Studenten kriegt ihr das gesamte Programm Angebot vom Hersteller
+JetBrains, also auch PhpStorm kostenlos als Student Version. Nähere Infos auf der Hersteller
+Website: https://www.jetbrains.com/community/education/#students
 
 ## `docker-compose`
 
-Wer gerne Docker/Docker Compose nutzen möchte, findet ein entsprechendes File im Repository. Ihr könnte aber genauso gut auch den XAMPP/MAMP/whatever verwenden. Wichtig bei der Verwendung des hier befindlichen `docker-compose.yml` Files ist, dass ihr das `.env.example` File kopiert und damit ein `.env` File anlegt. Dieses `.env` File wird nicht von GIT in das Repository hinzugefügt und erlaubt auf allen Rechnern, auf denen ihr diese Docker-Umgebung startet, eine andere Konfiguration.
+Wer gerne Docker/Docker Compose nutzen möchte, findet ein entsprechendes File im Repository. Ihr könnte aber genauso gut
+auch den XAMPP/MAMP/whatever verwenden. Wichtig bei der Verwendung des hier befindlichen `docker-compose.yml` Files ist,
+dass ihr das `.env.example` File kopiert und damit ein `.env` File anlegt. Dieses `.env` File wird nicht von GIT in das
+Repository hinzugefügt und erlaubt auf allen Rechnern, auf denen ihr diese Docker-Umgebung startet, eine andere
+Konfiguration.
 
 ### Web
+
 + Apache: [localhost:8080](localhost:8080)
 + PhpMyAdmin: [localhost:8081](localhost:8081)
 
 ### Database
+
 + MariaDB: [localhost:3306](localhost:3306)
 
 ### Composer
 
-Das MVC verwendet Composer. Wir haben die Bibliothek MPDF mittels Composer installiert. Um alle Abhängigkeiten nach dem Pull zu installieren führe im Terminal im Ordner `mvc` den Befehl `php composer.phar install` aus. Danach sollte ein Ordner angelegt werden mit dem Namen `vendor` und mehreren Inhalten. Bis dahin funktioniert das MVC möglicherweise nicht mehr.
+Das MVC verwendet Composer. Wir haben die Bibliothek MPDF mittels Composer installiert. Um alle Abhängigkeiten nach dem
+Pull zu installieren führe im Terminal im Ordner `mvc` den Befehl `php composer.phar install` aus. Danach sollte ein
+Ordner angelegt werden mit dem Namen `vendor` und mehreren Inhalten. Bis dahin funktioniert das MVC möglicherweise nicht
+mehr.
 
 ## Nützliche Informationen & Links
 
@@ -28,8 +42,8 @@ Das MVC verwendet Composer. Wir haben die Bibliothek MPDF mittels Composer insta
 + GIT Flow: https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow
 + https://learngitbranching.js.org/
 + Regular Expressions:
-  + https://regex101.com/
-  + https://regexr.com/
+    + https://regex101.com/
+    + https://regexr.com/
 + https://regexcrossword.com
 + Command Line Basics: https://levelup.gitconnected.com/console-commands-that-you-should-know-how-to-use-f2b24a455394
 + https://www.gitignore.io/
@@ -70,31 +84,43 @@ while ($row = mysqli_fetch_assoc($result)) {
 extract($row);
 ```
 
+```mysql
+-- MySQL Query, um alle bestellten Produkte aus dem JSON in der `orders` Tabelle auszulesen
+SELECT id,
+       user_id,
+       JSON_EXTRACT(products, "$[*].id") as ordered_products
+    FROM orders
+    WHERE user_id = 1
+    GROUP BY ordered_products
+```
+
 ### Misc
 
-+ Manche Verzeichnisse in diesem Repository werden ein `.gitkeep` file beinhalten und sonst nichts. Das liegt daran, dass GIT leere Verzeichnisse nicht versioniert, ich möchte euch aber unter Umständen schon ein paar Ordner vorbereiten, in die später einmal etwas rein kommen wird.
-
++ Manche Verzeichnisse in diesem Repository werden ein `.gitkeep` file beinhalten und sonst nichts. Das liegt daran,
+  dass GIT leere Verzeichnisse nicht versioniert, ich möchte euch aber unter Umständen schon ein paar Ordner
+  vorbereiten, in die später einmal etwas rein kommen wird.
 
 ### Virtual Hosts / vhosts
 
 Normalerweise sind Dateien im Apache Webserver nur über den Pfad erreichbar:
 
 ```
-localhost/datei.php --> /var/www/html/datei.php
-domain.tld/datei.php --> /var/www/html/datei.php
 
-localhost/php/index.php --> /var/www/html/php/index.php
-localhost/mvc/index.php --> /var/www/html/mvc/index.php
+localhost/datei.php --> /var/www/html/datei.php domain.tld/datei.php --> /var/www/html/datei.php
+
+localhost/php/index.php --> /var/www/html/php/index.php localhost/mvc/index.php --> /var/www/html/mvc/index.php
 localhost/project3/index.php --> /var/www/html/project3/index.php
+
 ```
 
 Sollen Dateien über eine Subdomain erreichbar sein, müssen virtuelle Hosts konfiguriert werden:
 
 ```
-php.localhost/index.php --> /var/www/html/php/index.php
-mvc.localhost/index.php --> /var/www/html/mvc/index.php
+
+php.localhost/index.php --> /var/www/html/php/index.php mvc.localhost/index.php --> /var/www/html/mvc/index.php
 project3.localhost/index.php --> /var/www/html/project3/index.php
 
 localhost/php_workspace/Aufgabe/1/index.php --> /Application/MAMP/htdocs/php_workspace/Aufgabe/1/index.php
 php_workspace.localhost/Aufgabe/1/index.php --> /Application/MAMP/htdocs/php_workspace/Aufgabe/1/index.php
+
 ```

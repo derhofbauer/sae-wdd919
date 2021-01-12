@@ -123,4 +123,60 @@ class User extends BaseUser
             return $result;
         }
     }
+
+    /**
+     * @param int $productId
+     *
+     * @return bool
+     * @todo: comment
+     */
+    public function didOrderProduct (int $productId): bool
+    {
+        /**
+         * Datenbankverbindung herstellen.
+         */
+        $db = new Database();
+
+        $result = $db->query("SELECT COUNT(*) as count FROM orders WHERE JSON_CONTAINS(products, ?) AND user_id = ?", [
+            's:json' => "{\"id\": $productId}",
+            'i:user_id' => $this->id
+        ]);
+
+        if ($result[0]['count'] > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @return array
+     * @todo: comment
+     */
+    public function getOrderedProducts (): array
+    {
+        /**
+         * Datenbankverbindung herstellen.
+         */
+        $db = new Database();
+
+        $result = $db->query('SELECT JSON_EXTRACT(products, "$[*].id") as ordered_products FROM orders WHERE user_id = ? GROUP BY ordered_products', [
+            'i:user_id' => $this->id
+        ]);
+
+        $productIds = [];
+        $products = [];
+
+        foreach ($result as $item) {
+            foreach(json_decode($item['ordered_products']) as $productId) {
+                $productIds[] = (int)$productId;
+            }
+        }
+
+        $uniqueProductIds = array_unique($productIds);
+        foreach($uniqueProductIds as $key => $productId) {
+            $products[$key] = Product::find($productId);
+        }
+
+        return $products;
+    }
 }
