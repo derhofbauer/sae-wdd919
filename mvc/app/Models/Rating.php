@@ -9,7 +9,6 @@ use Core\Models\BaseModel;
  * Class Rating
  *
  * @package App\Models
- * @todo    : comment
  */
 class Rating extends BaseModel
 {
@@ -114,14 +113,12 @@ class Rating extends BaseModel
     }
 
     /**
-     * Diese Methode ist eine Mischung zwischen der BaseModel::find() und der BaseModel::all() Methode, weil anhand
-     * eines Wertes gesucht wird, aber mehr als ein Datensatz zurückkommen können.
+     * Diese Methode ist eine Variante der BaseModel::find() Methode, weil anhand mehrerer Werte gesucht wird.
      *
      * @param int $userId
      * @param int $productId
      *
      * @return array
-     * @todo: comment
      */
     public static function findByUserIdAndProductId (int $userId, int $productId): array
     {
@@ -173,7 +170,6 @@ class Rating extends BaseModel
      * @param int $productId
      *
      * @return array
-     * @todo: comment
      */
     public static function findByProductId (int $productId): array
     {

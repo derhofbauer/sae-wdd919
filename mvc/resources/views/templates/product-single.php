@@ -26,11 +26,6 @@ require __DIR__ . '/../partials/success.php';
 
     <div class="col-6">
         <h2>
-            <?php
-            /**
-             * @todo: comment
-             */
-            ?>
             <?php echo $product->name; ?>
             <?php if ($product->getAverageRating() !== null): ?>
                 <small>(Rating: <?php echo $product->getAverageRating(); ?>)</small>

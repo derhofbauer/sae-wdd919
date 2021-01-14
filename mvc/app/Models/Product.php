@@ -24,7 +24,7 @@ class Product extends BaseModel
     public int $stock = 0;
     public string $images = '';
     /**
-     * @todo: comment
+     * Wir verwenden $_rating als Cache für das Ergebnis von Product::getAverageRating(). Mehr dazu s. unten.
      */
     public float $_rating = 0;
 
@@ -581,33 +581,65 @@ class Product extends BaseModel
     }
 
     /**
+     * Berechne den Durchschnitt aller Bewertungen für dieses Produkt.
+     *
      * @return float|int
-     * @todo: comment
      */
     public function getAverageRating ()
     {
+        /**
+         * Hier sprechen wir den oben erwähnten Cache an. Wenn wir also den Durchschnitt in diesem Programmdurchlauf
+         * bereits berechnet haben, laden wir nicht alle Ratings neu aus der Datenbank und berechnen den Durchschnitt
+         * erneut, sondern verwenden den Wert aus dem Cache. Dadurch können wir $product->getAverageRating() mehrfach
+         * aufrufen, ohne jedes Mal die selbe aufwändige Berechnung durchzuführen. Der Bottleneck ist hier der
+         * Datenbankzugriff.
+         */
         if ($this->_rating > 0) {
             return $this->_rating;
         }
 
+        /**
+         * Alle Ratings zu diesem Produkt abfragen.
+         */
         $ratings = Rating::findByProductId($this->id);
 
+        /**
+         * Wenn es Ratings gibt, ...
+         */
         if (!empty($ratings)) {
             $_ratings = [];
 
+            /**
+             * ... so holen wir nur die Bewertung von 1-5 aus den Datenbankergebnissen ...
+             */
             foreach ($ratings as $rating) {
                 $_ratings[] = $rating->rating;
             }
 
+            /**
+             * ... und berechnen die Summer davon.
+             */
             $ratingSum = array_sum($_ratings);
 
             /**
+             * Der Durchschnitt berechnet sich dann aus der Summe aller Werte dividiert durch die Anzahl aller Werte.
+             *
              * SUM(<aller Werte>) / COUNT(<aller Werte>)
+             *
+             * Hier setzen wir auch den Cache, damit beim nächsten Aufruf dieser Funktion nicht wieder ein Datenbank-
+             * Zugriff nötig ist.
              */
             $this->_rating = round($ratingSum / count($_ratings), 1);
+
+            /**
+             * Berechnetes Rating zurück geben.
+             */
             return $this->_rating;
         }
 
+        /**
+         * Gibt es kein Rating, geben wir null zurück.
+         */
         return null;
     }
 

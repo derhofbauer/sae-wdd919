@@ -125,10 +125,11 @@ class User extends BaseUser
     }
 
     /**
+     * Prüfen ob dieser User das angegeben Produkt bereits bewertet hat.
+     *
      * @param int $productId
      *
      * @return bool
-     * @todo: comment
      */
     public function didOrderProduct (int $productId): bool
     {
@@ -137,20 +138,31 @@ class User extends BaseUser
          */
         $db = new Database();
 
+        /**
+         * Query abschicken.
+         */
         $result = $db->query("SELECT COUNT(*) as count FROM orders WHERE JSON_CONTAINS(products, ?) AND user_id = ?", [
             's:json' => "{\"id\": $productId}",
             'i:user_id' => $this->id
         ]);
 
+        /**
+         * Nachdem wir das Ergebnis eines COUNT-Query verarbeiten, können wir direkt das Element am Index 0 verwenden
+         * und davon dann count, weil ein Count Query immer nur ein Ergebnis zurück geben wird.
+         */
         if ($result[0]['count'] > 0) {
+            /**
+             * Wir geben dann einen Bool'schen Wert zurück.
+             */
             return true;
         }
         return false;
     }
 
     /**
+     * Alle Produkte, die dieser User jemals bestellt hat, zurückgeben.
+     *
      * @return array
-     * @todo: comment
      */
     public function getOrderedProducts (): array
     {
@@ -159,24 +171,56 @@ class User extends BaseUser
          */
         $db = new Database();
 
+        /**
+         * Query abschicken.
+         *
+         * Die Herausforderung hier ist, dass wir über das JSON-Feld `products` aus der Tabelle `orders` suchen müssen.
+         * Wir müssen also mit "$[*].id" folgendes machen:
+         * + $[*] nimmt alle Felder aus dem Array innerhalb von `products`
+         * + .id nimmt dann die id-Property aus jedem der beinhalteten Objekte.
+         */
         $result = $db->query('SELECT JSON_EXTRACT(products, "$[*].id") as ordered_products FROM orders WHERE user_id = ? GROUP BY ordered_products', [
             'i:user_id' => $this->id
         ]);
 
+        /**
+         * Ergebnisse vorbereiten.
+         */
         $productIds = [];
         $products = [];
 
+        /**
+         * Ergebnisse durchgehen.
+         */
         foreach ($result as $item) {
-            foreach(json_decode($item['ordered_products']) as $productId) {
+            /**
+             * Nachdem `products` ein JSON Feld ist, erhalten wir auch JSON, wenn wir nur einen Teil davon haben wollen.
+             * Vermutlich könnten wir diese Abfrage auch über ein JOIN lösen, aber diese Möglichkeit ist denke ich
+             * besser verständlich.
+             */
+            foreach (json_decode($item['ordered_products']) as $productId) {
+                /**
+                 * Product Id in das vorbereitete Array speichern.
+                 */
                 $productIds[] = (int)$productId;
             }
         }
 
+        /**
+         * Duplicate aus dem Array entfernen.
+         */
         $uniqueProductIds = array_unique($productIds);
-        foreach($uniqueProductIds as $key => $productId) {
+
+        /**
+         * Daten zu den $productIds aus der Datenbank laden.
+         */
+        foreach ($uniqueProductIds as $key => $productId) {
             $products[$key] = Product::find($productId);
         }
 
+        /**
+         * Produkte zurückgeben.
+         */
         return $products;
     }
 }
