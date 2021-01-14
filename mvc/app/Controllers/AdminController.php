@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\Category;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\Post;
 use App\Models\User;
 use Core\View;
 
@@ -77,13 +78,19 @@ class AdminController
         }
 
         /**
+         * Alle Posts, von der Datenbank nach crdate sortiert, auslesen
+         */
+        $posts = Post::all('crdate', 'DESC');
+
+        /**
          * View laden und sortierte Produkte übergeben
          */
         View::render('admin/dashboard', [
             'products' => $products,
             'users' => $users,
             'orders' => $orders,
-            'categories' => $categories
+            'categories' => $categories,
+            'posts' => $posts
         ]);
     }
 

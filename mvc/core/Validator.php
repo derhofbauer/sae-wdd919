@@ -20,7 +20,7 @@ class Validator
         'text' => '/^[a-zA-Z .\-,;_]*&/',
         'int' => '/^[\d]*$/',
         'float' => '/^[\d]+[.,]?[\d]{0,}$/',
-        'textnum' => '/^[\w .,#-]*$/',
+        'textnum' => '/^[\w\s.,#\-!:;]*$/',
         'email' => '/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/',
         'url' => '/^http(s)?:\/\/([\w]{1,20}\.)?[a-z0-9-]{2,65}(\.[a-z]{2,10}){1,2}(\/)?$/',
         'tel' => '/^[\d]*$/',
@@ -118,7 +118,7 @@ class Validator
         }
 
         /**
-         * Wenn der als Funktionsparameter übergebene Validierungstyp in den unterstützen Tyoen exisiert ...
+         * Wenn der als Funktionsparameter übergebene Validierungstyp in den unterstützen Typen existiert ...
          */
         if (array_key_exists($type, $this->types)) {
 

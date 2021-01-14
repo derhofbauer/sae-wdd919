@@ -15,6 +15,9 @@
             <li class="nav-item">
                 <a href="contact" class="nav-link">Contact</a>
             </li>
+            <li class="nav-item">
+                <a href="blog" class="nav-link">Blog</a>
+            </li>
         </ul>
 
         <form class="form-inline my-2 my-lg-0" method="get" action="search">

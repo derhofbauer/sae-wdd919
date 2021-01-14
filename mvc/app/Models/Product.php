@@ -359,6 +359,62 @@ class Product extends BaseModel
     }
 
     /**
+     * Diese Methode ist eine Mischung zwischen der BaseModel::find() und der BaseModel::all() Methode, weil anhand
+     * eines Wertes gesucht wird, aber mehr als ein Datensatz zurückkommen können.
+     *
+     * @param int $postId
+     *
+     * @return array
+     */
+    public static function findByPostId (int $postId): array
+    {
+        /**
+         * Datenbankverbindung herstellen.
+         */
+        $db = new Database();
+
+        /**
+         * Tabellennamen berechnen.
+         */
+        $tableName = self::getTableNameFromClassName();
+
+        /**
+         * Query ausführen.
+         *
+         * Hier können wir leider nicht alle benötigten Tabellen-Namen generieren, weil die Benennung der Mapping
+         * Tabelle komplex ist. Technisch geht das natürlich schon, wir haben es aber nicht im Core gebaut.
+         */
+        $result = $db->query("
+            SELECT $tableName.* FROM $tableName 
+                JOIN posts_products_mm
+                    ON posts_products_mm.product_id = $tableName.id
+            WHERE posts_products_mm.post_id = ?
+            ", ['i:post_id' => $postId]);
+
+        /**
+         * Ergebnis-Array vorbereiten.
+         */
+        $objects = [];
+
+        /**
+         * Ergebnisse des Datenbank-Queries durchgehen und jeweils ein neues Objekt erzeugen.
+         */
+        foreach ($result as $object) {
+            /**
+             * Auslesen, welche Klasse aufgerufen wurde und ein Objekt dieser Klasse erstellen und in den Ergebnis-Array
+             * speichern.
+             */
+            $calledClass = get_called_class();
+            $objects[] = new $calledClass($object);
+        }
+
+        /**
+         * Ergebnisse zurückgeben.
+         */
+        return $objects;
+    }
+
+    /**
      * Produkte durchsuchen
      *
      * @param string $searchterm
@@ -467,6 +523,68 @@ class Product extends BaseModel
         $result = $db->query('DELETE FROM products_categories_mm WHERE product_id = ? AND category_id = ?', [
             'i:product_id' => $this->id,
             'i:category_id' => $categoryId
+        ]);
+
+        /**
+         * Rückgabewert des Queries zurückgeben.
+         */
+        return $result;
+    }
+
+    /**
+     * Verknüpfung zwischen einem Produkt und einer Kategorie herstellen.
+     *
+     * @param int $postId
+     *
+     * @return array|bool|mixed
+     */
+    public function attachToPost (int $postId)
+    {
+        /**
+         * Datenbankverbindung herstellen.
+         */
+        $db = new Database();
+
+        /**
+         * Query ausführen.
+         *
+         * Hier können wir leider nicht alle benötigten Tabellen-Namen generieren, weil die Benennung der Mapping
+         * Tabelle komplex ist. Technisch geht das natürlich schon, wir haben es aber nicht im Core gebaut.
+         */
+        $result = $db->query('INSERT INTO posts_products_mm SET product_id = ?, post_id = ?', [
+            'i:product_id' => $this->id,
+            'i:post_id' => $postId
+        ]);
+
+        /**
+         * Rückgabewert des Queries zurückgeben.
+         */
+        return $result;
+    }
+
+    /**
+     * Verknüpfung zwischen einem Produkt und einer Kategorie aufheben.
+     *
+     * @param int $postId
+     *
+     * @return mixed
+     */
+    public function detachFromPost (int $postId)
+    {
+        /**
+         * Datenbankverbindung herstellen.
+         */
+        $db = new Database();
+
+        /**
+         * Query ausführen.
+         *
+         * Hier können wir leider nicht alle benötigten Tabellen-Namen generieren, weil die Benennung der Mapping
+         * Tabelle komplex ist. Technisch geht das natürlich schon, wir haben es aber nicht im Core gebaut.
+         */
+        $result = $db->query('DELETE FROM posts_products_mm WHERE product_id = ? AND post_id = ?', [
+            'i:product_id' => $this->id,
+            'i:post_id' => $postId
         ]);
 
         /**

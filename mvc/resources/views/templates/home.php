@@ -16,7 +16,7 @@ require_once __DIR__ . '/../partials/success.php';
         <div class="col-4 product">
             <?php
             /**
-             * ibt es Bilder? Wenn ja, geben wir hier das erste davon als Produktbild aus.
+             * Gibt es Bilder? Wenn ja, geben wir hier das erste davon als Produktbild aus.
              */
             ?>
             <?php if (count($product->getImages()) > 0): ?>

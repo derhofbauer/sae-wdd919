@@ -8,6 +8,8 @@ use Core\Models\BaseUser;
 /**
  * Class Bootstrap
  *
+ * Diese Klasse hat nichts mit dem CSS Framework Bootstrap zutun, nur der Name ist gleich.
+ *
  * @package Core
  */
 class Bootstrap

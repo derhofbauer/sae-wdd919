@@ -75,3 +75,22 @@
     </div>
 
 </div>
+
+<div class="row">
+    <div class="col posts">
+        <h2>Posts
+            <a href="admin/posts/create" class="btn btn-primary btn-sm">Add</a>
+        </h2>
+        <ul class="list-group">
+            <!-- Hier gehen wir alle Posts durch und geben sie in einer Liste aus. -->
+            <?php foreach ($posts as $post): ?>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <a href="admin/posts/<?php echo $post->id; ?>/edit">
+                        <?php echo $post->title; ?>
+                    </a>
+                    <!--<span class="badge badge-primary badge-pill"><?php /*echo $post->numberOfProducts; */?></span>-->
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+</div>

@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\Category;
+use App\Models\Post;
 use App\Models\Product;
 use Core\Database;
 use Core\View;
@@ -46,6 +47,37 @@ class HomeController
          * Klasse gebaut.
          */
         View::render('home', [
+            'products' => $products
+        ]);
+    }
+
+    /**
+     * Übersicht aller Blog Posts ausgeben.
+     *
+     * @todo: comment
+     */
+    public function blog ()
+    {
+        $posts = Post::all();
+
+        View::render('blog', [
+            'posts' => $posts
+        ]);
+    }
+
+    /**
+     * Blog Post Einzelansicht ausgeben.
+     *
+     * @param int $id
+     * @todo: comment
+     */
+    public function post (int $id)
+    {
+        $post = Post::find($id);
+        $products = Product::findByPostId($post->id);
+
+        View::render('post', [
+            'post' => $post,
             'products' => $products
         ]);
     }

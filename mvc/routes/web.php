@@ -1,21 +1,22 @@
 <?php
 
+use App\Controllers\AddressController;
 use App\Controllers\AdminController;
+use App\Controllers\ApiDemoController;
 use App\Controllers\AuthController;
 use App\Controllers\CartController;
+use App\Controllers\CategoryController;
 use App\Controllers\CheckoutController;
+use App\Controllers\EmailController;
 use App\Controllers\HomeController;
 use App\Controllers\OrderController;
+use App\Controllers\PaymentController;
+use App\Controllers\PostController;
 use App\Controllers\ProductController;
 use App\Controllers\ProfileController;
-use App\Controllers\UserController;
-use App\Controllers\AddressController;
-use App\Controllers\PaymentController;
-use App\Controllers\CategoryController;
-use App\Controllers\SearchController;
-use App\Controllers\ApiDemoController;
-use App\Controllers\EmailController;
 use App\Controllers\RatingController;
+use App\Controllers\SearchController;
+use App\Controllers\UserController;
 
 /**
  * Die Dateien im /routes Ordner beinhalten ein Mapping von einer URL auf eine eindeutige Controller & Action
@@ -30,6 +31,9 @@ return [
     '/home' => [HomeController::class, 'show'],
     '/products' => [HomeController::class, 'show'],
     '/products/category/{id}' => [HomeController::class, 'category'],
+    '/blog' => [HomeController::class, 'blog'],
+    '/blog/{id}' => [HomeController::class, 'post'],
+    '/blog/{id}/{slug}' => [HomeController::class, 'post'],
 
     /**
      * Product Routes
@@ -93,6 +97,14 @@ return [
     '/admin/categories/{id}/edit/do' => [CategoryController::class, 'update'],
     '/admin/categories/create' => [CategoryController::class, 'createForm'],
     '/admin/categories/create/do' => [CategoryController::class, 'create'],
+
+    /**
+     * Admin Blog Post Routes
+     */
+    '/admin/posts/{id}/edit' => [PostController::class, 'updateForm'],
+    '/admin/posts/{id}/edit/do' => [PostController::class, 'update'],
+    '/admin/posts/create' => [PostController::class, 'createForm'],
+    '/admin/posts/create/do' => [PostController::class, 'create'],
 
     /**
      * Checkout Routes
