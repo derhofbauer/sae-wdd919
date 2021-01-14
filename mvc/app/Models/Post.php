@@ -153,4 +153,59 @@ class Post extends BaseModel
 
         return $slug;
     }
+
+    /**
+     * Posts durchsuchen
+     *
+     * @param string $searchterm
+     *
+     * @return array
+     */
+    public static function search (string $searchterm): array
+    {
+        /**
+         * Datenbankverbindung herstellen.
+         */
+        $db = new Database();
+
+        /**
+         * Tabellennamen berechnen.
+         */
+        $tableName = self::getTableNameFromClassName();
+
+        /**
+         * Query ausführen.
+         *
+         * Hier führen wird eine Volltextsuche ausgeführt. MySQL unterstützt dabei nur eine sehr grundlegende Suche,
+         * die für unsere Zwecke aber ausreichen ist. Im MATCH() Statement werden die Spalten angegeben, die durchsucht
+         * werden sollen. Im AGAINST() Statement wird der Suchbegriff und der Suchmodus übergeben. Wichtig dabei ist,
+         * dass die Spalten, die durchsucht werden sollen, in der Datenbank als kombinierter FULLTEXT-Index definiert
+         * sind.
+         */
+        $result = $db->query("SELECT * FROM $tableName WHERE MATCH(title, content) AGAINST(? IN BOOLEAN MODE)", [
+            's:term' => $searchterm
+        ]);
+
+        /**
+         * Ergebnis-Array vorbereiten.
+         */
+        $objects = [];
+
+        /**
+         * Ergebnisse des Datenbank-Queries durchgehen und jeweils ein neues Objekt erzeugen.
+         */
+        foreach ($result as $object) {
+            /**
+             * Auslesen, welche Klasse aufgerufen wurde und ein Objekt dieser Klasse erstellen und in den Ergebnis-Array
+             * speichern.
+             */
+            $calledClass = get_called_class();
+            $objects[] = new $calledClass($object);
+        }
+
+        /**
+         * Ergebnisse zurückgeben.
+         */
+        return $objects;
+    }
 }

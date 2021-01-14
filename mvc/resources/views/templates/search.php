@@ -18,32 +18,56 @@ require __DIR__ . '/../partials/errors.php';
  * s. https://de.wikipedia.org/wiki/Base64
  */
 ?>
-<div class="number-of-results" data-searchresults="<?php echo base64_encode(json_encode($results)); ?>">Sie sucher lieferte <?php echo count($results); ?> Treffer.</div>
-
-<div class="products row">
-    <?php
-    /**
-     * [ ] Produktübersicht
-     */
-
-    foreach ($results as $product): ?>
-
-        <div class="col-4 product">
-            <?php
-            /**
-             * ibt es Bilder? Wenn ja, geben wir hier das erste davon als Produktbild aus.
-             */
-            ?>
-            <?php if (count($product->getImages()) > 0): ?>
-                <img src="<?php echo $product->getImages()[0]; ?>" alt="<?php echo $product->name ?>" class="img-thumbnail">
-            <?php endif; ?>
-            <h2><?php echo $product->name; ?></h2>
-            <div><?php echo $product->description; ?></div>
-            <a href="products/<?php echo $product->id; ?>">more ...</a>
+<div class="row">
+    <div class="col">
+        <div class="number-of-results" data-searchresults="<?php echo base64_encode(json_encode($productResults)); ?>">
+            Sie sucher lieferte <?php echo count($productResults); ?>Produkt-Treffer.
         </div>
 
-    <?php endforeach; ?>
+        <div class="products row">
+            <?php
+            foreach ($productResults as $product): ?>
 
+                <div class="col-4 product">
+                    <?php
+                    /**
+                     * Gibt es Bilder? Wenn ja, geben wir hier das erste davon als Produktbild aus.
+                     */
+                    ?>
+                    <?php if (count($product->getImages()) > 0): ?>
+                        <img src="<?php echo $product->getImages()[0]; ?>" alt="<?php echo $product->name ?>" class="img-thumbnail">
+                    <?php endif; ?>
+                    <h2><?php echo $product->name; ?></h2>
+                    <div><?php echo $product->description; ?></div>
+                    <a href="products/<?php echo $product->id; ?>">more ...</a>
+                </div>
+
+            <?php endforeach; ?>
+
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="number-of-results" data-searchresults="<?php echo base64_encode(json_encode($blogResults)); ?>">
+            Sie sucher lieferte <?php echo count($blogResults); ?> Blog-Treffer.
+        </div>
+
+        <div class="posts">
+            <?php
+            foreach ($blogResults as $post): ?>
+
+                <div class="post">
+                    <h2>
+                        <a href="blog/<?php echo $post->id; ?>/<?php echo $post->getSlug(); ?>"><?php echo $post->title; ?></a>
+                    </h2>
+                    <div><?php echo $post->getContent(100); ?></div>
+                    <a href="blog/<?php echo $post->id; ?>/<?php echo $post->getSlug(); ?>">more ...</a>
+                </div>
+
+            <?php endforeach; ?>
+
+        </div>
+    </div>
 </div>
 
 <?php
@@ -56,5 +80,6 @@ require __DIR__ . '/../partials/errors.php';
  */
 ?>
 <script>
-    const _searchresults = <?php echo json_encode($results); ?>
+    const _productResults = <?php echo json_encode($productResults); ?>
+    const _blogResults = <?php echo json_encode($blogResults); ?>
 </script>

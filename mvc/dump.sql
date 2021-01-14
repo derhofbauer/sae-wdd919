@@ -296,6 +296,7 @@ ALTER TABLE `payments`
 --
 ALTER TABLE `posts`
   ADD PRIMARY KEY (`id`);
+ALTER TABLE `posts` ADD FULLTEXT KEY `title` (`title`,`content`);
 
 --
 -- Indizes für die Tabelle `posts_products_mm`

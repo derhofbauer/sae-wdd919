@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\Post;
 use App\Models\Product;
 use Core\Session;
 use Core\View;
@@ -23,7 +24,8 @@ class SearchController
          * Fehler und Ergebnisse vorbereiten
          */
         $errors = [];
-        $results = [];
+        $productResults = [];
+        $blogResults = [];
 
         /**
          * Gibt es einen Suchbegriff ...
@@ -38,7 +40,8 @@ class SearchController
             /**
              * ... und setzen die Suche ab.
              */
-            $results = Product::search($searchterm);
+            $productResults = Product::search($searchterm);
+            $blogResults = Post::search($searchterm);
 
         } else {
             /**
@@ -56,7 +59,8 @@ class SearchController
          * View laden und Daten übergeben.
          */
         View::render('search', [
-            'results' => $results
+            'productResults' => $productResults,
+            'blogResults' => $blogResults
         ]);
     }
 
