@@ -9,7 +9,6 @@ use Core\Models\BaseModel;
  * Class Post
  *
  * @package App\Models
- * @todo    : comment
  */
 class Post extends BaseModel
 {
@@ -21,7 +20,13 @@ class Post extends BaseModel
     public string $title = '';
     public string $content = '';
     public int $user_id;
+    /**
+     * @var int Zeitstempel der Erstellung.
+     */
     public int $crdate;
+    /**
+     * @var int Zeitstempel der letzten Aktualisierung.
+     */
     public int $tstamp;
 
     /**
@@ -122,35 +127,82 @@ class Post extends BaseModel
      * @param int $maxLength
      *
      * @return string
-     * @todo: comment
      */
     public function getContent (int $maxLength = 0): string
     {
+        /**
+         * Content kopieren, damit wir ihn verändern können, ohne das Original zu verändern.
+         */
         $content = $this->content;
+
+        /**
+         * Wenn eine $maxLength gesetzt ist ...
+         */
         if ($maxLength > 0) {
+            /**
+             * ... holen wir den Substring aus dem $content.
+             */
             $content = substr($content, 0, $maxLength);
 
+            /**
+             * Wenn die Länge Substrings ungleich der Länge des originalen Strings ist, so hängen wir hinten eine
+             * horizontale Ellipse an, weil das bedeutet, dass die substr()-Funktion den Content gekürzt hat.
+             */
             if (strlen($content) !== strlen($this->content)) {
                 $content .= ' …';
             }
         }
+        /**
+         * Im Anschluss trimmen wir den Content noch ...
+         */
         $content = trim($content);
 
+        /**
+         * ... und geben eine Version, bei der alle Zeilenumbrüche mit <br>-Tags ersetzt sind zurück.
+         *
+         * Die nl2br() Funktion ersetzt Zeilenumbrüche mit <br>-Tags. Wir wandeln Zeilenumbrüche ganz am Schluss erst um,
+         * weil es sonst passieren könnte, dass ein <br>-Tag durch die substr()-Funktion auseinander geschnitten wird.
+         */
         return nl2br($content);
     }
 
     /**
-     * @todo: comment
+     * Slug aus dem Titel des Posts berechnen.
+     *
+     * Wir werden den Slug nur für die URL verwenden, damit direkt aus der URL der Titel des Posts erkennbar ist, wenn
+     * die URL bspw. jemandem geschickt wird.
+     *
      * @return string
      */
     public function getSlug (): string
     {
+        /**
+         * Liste der Zeichen erstellen, die aus dem String gelöscht werden sollen.
+         */
         $replaceWithNothing = ".!?:;#+*";
+        /**
+         * Liste der Zeichen in einen Array umformen. Die str_split() Funktion teilt einen String in einzelne Strings
+         * einer gewissen länge. In unserem Fall teilen wir den String in Strings mit der Länge 1, dadurch haben wir
+         * einen Array, in dem jedes Feld ein Zeichen beinhaltet.
+         */
         $needles = str_split($replaceWithNothing, 1);
+        /**
+         * Die str_replace() Funktion akzeptiert als ersten Parameter auch einen Array. In diesem Fall werden alle
+         * Strings aus diesem Array mit dem zweiten Parameter ersetzt.
+         */
         $slug = str_replace($needles, '', $this->title);
+        /**
+         * Nun ersetzen wir Leerzeichen mit Bindestrichen ...
+         */
         $slug = str_replace(' ', '-', $slug);
+        /**
+         * ... und lowercasen den String.
+         */
         $slug = strtolower($slug);
 
+        /**
+         * Generierten Slug zurückgeben.
+         */
         return $slug;
     }
 

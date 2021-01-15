@@ -53,13 +53,17 @@ class HomeController
 
     /**
      * Übersicht aller Blog Posts ausgeben.
-     *
-     * @todo: comment
      */
     public function blog ()
     {
+        /**
+         * Alle Posts aus der Datenbank abfragen.
+         */
         $posts = Post::all();
 
+        /**
+         * View laden und Daten übergeben.
+         */
         View::render('blog', [
             'posts' => $posts
         ]);
@@ -69,13 +73,21 @@ class HomeController
      * Blog Post Einzelansicht ausgeben.
      *
      * @param int $id
-     * @todo: comment
      */
     public function post (int $id)
     {
+        /**
+         * Einzelnen Post aus der Datenbank laden.
+         */
         $post = Post::find($id);
+        /**
+         * Produkte, die mit diesem Post verknüpft sind, aus der Datenbank laden.
+         */
         $products = Product::findByPostId($post->id);
 
+        /**
+         * View laden und Daten übergeben.
+         */
         View::render('post', [
             'post' => $post,
             'products' => $products

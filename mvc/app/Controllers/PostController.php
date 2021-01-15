@@ -15,7 +15,6 @@ use Core\View;
  * Class PostController
  *
  * @package App\Controllers
- * @todo    : comment
  */
 class PostController
 {
@@ -142,8 +141,6 @@ class PostController
 
     /**
      * Formular zur Erstellung eines neuen Posts ausgeben.
-     *
-     * @todo: comment
      */
     public function createForm ()
     {
