@@ -30,6 +30,10 @@ require __DIR__ . '/../partials/success.php';
             <?php if ($product->getAverageRating() !== null): ?>
                 <small>(Rating: <?php echo $product->getAverageRating(); ?>)</small>
             <?php endif; ?>
+
+            <?php if (\App\Models\User::isLoggedIn()): ?>
+                <a href="wishlist/add/<?php echo $product->id; ?>" class="btn btn-primary btn-sm">Add To Wishlist</a>
+            <?php endif; ?>
         </h2>
         <div>Price: <strong><?php echo $product->getPrice() ?></strong></div>
         <div><?php echo $product->description; ?></div>

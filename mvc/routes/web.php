@@ -17,6 +17,7 @@ use App\Controllers\ProfileController;
 use App\Controllers\RatingController;
 use App\Controllers\SearchController;
 use App\Controllers\UserController;
+use App\Controllers\WishlistController;
 
 /**
  * Die Dateien im /routes Ordner beinhalten ein Mapping von einer URL auf eine eindeutige Controller & Action
@@ -133,6 +134,13 @@ return [
      * Search Routes
      */
     '/search' => [SearchController::class, 'search'],
+
+    /**
+     * Wishlist Routes
+     */
+    '/wishlist' => [WishlistController::class, 'list'],
+    '/wishlist/add/{id}' => [WishlistController::class, 'add'],
+    '/wishlist/remove/{id}' => [WishlistController::class, 'remove'],
 
     /**
      * Contact form Routes

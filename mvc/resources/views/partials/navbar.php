@@ -18,6 +18,11 @@
             <li class="nav-item">
                 <a href="blog" class="nav-link">Blog</a>
             </li>
+            <?php if (\App\Models\User::isLoggedIn()): ?>
+                <li class="nav-item">
+                    <a href="wishlist" class="nav-link">Wishlist</a>
+                </li>
+            <?php endif; ?>
         </ul>
 
         <form class="form-inline my-2 my-lg-0" method="get" action="search">
