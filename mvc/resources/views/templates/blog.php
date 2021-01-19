@@ -5,9 +5,10 @@ require_once __DIR__ . '/../partials/success.php';
 
 ?>
 
+<?php require __DIR__ . '/../partials/paginator.php'; ?>
+
 <div class="posts row">
-    <?php
-    foreach ($posts as $post): ?>
+    <?php foreach ($posts as $post): ?>
 
         <div class="col-4 post">
             <h2>
@@ -20,3 +21,5 @@ require_once __DIR__ . '/../partials/success.php';
     <?php endforeach; ?>
 
 </div>
+
+<?php require __DIR__ . '/../partials/paginator.php'; ?>

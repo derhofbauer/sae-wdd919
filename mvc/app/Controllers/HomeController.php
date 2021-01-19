@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\Product;
+use Core\Config;
 use Core\Database;
 use Core\View;
 
@@ -53,19 +54,30 @@ class HomeController
 
     /**
      * Übersicht aller Blog Posts ausgeben.
+     * @todo: comment
      */
     public function blog ()
     {
         /**
          * Alle Posts aus der Datenbank abfragen.
          */
-        $posts = Post::all();
+        $posts = Post::allPaginated();
+        $count = Post::countAll();
+        $numberOfPages = ceil($count / Config::get('app.pagination-limit'));
+
+        $isHttps = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on');
+        $currentUrl = ($isHttps ? 'https' : 'http') . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+        $currentUrlWithoutPage = preg_replace('/&?page=[0-9]+/', '', $currentUrl);
+        $currentUrlWithoutPage = rtrim($currentUrlWithoutPage, '?');
+        $currentUrlWithoutPage = str_replace('?&', '?', $currentUrlWithoutPage);
 
         /**
          * View laden und Daten übergeben.
          */
         View::render('blog', [
-            'posts' => $posts
+            'posts' => $posts,
+            'numberOfPages' => $numberOfPages,
+            'currentUrl' => $currentUrlWithoutPage
         ]);
     }
 

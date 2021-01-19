@@ -7,5 +7,6 @@ return  [
     'upload-path' => 'uploads/',
     'upload-limit-filesize' => 1024 * 1024 * 10, // 10MB
     'upload-limit-width' => 1920,
-    'upload-limit-height' => 1080
+    'upload-limit-height' => 1080,
+    'pagination-limit' => 5
 ];

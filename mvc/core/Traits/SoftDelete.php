@@ -53,12 +53,12 @@ trait SoftDelete
      * Datenbank durchgeführt werden, weil das wesentlich performanter ist als über PHP.
      * Dabei werden als gelöscht markierte Datensätze nicht abgerufen.
      *
-     * @param string $orderbBy
+     * @param string $orderBy
      * @param string $direction
      *
      * @return array
      */
-    public static function all (string $orderbBy = '', string $direction = 'ASC'): array
+    public static function all (string $orderBy = '', string $direction = 'ASC'): array
     {
         /**
          * Datenbankverbindung herstellen.
@@ -76,10 +76,10 @@ trait SoftDelete
          * Wurde in den Funktionsparametern eine Sortierung definiert, so wenden wir sie hier an, andernfalls rufen wir
          * alles ohne sortierung ab.
          */
-        if (empty($orderbBy)) {
+        if (empty($orderBy)) {
             $result = $db->query("SELECT * FROM $tableName WHERE deleted_at IS NULL");
         } else {
-            $result = $db->query("SELECT * FROM $tableName WHERE deleted_at IS NULL ORDER BY $orderbBy $direction");
+            $result = $db->query("SELECT * FROM $tableName WHERE deleted_at IS NULL ORDER BY $orderBy $direction");
         }
 
         /**
