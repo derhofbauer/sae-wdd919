@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Erstellungszeit: 14. Jan 2021 um 19:28
+-- Erstellungszeit: 19. Jan 2021 um 19:43
 -- Server-Version: 10.4.12-MariaDB-1:10.4.12+maria~bionic
 -- PHP-Version: 7.4.3
 
@@ -289,6 +289,25 @@ INSERT INTO `users` (`id`, `email`, `password`, `username`, `firstname`, `lastna
 (1, 'admin@shop.com', '$2y$12$Ffz4qqdZT.SXrqxVYj1seOQ1w6CTlejM.ktrAZwXEROaxM4i/9p1W', 'admin', 'User', 'One', 1, NULL),
 (2, 'user@shop.com', '$2y$12$.P6HA4LEjI7qT5jBTBlB5uY1UgLThZkYS6KDKe2BdgqoDFZvrOanq', 'user', 'User', 'Two (regular User)', NULL, NULL);
 
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `wishlist`
+--
+
+CREATE TABLE `wishlist` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Ganz normale Mapping-Tabelle mit einem speziellen Namen';
+
+--
+-- Daten für Tabelle `wishlist`
+--
+
+INSERT INTO `wishlist` (`id`, `user_id`, `product_id`) VALUES
+(4, 1, 3);
+
 --
 -- Indizes der exportierten Tabellen
 --
@@ -358,6 +377,12 @@ ALTER TABLE `users`
   ADD UNIQUE KEY `username` (`username`);
 
 --
+-- Indizes für die Tabelle `wishlist`
+--
+ALTER TABLE `wishlist`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT für exportierte Tabellen
 --
 
@@ -419,6 +444,12 @@ ALTER TABLE `ratings`
 -- AUTO_INCREMENT für Tabelle `users`
 --
 ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT für Tabelle `wishlist`
+--
+ALTER TABLE `wishlist`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
