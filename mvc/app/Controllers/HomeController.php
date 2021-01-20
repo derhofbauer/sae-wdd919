@@ -54,21 +54,50 @@ class HomeController
 
     /**
      * Übersicht aller Blog Posts ausgeben.
-     * @todo: comment
      */
     public function blog ()
     {
         /**
-         * Alle Posts aus der Datenbank abfragen.
+         * Alle Posts aus der Datenbank abfragen. Anders als die "normale" BaseModel::all() Methode gibt die
+         * BaseModel::allPaginated() Methode nur ein paar Elemente aus der Datenbank zurück und berücksichtigt dabei
+         * aber den GET-Parameter page, den wir im Paginator Partial setzen.
          */
         $posts = Post::allPaginated();
+        /**
+         * Anzahl aller Elemente in der Tabelle ausgeben. Diese Information brauchen wir, damit wir berechnen können,
+         * wie viele Seiten es im Paginator geben muss.
+         */
         $count = Post::countAll();
+        /**
+         * Anzahl der Seiten berechnen. Wir verwenden die ceil() Funktion, die eine Gleitkommazahl auf die nächste
+         * Ganzzahl aufrundet, weil wir auch eine eigene Seite brauchen, wenn nur ein einzelnes Element "zu viel" ist.
+         */
         $numberOfPages = ceil($count / Config::get('app.pagination-limit'));
 
+        /**
+         * Aktuelle URL berechnen und den GET-Paramater page entfernen, damit wir ihn im Paginator nicht ein zweites
+         * mal setzen.
+         *
+         * Zunächst prüfen wir, ob HTTP oder HTTPS verwendet wird.
+         */
         $isHttps = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on');
+        /**
+         * Dann bauen wir uns die aktuelle URL zusammen.
+         */
         $currentUrl = ($isHttps ? 'https' : 'http') . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+        /**
+         * Dann entfernen wir &page=<int> und page=<int>.
+         */
         $currentUrlWithoutPage = preg_replace('/&?page=[0-9]+/', '', $currentUrl);
+        /**
+         * Es kann vorkommen, dass am Ende der URL ein Fragezeichen übrig bleibt, wenn page der einzige GET Parameter
+         * war. Hier trimmen wir von rechts alle ? weg, die sich finden lassen.
+         */
         $currentUrlWithoutPage = rtrim($currentUrlWithoutPage, '?');
+        /**
+         * Es kann auch passieren, dass ? und & direkt aufeinander folgen, wenn page der erste von mehreren GET
+         * Parametern war. Hier lösen wir dieses Problem, indem wir ?& mit ? ersetzen.
+         */
         $currentUrlWithoutPage = str_replace('?&', '?', $currentUrlWithoutPage);
 
         /**

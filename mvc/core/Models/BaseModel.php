@@ -80,15 +80,9 @@ abstract class BaseModel
     }
 
     /**
-     * Alle Datensätze aus der Datenbank abfragen.
-     *
-     * Die beiden Funktionsparameter bieten die Möglichkeit die Daten, die abgerufen werden, nach einer einzelnen Spalte
-     * aufsteigend oder absteigend direkt über MySQL zu sortieren. Sortierungen sollten, sofern möglich, über die
-     * Datenbank durchgeführt werden, weil das wesentlich performanter ist als über PHP.
+     * Alle Datensätze aus der Datenbank zählen.
      *
      * @return false
-     * @todo: comment
-     *
      */
     public static function countAll ()
     {
@@ -109,7 +103,8 @@ abstract class BaseModel
 
         /**
          * Wurde ein Datensatz gefunden und gibt es somit Ergebnisse?
-         * @todo: comment
+         *
+         * Hier brauchen wir keine Schleife, weil ein COUNT Query wie dieser, nur eine Zeile als Ergebnis zurück liefert.
          */
         if (!empty($result)) {
             return (int)$result[0]['count'];
@@ -122,11 +117,15 @@ abstract class BaseModel
     }
 
     /**
-     * Alle Datensätze aus der Datenbank abfragen.
+     * Alle Datensätze aus der Datenbank abfragen und dabei den GET Parameter page brücksichtigen.
      *
-     * Die beiden Funktionsparameter bieten die Möglichkeit die Daten, die abgerufen werden, nach einer einzelnen Spalte
-     * aufsteigend oder absteigend direkt über MySQL zu sortieren. Sortierungen sollten, sofern möglich, über die
-     * Datenbank durchgeführt werden, weil das wesentlich performanter ist als über PHP.
+     * Die ersten beiden Funktionsparameter bieten die Möglichkeit die Daten, die abgerufen werden, nach einer
+     * einzelnen Spalte aufsteigend oder absteigend direkt über MySQL zu sortieren. Sortierungen sollten, sofern
+     * möglich, über die Datenbank durchgeführt werden, weil das wesentlich performanter ist als über PHP.
+     *
+     * Die letzten beiden Funktionsparameter ermöglichen es, nur einen Teil der Daten auch wirklich aus der Datenbank
+     * zu laden. Das hat den Vorteil, dass die Performance bei großen Datenbeständen massiv gesteigert wird, weil
+     * weniger Daten abgerufen und in PHP weiterverarbeitet werden müssen.
      *
      * @param string   $orderBy
      * @param string   $direction
@@ -134,22 +133,26 @@ abstract class BaseModel
      * @param int|null $page
      *
      * @return array
-     * @todo: comment
-     *
      */
     public static function allPaginated (string $orderBy = '', string $direction = 'ASC', int $limit = null, int $page = null): array
     {
         /**
          * Standardwerte definieren.
          *
-         * @todo: comment
+         * Wenn kein $limit übergeben wurde, holen wir den Wert aus der Config.
          */
         if ($limit === null) {
             $limit = Config::get('app.pagination-limit');
         }
+        /**
+         * Wurde keine Page übergeben, versuchen wir die $page aus dem GET Parameter page zu füllen.
+         */
         if ($page === null && isset($_GET['page']) && is_numeric($_GET['page'])) {
             $page = $_GET['page'];
         } else {
+            /**
+             * Schlägt das fehl, starten wir auf Seite 1.
+             */
             $page = 1;
         }
 
@@ -166,7 +169,9 @@ abstract class BaseModel
         /**
          * Query Parameter vorbereiten.
          *
-         * @todo: comment
+         * Hier haben wir die Query Parameter in eine eigene Variable ausgelagert, weil wir unten zwei verschiedene
+         * Queries haben, die beide exakt die selben Parameter haben und wir daher $params nicht doppelt definieren
+         * brauchen.
          */
         $params = [
             'i:offset' => $limit * ($page - 1),
@@ -178,8 +183,6 @@ abstract class BaseModel
          *
          * Wurde in den Funktionsparametern eine Sortierung definiert, so wenden wir sie hier an, andernfalls rufen wir
          * alles ohne sortierung ab.
-         *
-         * @todo: comment
          */
         if (empty($orderBy)) {
             $result = $db->query("SELECT * FROM $tableName LIMIT ?, ?", $params);
